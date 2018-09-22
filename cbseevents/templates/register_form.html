@@ -1,0 +1,42 @@
+<html>
+<body>
+<form method="post" action="" style="background-color: #F2F3F4   ">
+    {% csrf_token %}
+    <label>Name:</label>
+    <br>
+    {{ form.name }}
+    <br>
+    <label>Email ID:</label>
+    <br>
+    {{ form.email }}
+    <br>
+    <label>University Roll Number:</label>
+    <br>
+    {{ form.roll_no }}
+    <br>
+    <label>College Name:</label>
+    <br>
+    {{ form.college_name }}
+    <br>
+    <label>Branch:</label>
+    <br>
+    {{ form.branch }}
+    <br>
+    <label>Year:</label>
+    <br>
+    {{ form.year }}
+    <br>
+    <label>Sem:</label>
+    <br>
+    {{ form.sem }}
+    <br>
+    <label>Mobile Number:</label>
+    <br>
+    {{ form.number }}
+    <br>
+    <a href="{% url 'workshop' %}">
+        <button type="submit">Submit</button>
+    </a>
+</form>
+</body>
+</html>

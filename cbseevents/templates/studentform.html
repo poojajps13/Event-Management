@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+	<br><br><br><br><br>
+	    {% for m in messages %}{{ m }}{% endfor %}
+<form method="post" action="" style="background-color: #F2F3F4 ;padding-left:35%;  ">
+				 		{% csrf_token %}
+				 			<label>Name:</label>
+				 			<br>
+				 			{{ form.name }}
+				 			<br>
+				 			<label>Email ID:</label>
+				 			<br>
+				 			{{ form.email }}
+				 			<br>
+				 			<label>University Roll Number:</label>
+				 			<br>
+				 			{{ form.roll_no }}
+				 			<br>
+				 			<label>College Name:</label>
+				 			<br>
+				 			{{ form.college_name }}
+				 			<br>
+				 			<label>Branch:</label>
+				 			<br>
+				 			{{ form.branch }}
+				 			<br>
+				 			<label>Year:</label>
+				 			<br>
+				 			{{ form.year}}
+				 			<br>
+				 			<label>Semester:</label>
+				 			<br>
+				 			{{ form.sem }}
+				 			<br>
+				 			<label>Mobile Number:</label>
+				 			<br>
+				 			{{ form.number }}
+				 			<br>
+				 			<div class="g-recaptcha" data-sitekey="6LdH0G4UAAAAAFwYlkDYIxQzT8i8OV4skUrNBDjc"></div>
+				 			<br/>
+				 	<a href="{% url 'home'  %}"><button type="submit" >Submit</button></a>
+				 	<br><br><br><br>
+				 	</form>
+{% endblock content %}
