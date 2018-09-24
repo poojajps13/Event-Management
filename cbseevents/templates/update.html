@@ -14,9 +14,9 @@
 <label>Resource person data:</label>
 <input type="text" name="resource_person_data" placeholder="resource_person_data" required maxlength="" value="{{ event.resource_person_data}}"><br>
  <label>Registration start:</label>
-<input type="text" name="registration_start" placeholder="registration_start" required maxlength="" value="{{ event.registration_start}}"><br>
+<input type="text" name="registration_start" placeholder="registration_start" required maxlength="" value="{{ event.registration_start|date:'Y-m-d' }}"><br>
 <label>Registration end:</label>
-<input type="text" name="registration_end" placeholder="registration_end" required maxlength="" value="{{ event.registration_end}}"><br>
+<input type="text" name="registration_end" placeholder="registration_end" required maxlength="" value="{{ event.registration_end|date:'Y-m-d' }}"><br>
  <label>Event start:</label>
 <input type="text" name="event_date" placeholder="event_date" required maxlength="" value="{{ event.event_date }}">
 <input type="text" name="event_month" placeholder="event_month" required maxlength="" value="{{ event.event_month }}">
