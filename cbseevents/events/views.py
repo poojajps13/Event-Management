@@ -3,7 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist,PermissionDenied
 from django.contrib import messages, auth
 from .forms import *
 from .models import *
-
+from datetime import date
+from django.db.models.functions import ExtractDay
 def add_event(request):
     if request.method == "POST":
         form = EventForm(request.POST)
@@ -116,27 +117,30 @@ def add_event(request):
     else:
         form = EventForm()
     return render(request, 'add_event.html', {'form': form})
-
+def register(request):
+  return redirect('home')
 def update_workshop(request,slug):
   try:
     event=WorkshopRecord.objects.get(slug=slug)
     if event.user == request.user:
       if request.method == "POST":
         event.event_name=request.POST['event_name']
-        event.duration = request.POST['duration']
-        event.description = request.POST['description']
-        event.resource_person = request.POST['resource_person']
-        event.resource_person_data = request.POST['resource_person_data']
-        event.registration_start = request.POST['registration_start']
-        event.registration_end = request.POST['registration_end']
-        event.event_date = request.POST['event_date']
-        event.event_month = request.POST['event_month']
-        event.event_year = request.POST['event_year']
-        event.eligible_branches = request.POST['eligible_branches']
-        event.outside_student = request.POST['outside_student']
-        event.venue = request.POST['venue']
-        event.fees = request.POST['fees']
-        event.save(update_fields=['event_name','duration','description','resource_person','resource_person_data','registration_start','registration_end','event_date','event_month','event_year','eligible_branches','outside_student','venue','fees'])
+        event.duration=request.POST['duration']
+        event.description=request.POST['description']
+        event.resource_person=request.POST['resource_person']
+        event.resource_person_data=request.POST['resource_person_data']
+        event.registration_start=request.POST['registration_start']
+        event.registration_end=request.POST['registration_end']
+        event.event_date=request.POST['event_date']
+        event.event_month=request.POST['event_month']
+        event.event_year=request.POST['event_year']
+        event.eligible_branches=request.POST['eligible_branches']
+        event.outside_student=request.POST['outside_student']
+        event.venue=request.POST['venue']
+        event.fees=request.POST['fees']
+        event.save(update_fields=['event_name','description','duration','resource_person','resource_person_data',
+                  'registration_start','registration_end','event_date','event_month','event_year','eligible_branches',
+                  'outside_student','venue','fees'])
       return render(request,'update.html',{'event':event})
     else:
       raise PermissionDenied
@@ -145,28 +149,157 @@ def update_workshop(request,slug):
   except PermissionDenied:
     messages.error(request,'Workshop does not exist !!!')
   return render(request,'update.html')
-def update_save(request,slug):
+def workshop_registration(request,slug):
+  obj=WorkshopRecord.objects.get(slug=slug)
   try:
-    event=WorkshopRecord.objects.get(slug=slug)
-    if request.method == "POST":
-      event.event_name=request.POST['event_name']
-      event.duration = request.POST['duration']
-      event.description = request.POST['description']
-      event.resource_person = request.POST['resource_person']
-      event.resource_person_data = request.POST['resource_person_data']
-      event.registration_start = request.POST['registration_start']
-      event.registration_end = request.POST['registration_end']
-      event.event_date = request.POST['event_date']
-      event.event_month = request.POST['event_month']
-      event.event_year = request.POST['event_year']
-      event.eligible_branches = request.POST['eligible_branches']
-      event.outside_student = request.POST['outside_student']
-      event.venue = request.POST['venue']
-      event.fees = request.POST['fees']
-      event.save(update_fields=['event_name','duration','description','resource_person','resource_person_data','registration_start','registration_end','event_date','event_month','event_year','eligible_branches','outside_student','venue','fees'])
-  except ObjectDoesNotExist:
-            messages.error(request, 'Workshop Closed or Deleted')
+    if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+      if request.method == "POST":
+        form = StudentForm(request.POST)
+        try:
+          if form.is_valid():
+            name=form.cleaned_data['name']
+            email=form.cleaned_data['email']
+            roll_no=form.cleaned_data['roll_no']
+            college_name=form.cleaned_data['college_name']
+            branch=form.cleaned_data['branch']
+            year=form.cleaned_data['year']
+            sem=form.cleaned_data['sem']
+            number=form.cleaned_data['number']
+            StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
+            messages.success(request, 'Successfully Registered')
+          else:
+            messages.error(request, 'Invalid form')
+        except Exception:
+          messages.error(request, 'Try again')
+        form = StudentForm()
+        return render(request, 'studentform.html', {'form': form})
+      else:
+        form = StudentForm()
+      return render(request, 'studentform.html', {'form': form})
+  except Exception:
+    messages.error(request,'Registration Closed')
   return redirect('home')
+def seminar_registration(request,slug):
+  obj=SeminarRecord.objects.get(slug=slug)
+  try:
+    if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+      if request.method == "POST":
+        form = StudentForm(request.POST)
+        try:
+          if form.is_valid():
+            name=form.cleaned_data['name']
+            email=form.cleaned_data['email']
+            roll_no=form.cleaned_data['roll_no']
+            college_name=form.cleaned_data['college_name']
+            branch=form.cleaned_data['branch']
+            year=form.cleaned_data['year']
+            sem=form.cleaned_data['sem']
+            number=form.cleaned_data['number']
+            StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
+            messages.success(request, 'Successfully Registered')
+          else:
+            messages.error(request, 'Invalid form')
+        except Exception:
+          messages.error(request, 'Try again')
+        form = StudentForm()
+        return render(request, 'studentform.html', {'form': form})
+      else:
+        form = StudentForm()
+      return render(request, 'studentform.html', {'form': form})
+  except Exception:
+    messages.error(request,'Registration Closed')
+  return redirect('home')
+def competition_registration(request,slug):
+  obj=CompetitionRecord.objects.get(slug=slug)
+  try:
+    if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+      if request.method == "POST":
+        form = StudentForm(request.POST)
+        try:
+          if form.is_valid():
+            name=form.cleaned_data['name']
+            email=form.cleaned_data['email']
+            roll_no=form.cleaned_data['roll_no']
+            college_name=form.cleaned_data['college_name']
+            branch=form.cleaned_data['branch']
+            year=form.cleaned_data['year']
+            sem=form.cleaned_data['sem']
+            number=form.cleaned_data['number']
+            StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
+            messages.success(request, 'Successfully Registered')
+          else:
+            messages.error(request, 'Invalid form')
+        except Exception:
+          messages.error(request, 'Try again')
+        form = StudentForm()
+        return render(request, 'studentform.html', {'form': form})
+      else:
+        form = StudentForm()
+      return render(request, 'studentform.html', {'form': form})
+  except Exception:
+    messages.error(request,'Registration Closed')
+  return redirect('home')
+def guest_lecture_registration(request,slug):
+  obj=GuestLectureRecord.objects.get(slug=slug)
+  try:
+    if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+      if request.method == "POST":
+        form = StudentForm(request.POST)
+        try:
+          if form.is_valid():
+            name=form.cleaned_data['name']
+            email=form.cleaned_data['email']
+            roll_no=form.cleaned_data['roll_no']
+            college_name=form.cleaned_data['college_name']
+            branch=form.cleaned_data['branch']
+            year=form.cleaned_data['year']
+            sem=form.cleaned_data['sem']
+            number=form.cleaned_data['number']
+            StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
+            messages.success(request, 'Successfully Registered')
+          else:
+            messages.error(request, 'Invalid form')
+        except Exception:
+          messages.error(request, 'Try again')
+        form = StudentForm()
+        return render(request, 'studentform.html', {'form': form})
+      else:
+        form = StudentForm()
+      return render(request, 'studentform.html', {'form': form})
+  except Exception:
+    messages.error(request,'Registration Closed')
+  return redirect('home')
+def training_registration(request,slug):
+  obj=TrainingRecord.objects.get(slug=slug)
+  try:
+    if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+      if request.method == "POST":
+        form = StudentForm(request.POST)
+        try:
+          if form.is_valid():
+            name=form.cleaned_data['name']
+            email=form.cleaned_data['email']
+            roll_no=form.cleaned_data['roll_no']
+            college_name=form.cleaned_data['college_name']
+            branch=form.cleaned_data['branch']
+            year=form.cleaned_data['year']
+            sem=form.cleaned_data['sem']
+            number=form.cleaned_data['number']
+            StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
+            messages.success(request, 'Successfully Registered')
+          else:
+            messages.error(request, 'Invalid form')
+        except Exception:
+          messages.error(request, 'Try again')
+        form = StudentForm()
+        return render(request, 'studentform.html', {'form': form})
+      else:
+        form = StudentForm()
+      return render(request, 'studentform.html', {'form': form})
+  except Exception:
+    messages.error(request,'Registration Closed')
+  return redirect('home')
+
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')
     semi = SeminarRecord.objects.all().order_by('-pk')
@@ -198,30 +331,6 @@ def delete_workshop(request, slug):
     messages.error(request,'Workshop does not exist !!!')
   return render(request,'workshop.html',{'event_list': workshop_list, 'year_list': year_list, 'months_list': months_list})
 
-def workshop_registration(request,slug):
-  if request.method == "POST":
-    form = StudentForm(request.POST)
-    try:
-      if form.is_valid():
-        name=form.cleaned_data['name']
-        email=form.cleaned_data['email']
-        roll_no=form.cleaned_data['roll_no']
-        college_name=form.cleaned_data['college_name']
-        branch=form.cleaned_data['branch']
-        year=form.cleaned_data['year']
-        sem=form.cleaned_data['sem']
-        number=form.cleaned_data['number']
-        StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
-        messages.success(request, 'Successfully Registered')
-      else:
-        messages.error(request, 'Invalid form')
-    except Exception:
-            messages.error(request, 'Try again')
-    form = StudentForm()
-    return render(request, 'studentform.html', {'form': form})
-  else:
-    form = StudentForm()
-  return render(request, 'studentform.html', {'form': form})
 
 def workshop_description(request, slug):
   obj = WorkshopRecord.objects.get(slug=slug)
@@ -318,20 +427,6 @@ def guest_lecture_search(request, year, month):
     months_list = MonthRecordguest_lecture.objects.all()
     return render(request, 'guest_lecture.html',
                   {'event_list': guest_lecture_list, 'year_list': year_list, 'months_list': months_list})
-
-def register(request):
-    if request.method == "POST":
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            print("saved")
-            form.save()
-
-        form = StudentForm()
-        return render(request, 'register_form.html', {'form': form})
-    else:
-        form = StudentForm()
-    return render(request, 'register_form.html', {'form': form})
-
 
 def logout(request):
     auth.logout(request)
