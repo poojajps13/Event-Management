@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<br/><br/><br/><br/><br/>
+    {% for m in messages %}{{ m }}{% endfor %}
+    <form method="post" action="" style="background-color: #F2F3F4; padding-left:35%; ">
+        {% csrf_token %}
+        <label>Change username:</label>
+        <br>
+        <input type="text" name="Username" placeholder="Username" required maxlength="" value="{{ u.username }}"><br>
+        <br>
+        <label>Change password:</label>
+        <br>
+        <input type="text" name="password" placeholder="password" required maxlength="" value="{{ u.password }}"><br>
+        <br>
+        <button type="submit" ">SUBMIT</button>
+    </form>
+{% endblock %}

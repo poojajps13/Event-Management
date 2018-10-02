@@ -1,7 +1,36 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<h1>Centre of Excellence – VLSI Design
-</h1>
-<p>Centre of Excellence for VLSI design offers complete Chip Design expertise from RTL to GDSII implementations at 45nm, 90nm, 180nm technology nodes including pre and post-silicon testing & FPGA/Simulation-based prototyping. Expertise includes Front End Design and Verification; as well as Backend Design and Physical Implementation.</p>
+<style>
+ul {
+	color: grey;
+  list-style: none;
+}
+ul li::before {
+  content: "\2022";
+  color: red;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+</style>
+<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+<h2 style="color: red;">Centre of Excellence – VLSI Design</h2>
+<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static6.png' %}"/>
+<p style="float: left;">Centre of Excellence for VLSI design offers complete Chip Design expertise from RTL to GDSII implementations at 45nm, 90nm, 180nm technology nodes including pre and post-silicon testing & FPGA/Simulation-based prototyping. Expertise includes Front End Design and Verification; as well as Backend Design and Physical Implementation.</p>
+<h2 style="color: red;">Objective</h2>
+<p>The key objective of Centre of Excellence (COE) – VLSI Design is to introduce the fundamental principles of VLSI circuit design, to examine the basic building blocks of large-scale digital/analog integrated circuits, and to provide hands-on design experience with professional design (EDA) platforms among students. Finally, at the end of the training program, students should able to get placement in core VLSI design based companies.</p>
+<h2 style="color: red;">Technologies Covered</h2>
+<ul>
+<li>45nm, 90nm</li>
+<li>180nm CMOS technology</li>
+<li>Full-custom Cadence Design Suite</li>
+<li>Xilinx ISE Software</li>
+<li>HDL ModelSim simulator</li>
+<li>FPGA boards : Virtex-5, Spartan-3E, Spartan kit -6E</li>
+<li>ORCAD P-SPICE</li>
+<li>MATLAB</li>
+</ul>
+</div>
 {% endblock content %}

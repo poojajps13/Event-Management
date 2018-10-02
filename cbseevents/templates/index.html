@@ -1,6 +1,9 @@
-{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Home | {{ block.super }}{% endblock head_title %}
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head_title %}Home | {{ block.super }}{% endblock head_title %}
 {% block css %}{% endblock %}
 {% block content %}
+
     <!-- header begin -->
     <header class="page-head">
         <div class="header-wrapper">
@@ -15,111 +18,100 @@
             </div>
         </div>
     </header>
+    {% if user.is_authenticated %}
+    <button><a href="{% url 'consolidatedview' %}">Consolidated view</a></button>
+    {% endif %}
     <section class="blog-content">
         <div class="container">
             <div class="row">
                 <main class="col-md-9" style="display: block;">
+                    <span style="background-color: red;color: white;">{% for m in messages %}{{ m }}{% endfor %}</span>
                     <!-- Workshop -->
                     {% if work %}
                         <u><a href="{% url 'workshop' %}"><h2 style="margin: 10px 0 0 0;" id="workshop">Workshop</h2></a></u>
                         {% for list in work %}
                             <article class="blog-item" style="padding-bottom: 0;padding-top: 5px;">
                                 <div class="blog-heading">
-                                    <h3 class="text-capitalize" style="margin-top: 5px;">{{ list.event_name }}</h3>
-
-                                    <span class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                                    <span >{{ list.duration }}</span>
+                                   <a href="{% url 'workshop_description_with_slug' slug=list.slug %}"><span class="text-capitalize" style="font-size:125%; margin-top: 5px; color: black;">{{ list.event_name }}</span></a>
+                                    <span style="margin-left: 5%;" class="date";>{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
+                                    <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                                     <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                               <span> <a href="{% url 'workshop_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
+                                    <span> <a href="{% url 'workshop_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
                                 </div>
-                                <div>
-                                    <a href="{% url 'workshop_description_with_slug' slug=list.slug %}"
-                                       class="text-capitalize" style="float: right">read more...</a></div>
                             </article>
-                            <br>
                             <hr style="margin: 0">
                         {% endfor %}
                     {% endif %}
                     <!-- Seminar -->
                     {% if semi %}
-                      <u>  <a href="{% url 'seminar' %}"><h2 style="margin: 10px 0 0 0;" id="seminar">Seminar</h2></a></u>
+                      <u> <a href="{% url 'seminar' %}"><h2 style="margin: 10px 0 0 0;" id="seminar">Seminar</h2></a></u>
                         {% for list in semi %}
                             <article class="blog-item" style="padding-bottom: 0;padding-top: 5px;">
                                 <div class="blog-heading">
-                                    <h3 class="text-capitalize" style="margin-top: 5px;">{{ list.event_name }}</h3>
-                                    <span class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                                    <span>{{ list.duration }}</span>
+                                    <a href="{% url 'seminar_description_with_slug' slug=list.slug %}"><span class="text-capitalize" style="font-size:125%; color: black; margin-top: 5px;">{{ list.event_name }}</span></a>
+                                    <span style="margin-left: 5%;" class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
+                                    <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                                     <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
                                     <span> <a href="{% url 'seminar_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
                                 </div>
-                                <div>
-                                    <a href="{% url 'seminar_description_with_slug' slug=list.slug %}"
-                                       class="text-capitalize" style="float: right">read more...</a></div>
                             </article>
                             <hr style="margin: 0">
                         {% endfor %}
                     {% endif %}
+
                     <!-- Training -->
                     {% if train %}
-                     <u>   <a href="{% url 'training' %}"><h2 style="margin: 10px 0 0 0;" id="training">Training</h2></a></u>
+                     <u> <a href="{% url 'training' %}"><h2 style="margin: 10px 0 0 0;" id="training">Training</h2></a></u>
                         {% for list in train %}
                             <article class="blog-item" style="padding-bottom: 0;padding-top: 5px;">
                                 <div class="blog-heading">
-                                    <h3 class="text-capitalize" style="margin-top: 5px;">{{ list.event_name }}</h3>
-                                    <span class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                                    <span>{{ list.duration }}</span>
+                                     <a href="{% url 'training_description_with_slug' slug=list.slug %}"><span class="text-capitalize" style="font-size:125%; color: black; margin-top: 5px;">{{ list.event_name }}</span></a>
+                                    <span style="margin-left: 5%;" class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
+                                    <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                                     <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
                                     <span> <a href="{% url 'training_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
                                 </div>
-                                <div>
-                                    <a href="{% url 'training_description_with_slug' slug=list.slug %}"
-                                       class="text-capitalize" style="float: right">read more...</a></div>
                             </article>
                             <hr style="margin: 0">
                         {% endfor %}
                     {% endif %}
+
                     <!-- Competition -->
                     {% if comp %}
-                    <u>    <a href="{% url 'competition' %}"><h2 style="margin: 10px 0 0 0;" id="competition">
+                    <u> <a href="{% url 'competition' %}"><h2 style="margin: 10px 0 0 0;" id="competition">
                             Competition</h2></a></u>
                         {% for list in comp %}
                             <article class="blog-item" style="padding-bottom: 0;padding-top: 5px;">
                                 <div class="blog-heading">
-                                    <h3 class="text-capitalize" style="margin-top: 5px;">{{ list.event_name }}</h3>
-                                    <span class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                                    <span>{{ list.duration }}</span>
+                                    <a href="{% url 'competition_description_with_slug' slug=list.slug %}"><span class="text-capitalize" style="font-size:125%; color: black; margin-top: 5px;">{{ list.event_name }}</span></a>
+                                    <span style="margin-left: 5%;" class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
+                                    <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                                     <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
                                     <span> <a href="{% url 'competition_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
                                 </div>
-                                <div>
-                                    <a href="{% url 'competition_description_with_slug' slug=list.slug %}"
-                                       class="text-capitalize" style="float: right">read more...</a></div>
                             </article>
                             <hr style="margin: 0">
                         {% endfor %}
                     {% endif %}
+
                     <!-- Guest Lecture -->
                     {% if guest %}
-                      <u>  <a href="{% url 'guest_lecture' %}"><h2 style="margin: 10px 0 0 0;" id="guest_lecture">Guest
+                      <u> <a href="{% url 'guest_lecture' %}"><h2 style="margin: 10px 0 0 0;" id="guest_lecture">Guest
                             Lecture</h2></a></u>
                         {% for list in guest %}
                             <article class="blog-item" style="padding-bottom: 0;padding-top: 5px;">
                                 <div class="blog-heading">
-                                    <h3 class="text-capitalize" style="margin-top: 5px;">{{ list.event_name }}</h3>
-                                    <span class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                                    <span>{{ list.duration }}</span>
+                                    <a href="{% url 'guest_lecture_description_with_slug' slug=list.slug %}"><span class="text-capitalize" style="font-size:125%; color: black; margin-top: 5px;">{{ list.event_name }}</span></a>
+                                    <span style="margin-left: 5%;" class="date">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
+                                    <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                                     <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
                                     <span> <a href="{% url 'guest_lecture_registration' slug=list.slug %}"><button style="margin-left: 2.5%;">REGISTER</button></a></span>
                                 </div>
-                                <div>
-                                    <a href="{% url 'guest_lecture_description_with_slug' slug=list.slug %}"
-                                       class="text-capitalize" style="float: right">read more...</a></div>
                             </article>
                             <hr style="margin: 0">
                         {% endfor %}
                     {% endif %}
                 </main>
-
 
                 <!-- begin sidebar -->
                 <aside class="col-md-3 sticky-top">
@@ -141,7 +133,6 @@
                     </div> <!-- /.tag-widget -->
                 </aside>
                 <!-- end sidebar -->
-
             </div>
         </div>
     </section>

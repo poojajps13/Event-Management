@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-    <!DOCTYPE html>
-    <html>
-    <body>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <br/><br/><br/><br/><br/>
     {% for m in messages %}{{ m }}{% endfor %}
@@ -41,6 +38,9 @@
         <br>
         {{ form.registration_start }}
         <br>
+        <label>Registered:</label>
+        {{ form.registered }}
+        <br>
         <label>Registration end:</label>
         <br>
         {{ form.registration_end }}
@@ -75,6 +75,4 @@
         </a>
         <br><br><br><br><br><br><br><br>
     </form>
-    </body>
-    </html>
 {% endblock content %}

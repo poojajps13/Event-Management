@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{% url 'add_user' %}"><button style="margin-left:5%;">ADD USER</button></a>
+<table style=" border: 1px solid black; margin:5%;margin-bottom: -5%; width:50%;">
+  <tr>
+    <th>NAME</th>
+    <th>DELETE</th>
+    <th>EDIT</th>
+</tr>
+</table>
+<table style=" border: 1px solid black; margin:5%; width:50%;">
+{% for i in u %}
+<tr>
+ <th>{{ i }}</th>
+  <th> <a href="{% url 'deleteuser' username=i %}">DELETE</a></th>
+  <th> <a href="{% url 'edit_user' username=i %}">EDIT</a></th>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

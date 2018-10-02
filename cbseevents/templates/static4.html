@@ -1,7 +1,57 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<h1>Centre of Excellence for SMC India Pvt Ltd.
-</h1>
-<p>With a purpose of improving the skills of students of Mechanical Engineering / Electrical & Electronics Engineering in the field of automation, centre for building skills and employability (CBSE) has setup centre of excellence for pneumatics and electro pneumatics technology. The COE is setup in technical collaboration with SMC (INDIA) Pvt. Ltd., a world leader in pneumatics.</p>
+<style>
+ul {
+	color: grey;
+  list-style: none;
+}
+ul li::before {
+  content: "\2022";
+  color: red;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+</style>
+<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+<h2 style="color: red;">Centre of Excellence for SMC India Pvt Ltd.</h2>
+<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static4.png' %}"/>
+<p style="float: left;">With a purpose of improving the skills of students of Mechanical Engineering / Electrical & Electronics Engineering in the field of automation, centre for building skills and employability (CBSE) has setup centre of excellence for pneumatics and electro pneumatics technology. The COE is setup in technical collaboration with SMC (INDIA) Pvt. Ltd., a world leader in pneumatics.</p>
+<h2 style="color: red;">Objective</h2>
+<p>The aim of COE-Pneumatics & Electro-Pneumatics is to provide a platform for industry – academia interaction through training, project development, expert lectures, and industrial visits to improve the skill set of students in the area of automation.</p>
+<h2 style="color: red;">Technologies Covered</h2>
+<ul>
+<li>Basic Pneumatics</li>
+	<ul>
+	<li>Properties of compressed air and its area of application.</li>
+	<li>Basic pneumatic system and compressed air theory.</li>
+	<li>Description of different types of pneumatic compressor and their efficiencies.</li>
+	<li>Compressed air production, purification and distribution.</li>
+	<li>Explanation of different air filtering, regulation, and lubrication techniques.</li>
+	<li>Construction and principle of operation of actuators and Directional Control Valves.</li>
+	<li>Familiarization with pneumatic symbols-ISO 1219/5599</li>
+	</ul>
+<li>MAP-200 handling system (PLC controlled Pneumatic station )The MAP-200 series consists of seven independent and different training systems.</li>
+	<ul>
+	<li>MAP-201 – Part feeder with detector and ejector for incorrect parts</li>
+	<li>MAP-202 – Vacuum-held handling device with two shafts</li>
+	<li>MAP-203 – Vertical revolving handling device with internal gripper</li>
+	<li>MAP-204 – Horizontal rotolinear handling device with external gripper</li>
+	<li>MAP-205 – Assembly minicell</li>
+	<li>MAP-206 – Handling device using electric actuators</li>
+	<li>MAP-207 – Handling device for parts classification</li>
+	</ul>
+<li>Electro Pneumatics</li>
+	<ul>
+	<li>Economical and technical aspects of Electro-Pneumatic Systems.</li>
+	<li>Basic electric theory.</li>
+	<li>Construction and principal of operation of Electro-Pneumatic Components.</li>
+	<li>Electrical Symbols DIN and ladder diagram.</li>
+	<li>Reading/designing and control schematics.</li>
+	<li>Safety Requirement</li>
+	</ul>
+</ul>
+</div>
 {% endblock content %}

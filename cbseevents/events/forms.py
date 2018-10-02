@@ -60,5 +60,6 @@ class EventForm(forms.Form):
                                         widget=forms.CheckboxSelectMultiple(choices=BRANCHES), required=True)
     outside_student = forms.CharField(label='OUTSIDE STUDENTS ALLOWED',
                                       widget=forms.RadioSelect(choices=CHOICE), required=True)
+    registered = forms.IntegerField(widget=forms.TextInput())
     venue = forms.CharField(widget=forms.Textarea(), required=True, max_length=1000)
     fees = forms.FloatField(widget=forms.TextInput(), required=True)

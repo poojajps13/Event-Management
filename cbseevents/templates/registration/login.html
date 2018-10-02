@@ -3,11 +3,10 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <div id="content-container" class="container p-none" >
         <div class="lgn-container col-lg-8">
-            <form id="login-form" method="post" 
-                  action="{% url 'login' %}">
+            <form id="login-form" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <table class="table" style="background-color: #33FFE3; width: 60%; margin-left: 50%;margin-top: 20%;" >
                     <tr>
@@ -21,14 +20,15 @@
                                    type="password" class="form-control"></td>
                     </tr>
                 </table>
-                
+                <br>
+                <div class="g-recaptcha" data-sitekey="6LdH0G4UAAAAAFwYlkDYIxQzT8i8OV4skUrNBDjc"></div>
+                <br>
                 {% if form.errors %}
                     <p class=" label label-danger">
                         Your username and password didn't match. 
                         Please try again.
                     </p>
                 {% endif %}
-
                 <input type="submit" value="Login" 
                        class="btn btn-primary pull-right" />
                 <input type="hidden" name="next" value="{{ next }}" />

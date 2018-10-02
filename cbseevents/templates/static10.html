@@ -1,9 +1,37 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<h1>Center for Enterprise Software Development
-</h1>
-<p>Center of Excellence- Enterprise Software Development was established in September 2013. This center was developed to make students aware of the software development at the enterprise level and also the tools and technologies used in various industries.The basic objective of Enterprise software development is to develop methods and procedures for software development that can scale up
-
-for large systems and that can be used consistently to produce high-quality software at low cost and with a small cycle of time using RAD (rapid application development) tools.</p>
+<style>
+ul {
+	color: grey;
+  list-style: none;
+}
+ul li::before {
+  content: "\2022";
+  color: red;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+</style>
+<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+<h2 style="color: red;">Center for Enterprise Software Development</h2>
+<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static10.png' %}"/>
+<p style="float: left;">Center of Excellence- Enterprise Software Development was established in September 2013. This center was developed to make students aware of the software development at the enterprise level and also the tools and technologies used in various industries.The basic objective of Enterprise software development is to develop methods and procedures for software development that can scale up for large systems and that can be used consistently to produce high-quality software at low cost and with a small cycle of time using RAD (rapid application development) tools.</p>
+<h2 style="color: red;">Objective</h2>
+<ul>
+<li>Understanding user conceptual manual and develop better specifications.</li>
+<li>Reliability – an attribute of software quality. The extent to which a program can be expected to perform its intended function, over an arbitrary time period.</li>
+<li>To develop skills for developing useful softwares that can generate new revenue in corporate business area.</li>
+</ul>
+<h2 style="color: red;">Technologies Covered</h2>
+<ul>
+<li>Oracle Work Force Development (JAVA)</li>
+<li>Microsoft IT Academy (.NET)</li>
+<li>Web Development using PHP</li>
+<li>SAP-B1</li>
+<li>IBM Academy</li>
+</ul>
+</div>
 {% endblock content %}

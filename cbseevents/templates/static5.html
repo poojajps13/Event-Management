@@ -1,8 +1,34 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<h1>Industrial Automation Research & Training Centre (IARTC)</h1>
-<p>Realizing that industrial automation is an emerging field and offers a wide scope for career growth, ABESEC, in the year 2012, set up a Centre of Excellence “Industrial Automation Research & Training Centre (IARTC)” in technical association with ROCKWELL AUTOMATION. Rockwell Automation, the world’s largest company dedicated to industrial automation and information, makes its customers more
-
-productive and the world more sustainable. Throughout the world, flagship of Allen-Bradley® and Rockwell Software® product brands are recognized for innovation and excellence. The COE is equipped with latest technologies in the field of automation and it is one of its kind in AKTU NCR region to provide such in house training programs.</p>
+<style>
+ul {
+	color: grey;
+  list-style: none;
+}
+ul li::before {
+  content: "\2022";
+  color: red;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+</style>
+<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+<h2 style="color: red;">Industrial Automation Research & Training Centre (IARTC)</h2>
+<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static5.png' %}"/>
+<p style="float: left;">Realizing that industrial automation is an emerging field and offers a wide scope for career growth, ABESEC, in the year 2012, set up a Centre of Excellence “Industrial Automation Research & Training Centre (IARTC)” in technical association with ROCKWELL AUTOMATION. Rockwell Automation, the world’s largest company dedicated to industrial automation and information, makes its customers more productive and the world more sustainable. Throughout the world, flagship of Allen-Bradley® and Rockwell Software® product brands are recognized for innovation and excellence. The COE is equipped with latest technologies in the field of automation and it is one of its kind in AKTU NCR region to provide such in house training programs.</p>
+<h2 style="color: red;">Objective</h2>
+<p>The aim of IARTC is to provide a platform for industry – academia interaction through hands-on training programs, project development, expert lectures, industrial visits to improve the skill set of students in the area of automation.</p>
+<h2 style="color: red;">Technologies Covered</h2>
+<ul>
+<li>Programmable Logic Controllers (PLCs)</li>
+<li>Human Machine Interface (HMI)</li>
+<li>Motion Control – VFD & Servo Drives</li>
+<li>Vibration Monitoring and Control</li>
+<li>Industrial Communication Protocols</li>
+<li>Safety PLCs</li>
+</ul>
+</div>
 {% endblock content %}

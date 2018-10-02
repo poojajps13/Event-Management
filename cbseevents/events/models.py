@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
 class MonthRecordworkshop(models.Model):
     month_code = models.CharField(max_length=10)
 
@@ -34,7 +33,6 @@ class YearRecord(models.Model):
     def __str__(self):
         return str(self.year)
 
-
 class WorkshopRecord(models.Model):
     slug = models.CharField(unique=True, max_length=55)
     event_name = models.CharField(max_length=55)
@@ -50,6 +48,7 @@ class WorkshopRecord(models.Model):
     eligible_branches = models.CharField(max_length=10)
     outside_student = models.CharField(max_length=5)
     venue = models.TextField(max_length=1010)
+    registered= models.IntegerField(default=0)
     fees = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
