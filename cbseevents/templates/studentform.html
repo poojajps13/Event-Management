@@ -3,7 +3,7 @@
 {% block content %}
 <script src='https://www.google.com/recaptcha/api.js'></script>
 	<br><br><br><br><br>
-	    {% for m in messages %}{{ m }}{% endfor %}
+	    <span style="color:white;background-color: red;">{% for m in messages %}{{ m }}{% endfor %}</span>
 <form method="post" action="" style="background-color: #F2F3F4 ;padding-left:35%;  ">
 				 		{% csrf_token %}
 				 			<label>Name:</label>

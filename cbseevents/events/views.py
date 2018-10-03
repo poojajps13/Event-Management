@@ -174,8 +174,6 @@ def consolidatedview(request):
   guest_lecture=GuestLectureRecord.objects.filter(user=request.user)
   return render(request,'consolidatedview.html',{'workshop':workshop,'training':training,'competition':competition,
                     'seminar':seminar,'guest_lecture':guest_lecture} )
-def register(request):
-  return redirect('home')
 def update_workshop(request,slug):
   try:
     event=WorkshopRecord.objects.get(slug=slug)
@@ -222,6 +220,8 @@ def workshop_registration(request,slug):
             year=form.cleaned_data['year']
             sem=form.cleaned_data['sem']
             number=form.cleaned_data['number']
+            obj.registered=obj.registered+1;
+            obj.save(update_fields=['registered'])
             StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,
                                           year=year,sem=sem,number=number,registered_event_code=slug)
             messages.success(request, 'Successfully Registered')
@@ -255,6 +255,8 @@ def seminar_registration(request,slug):
             year=form.cleaned_data['year']
             sem=form.cleaned_data['sem']
             number=form.cleaned_data['number']
+            obj.registered=obj.registered+1;
+            obj.save(update_fields=['registered'])
             StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,branch=branch,
                                           year=year,sem=sem,number=number,registered_event_code=slug)
             messages.success(request, 'Successfully Registered')
@@ -267,6 +269,8 @@ def seminar_registration(request,slug):
       else:
         form = StudentForm()
       return render(request, 'studentform.html', {'form': form})
+    else:
+      messages.error(request, 'REGISTRATION CLOSED')
   except Exception:
     messages.error(request,'Registration Closed')
   return redirect('home')
@@ -286,6 +290,8 @@ def competition_registration(request,slug):
             year=form.cleaned_data['year']
             sem=form.cleaned_data['sem']
             number=form.cleaned_data['number']
+            obj.registered=obj.registered+1;
+            obj.save(update_fields=['registered'])
             StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,
                                         branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
             messages.success(request, 'Successfully Registered')
@@ -298,6 +304,8 @@ def competition_registration(request,slug):
       else:
         form = StudentForm()
       return render(request, 'studentform.html', {'form': form})
+    else:
+      messages.error(request, 'REGISTRATION CLOSED')
   except Exception:
     messages.error(request,'Registration Closed')
   return redirect('home')
@@ -317,6 +325,8 @@ def guest_lecture_registration(request,slug):
             year=form.cleaned_data['year']
             sem=form.cleaned_data['sem']
             number=form.cleaned_data['number']
+            obj.registered=obj.registered+1;
+            obj.save(update_fields=['registered'])
             StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,
                                       branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
             messages.success(request, 'Successfully Registered')
@@ -329,6 +339,8 @@ def guest_lecture_registration(request,slug):
       else:
         form = StudentForm()
       return render(request, 'studentform.html', {'form': form})
+    else:
+      messages.error(request, 'REGISTRATION CLOSED')
   except Exception:
     messages.error(request,'Registration Closed')
   return redirect('home')
@@ -348,6 +360,8 @@ def training_registration(request,slug):
             year=form.cleaned_data['year']
             sem=form.cleaned_data['sem']
             number=form.cleaned_data['number']
+            obj.registered=obj.registered+1;
+            obj.save(update_fields=['registered'])
             StudentRecord.objects.create(name=name,email=email,roll_no=roll_no,college_name=college_name,
                                          branch=branch,year=year,sem=sem,number=number,registered_event_code=slug)
             messages.success(request, 'Successfully Registered')
@@ -360,6 +374,8 @@ def training_registration(request,slug):
       else:
         form = StudentForm()
       return render(request, 'studentform.html', {'form': form})
+    else:
+      messages.error(request, 'REGISTRATION CLOSED')
   except Exception:
     messages.error(request,'Registration Closed')
   return redirect('home')

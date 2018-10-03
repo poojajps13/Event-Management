@@ -13,7 +13,6 @@ urlpatterns = [
     path('form/', login_required(add_event), name='form'),
     path('logout/', login_required(logout), name='logout'),
     path('login/', auth_views.LoginView.as_view(), {'template_name': 'login.html'}, name='login'),
-    path('register/', register, name='register'),
     path('edit_user/<username>',edit_user,name='edit_user'),
     path('consolidatedview/',consolidatedview,name='consolidatedview'),
     path('deleteuser/<username>',del_user,name='deleteuser'),

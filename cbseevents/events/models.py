@@ -72,6 +72,7 @@ class SeminarRecord(models.Model):
     eligible_branches = models.CharField(max_length=10)
     outside_student = models.CharField(max_length=5)
     venue = models.TextField(max_length=1010)
+    registered= models.IntegerField(default=0)
     fees = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -95,6 +96,7 @@ class TrainingRecord(models.Model):
     eligible_branches = models.CharField(max_length=10)
     outside_student = models.CharField(max_length=5)
     venue = models.TextField(max_length=1010)
+    registered= models.IntegerField(default=0)
     fees = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -118,6 +120,7 @@ class CompetitionRecord(models.Model):
     eligible_branches = models.CharField(max_length=10)
     outside_student = models.CharField(max_length=5)
     venue = models.TextField(max_length=1010)
+    registered= models.IntegerField(default=0)
     fees = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -141,6 +144,7 @@ class GuestLectureRecord(models.Model):
     eligible_branches = models.CharField(max_length=10)
     outside_student = models.CharField(max_length=5)
     venue = models.TextField(max_length=1010)
+    registered= models.IntegerField(default=0)
     fees = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -159,7 +163,7 @@ class StudentRecord(models.Model):
     sem = models.CharField(max_length=50)
     number = models.CharField(max_length=10)
     timestamp = models.DateTimeField(auto_now_add=True)
-    registered_event_code = models.CharField(unique=True, max_length=55)
+    registered_event_code = models.CharField(max_length=55)
 
     def __str__(self):
         return self.name

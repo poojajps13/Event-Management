@@ -46,15 +46,26 @@
                 <ol class="nav navbar-nav navbar-right text-uppercase">
                     <li><a href="{% url 'excellence_center' %}">Excellence Center</a></li>
                     <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'workshop' %}">Workshop</a></li>
-                    <li><a href="{% url 'seminar' %}">Seminar</a></li>
-                    <li><a href="{% url 'training' %}">Training</a></li>
-                    <li><a href="{% url 'competition' %}">Competition</a></li>
-                    <li><a href="{% url 'guest_lecture' %}">Guest Lecture</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'form' %}">Add Event</a></li>
-                        <li><a href="{% url 'logout' %}" style="color:red">Logout</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target"
+                                href="#">EVENTS<span class="caret"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown_target">
+                                <a class="dropdown-item" href="{% url 'workshop' %}">Workshop</a>
+                                <a class="dropdown-item" href="{% url 'seminar' %}">Seminar</a>
+                                <a class="dropdown-item" href="{% url 'training' %}">Training</a>
+                                <a class="dropdown-item" href="{% url 'competition' %}">Competition</a>
+                                <a class="dropdown-item" href="{% url 'guest_lecture' %}">Guest Lecture</a>
+                            </div></li>
+                        <li><a href="{% url 'consolidatedview' %}">Consolidated view</a></li>
+                            <li><a href="{% url 'form' %}">Add Event</a></li>
+                            <li><a href="{% url 'logout' %}" style="color:red">Logout</a></li>
                     {% else %}
+                        <li><a href="{% url 'workshop' %}">Workshop</a></li>
+                        <li><a href="{% url 'seminar' %}">Seminar</a></li>
+                        <li><a href="{% url 'training' %}">Training</a></li>
+                        <li><a href="{% url 'competition' %}">Competition</a></li>
+                        <li><a href="{% url 'guest_lecture' %}">Guest Lecture</a></li>
                         <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ol>
