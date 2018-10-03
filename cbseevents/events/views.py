@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist,PermissionDenied
 from django.contrib import messages, auth
 from .forms import *
 from .models import *
+from django.utils import timezone
 from datetime import date
 from django.db.models.functions import ExtractDay
 from django.contrib.auth.forms import UserCreationForm
@@ -26,7 +27,6 @@ def add_event(request):
                 event_year = form.cleaned_data['event_year']
                 eligible_branches = form.cleaned_data['eligible_branches']
                 outside_student = form.cleaned_data['outside_student']
-                registered = form.cleaned_data['registered']
                 venue = form.cleaned_data['venue']
                 fees = form.cleaned_data['fees']
                 if select_event == 'workshop':
@@ -37,7 +37,7 @@ def add_event(request):
                                                   registration_end=registration_end,
                                                   event_date=event_date, event_month=event_month, event_year=event_year,
                                                   eligible_branches=eligible_branches,
-                                                  outside_student=outside_student, venue=venue, fees=fees,registered=registered,
+                                                  outside_student=outside_student, venue=venue, fees=fees,
                                                   user=request.user)
                 if select_event == 'seminar':
                     SeminarRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
@@ -105,7 +105,7 @@ def add_event(request):
                     MonthRecordcompetition.objects.get(month_code=event_month)
                   except ObjectDoesNotExist:
                     MonthRecordcompetition.objects.create(month_code=event_month)
-                if select_event == 'guest_lecture':
+                if select_event == 'guest lecture':
                   try:
                     MonthRecordguest_lecture.objects.get(month_code=event_month)
                   except ObjectDoesNotExist:
@@ -120,9 +120,11 @@ def add_event(request):
     else:
         form = EventForm()
     return render(request, 'add_event.html', {'form': form})
+
 def superuser(request):
    u=User.objects.all()
    return render(request,'superuser.html',{'u':u})
+
 def add_user(request):
   if request.user.is_staff:
     if request.method=="POST":
@@ -166,6 +168,7 @@ def del_user(request, username):
     except Exception as e: 
         return render(request, 'superuser.html',{'err':e.message})
     return redirect('superuser')
+
 def consolidatedview(request):
   workshop = WorkshopRecord.objects.filter(user=request.user)
   seminar=SeminarRecord.objects.filter(user=request.user)
@@ -173,7 +176,7 @@ def consolidatedview(request):
   competition=CompetitionRecord.objects.filter(user=request.user)
   guest_lecture=GuestLectureRecord.objects.filter(user=request.user)
   return render(request,'consolidatedview.html',{'workshop':workshop,'training':training,'competition':competition,
-                    'seminar':seminar,'guest_lecture':guest_lecture} )
+                    'seminar':seminar,'guest_lecture':guest_lecture, 'now':timezone.now()} )
 def update_workshop(request,slug):
   try:
     event=WorkshopRecord.objects.get(slug=slug)
@@ -492,6 +495,7 @@ def guest_lecture(request):
     guest_lecture_list = GuestLectureRecord.objects.all().order_by('-pk')
     year_list = YearRecord.objects.all().order_by('-year')
     months_list = MonthRecordguest_lecture.objects.all()
+    print(year_list, months_list)
     return render(request, 'guest_lecture.html',
                   {'event_list': guest_lecture_list, 'year_list': year_list, 'months_list': months_list})
 
