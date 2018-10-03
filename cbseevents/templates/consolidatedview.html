@@ -1,16 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<script language="JavaScript">
-function mdy(todaysdate) {
-return todaysdate.getMonth()+1+"/"+todaysdate.getDate()+"/"+todaysdate.getYear()
-}
-</script>
-<script language="JavaScript">
-sampleDate1=new Date()
-a = mdy(sampleDate1)
-</script>
-
 <table style=" border: 1px solid black; margin:5%; width:90%;">
   <tr>
     <th>TITLE</th>
@@ -27,7 +16,7 @@ a = mdy(sampleDate1)
   <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
   <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
   <th>{{ i.registered }}</th>
-  {% if a < i.registration_end %}
+  {% if now < i.registration_end %}
   <th>Active</th>
   {% else %}
   <th>Not Active</th>
@@ -41,7 +30,7 @@ a = mdy(sampleDate1)
   <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
   <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
   <th>{{ i.registered }}</th>
-  {% if a < i.registration_end %}
+  {% if now < i.registration_end %}
   <th>Active</th>
   {% else %}
   <th>Not Active</th>
@@ -55,7 +44,7 @@ a = mdy(sampleDate1)
   <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
   <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
   <th>{{ i.registered }}</th>
-  {% if a < i.registration_end %}
+  {% if now < i.registration_end %}
   <th>Active</th>
   {% else %}
   <th>Not Active</th>
@@ -69,7 +58,7 @@ a = mdy(sampleDate1)
   <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
   <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
   <th>{{ i.registered }}</th>
-  {% if a < i.registration_end %}
+  {% if now < i.registration_end %}
   <th>Active</th>
   {% else %}
   <th>Not Active</th>
@@ -83,7 +72,7 @@ a = mdy(sampleDate1)
   <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
   <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
   <th>{{ i.registered }}</th>
-  {% if a < i.registration_end %}
+  {% if now < i.registration_end %}
   <th>Active</th>
   {% else %}
   <th>Not Active</th>
