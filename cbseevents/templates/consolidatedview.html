@@ -22,78 +22,6 @@
       <th>Not Active</th>
       {% endif %}
   </tr>
-<<<<<<< HEAD
-     {% for i in workshop %}
-  <tr>
-  <th>{{ i.event_name }}</th>
-  <th> <a href="{% url 'workshop_description_with_slug' slug=i.slug %}">Read</a></th>
-  <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
-  <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
-  <th>{{ i.registered }}</th>
-  {% if now < i.registration_end %}
-  <th>Active</th>
-  {% else %}
-  <th>Not Active</th>
-  {% endif %}
-</tr>
-{% endfor %}
-{% for i in seminar %}
-  <tr>
-  <th>{{ i.event_name }}</th>
-  <th> <a href="{% url 'seminar_description_with_slug' slug=i.slug %}">Read</a></th>
-  <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
-  <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
-  <th>{{ i.registered }}</th>
-  {% if now < i.registration_end %}
-  <th>Active</th>
-  {% else %}
-  <th>Not Active</th>
-  {% endif %}
-</tr>
-{% endfor %}
-{% for i in training %}
-  <tr>
-  <th>{{ i.event_name }}</th>
-  <th> <a href="{% url 'training_description_with_slug' slug=i.slug %}">Read</a></th>
-  <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
-  <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
-  <th>{{ i.registered }}</th>
-  {% if now < i.registration_end %}
-  <th>Active</th>
-  {% else %}
-  <th>Not Active</th>
-  {% endif %}
-</tr>
-{% endfor %}
-{% for i in competition %}
-  <tr>
-  <th>{{ i.event_name }}</th>
-  <th> <a href="{% url 'competition_description_with_slug' slug=i.slug %}">Read</a></th>
-  <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
-  <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
-  <th>{{ i.registered }}</th>
-  {% if now < i.registration_end %}
-  <th>Active</th>
-  {% else %}
-  <th>Not Active</th>
-  {% endif %}
-</tr>
-{% endfor %}
-{% for i in guest_lecture %}
-  <tr>
-  <th>{{ i.event_name }}</th>
-  <th> <a href="{% url 'guest_lecture_description_with_slug' slug=i.slug %}">Read</a></th>
-  <th><a href="{% url 'update_workshop' slug=i.slug %}">Edit</a></th>
-  <th><a href="{% url 'delete_workshop' slug=i.slug %}">Delete</a></th>
-  <th>{{ i.registered }}</th>
-  {% if now < i.registration_end %}
-  <th>Active</th>
-  {% else %}
-  <th>Not Active</th>
-  {% endif %}
-</tr>
-{% endfor %}
-=======
   {% endfor %}
   {% for i in seminar %}
     <tr>
@@ -151,6 +79,5 @@
       {% endif %}
   </tr>
   {% endfor %}
->>>>>>> b1454372638987108ef24748797f91e1633ad4f4
 </table>
 {% endblock %}

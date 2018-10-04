@@ -8,177 +8,6 @@ from datetime import date
 from django.db.models.functions import ExtractDay
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login
-<<<<<<< HEAD
-def add_event(request):
-    if request.method == "POST":
-        form = EventForm(request.POST)
-        try:
-            if form.is_valid():
-                select_event = form.cleaned_data['select_event']
-                slug = form.cleaned_data['slug']
-                event_name = form.cleaned_data['event_name']
-                description = form.cleaned_data['description']
-                duration = form.cleaned_data['duration']
-                resource_person = form.cleaned_data['resource_person']
-                resource_person_data = form.cleaned_data['resource_person_data']
-                registration_start = form.cleaned_data['registration_start']
-                registration_end = form.cleaned_data['registration_end']
-                event_date = form.cleaned_data['event_date']
-                event_month = form.cleaned_data['event_month']
-                event_year = form.cleaned_data['event_year']
-                eligible_branches = form.cleaned_data['eligible_branches']
-                outside_student = form.cleaned_data['outside_student']
-                venue = form.cleaned_data['venue']
-                fees = form.cleaned_data['fees']
-                if select_event == 'workshop':
-                    WorkshopRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
-                                                  description=description, resource_person=resource_person,
-                                                  resource_person_data=resource_person_data,
-                                                  registration_start=registration_start,
-                                                  registration_end=registration_end,
-                                                  event_date=event_date, event_month=event_month, event_year=event_year,
-                                                  eligible_branches=eligible_branches,
-                                                  outside_student=outside_student, venue=venue, fees=fees,
-                                                  user=request.user)
-                if select_event == 'seminar':
-                    SeminarRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
-                                                 description=description, resource_person=resource_person,
-                                                 resource_person_data=resource_person_data,
-                                                 registration_start=registration_start,
-                                                 registration_end=registration_end,
-                                                 event_date=event_date, event_month=event_month, event_year=event_year,
-                                                 eligible_branches=eligible_branches,
-                                                 outside_student=outside_student, venue=venue, fees=fees,
-                                                 user=request.user)
-                if select_event == 'training':
-                    TrainingRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
-                                                  description=description, resource_person=resource_person,
-                                                  resource_person_data=resource_person_data,
-                                                  registration_start=registration_start,
-                                                  registration_end=registration_end,
-                                                  event_date=event_date, event_month=event_month, event_year=event_year,
-                                                  eligible_branches=eligible_branches,
-                                                  outside_student=outside_student, venue=venue, fees=fees,
-                                                  user=request.user)
-                if select_event == 'competition':
-                    CompetitionRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
-                                                     description=description, resource_person=resource_person,
-                                                     resource_person_data=resource_person_data,
-                                                     registration_start=registration_start,
-                                                     registration_end=registration_end,
-                                                     event_date=event_date, event_month=event_month,
-                                                     event_year=event_year,
-                                                     eligible_branches=eligible_branches,
-                                                     outside_student=outside_student, venue=venue, fees=fees,
-                                                     user=request.user)
-                if select_event == 'guest lecture':
-                    GuestLectureRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
-                                                      description=description, resource_person=resource_person,
-                                                      resource_person_data=resource_person_data,
-                                                      registration_start=registration_start,
-                                                      registration_end=registration_end,
-                                                      event_date=event_date, event_month=event_month,
-                                                      event_year=event_year,
-                                                      eligible_branches=eligible_branches,
-                                                      outside_student=outside_student, venue=venue, fees=fees,
-                                                      user=request.user)
-                try:
-                    YearRecord.objects.get(year=event_year)
-                except ObjectDoesNotExist:
-                    YearRecord.objects.create(year=event_year)
-                if select_event == 'workshop':
-                  try:
-                    MonthRecordworkshop.objects.get(month_code=event_month)
-                  except ObjectDoesNotExist:
-                    MonthRecordworkshop.objects.create(month_code=event_month)
-                if select_event == 'training':
-                  try:
-                    MonthRecordtraining.objects.get(month_code=event_month)
-                  except ObjectDoesNotExist:
-                    MonthRecordtraining.objects.create(month_code=event_month)
-                if select_event == 'seminar':
-                  try:
-                    MonthRecordseminar.objects.get(month_code=event_month)
-                  except ObjectDoesNotExist:
-                    MonthRecordseminar.objects.create(month_code=event_month)
-                if select_event == 'competition':
-                  try:
-                    MonthRecordcompetition.objects.get(month_code=event_month)
-                  except ObjectDoesNotExist:
-                    MonthRecordcompetition.objects.create(month_code=event_month)
-                if select_event == 'guest lecture':
-                  try:
-                    MonthRecordguest_lecture.objects.get(month_code=event_month)
-                  except ObjectDoesNotExist:
-                    MonthRecordguest_lecture.objects.create(month_code=event_month)
-                  messages.success(request, 'Successfully add Event')
-            else:
-                messages.error(request, 'Invalid form')
-        except Exception:
-            messages.error(request, 'Try again')
-        form = EventForm()
-        return render(request, 'add_event.html', {'form': form})
-    else:
-        form = EventForm()
-    return render(request, 'add_event.html', {'form': form})
-
-def superuser(request):
-   u=User.objects.all()
-   return render(request,'superuser.html',{'u':u})
-
-def add_user(request):
-  if request.user.is_staff:
-    if request.method=="POST":
-      form=UserCreationForm(request.POST)
-      if form.is_valid():
-        form.save()
-        username = form.cleaned_data.get('username')
-        raw_password = form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=raw_password)
-        login(request, user)
-        return redirect('home')
-    else:
-      form=UserCreationForm()
-    return render(request,'add_user.html',{'form':form})
-  return redirect('superuser')
-def edit_user(request,username):
-  try:
-    u= User.objects.get(username=username)
-    if request.user.is_staff:
-      if request.method == "POST":
-        u.Username=request.POST['username']
-        new_password = form.cleaned_data.get('password')
-        u.set_password('new_password')
-        u.save(update_fields=['username','password'])
-      return render(request,'edit_user.html',{'u':u})
-    else:
-      raise PermissionDenied
-  except ObjectDoesNotExist:
-    messages.error(request,'Edit not allowed!!!')
-  except PermissionDenied:
-    messages.error(request,'User does not exist !!!')
-  return render(request,'edit_user.html',{'u':u})
-def del_user(request, username):    
-    try:
-        u = User.objects.get(username = username)
-        u.delete()
-        messages.success(request, "The user is deleted")            
-    except User.DoesNotExist:
-        messages.error(request, "User doesnot exist")    
-        return render(request, 'superuser.html')
-    except Exception as e: 
-        return render(request, 'superuser.html',{'err':e.message})
-    return redirect('superuser')
-
-def consolidatedview(request):
-  workshop = WorkshopRecord.objects.filter(user=request.user)
-  seminar=SeminarRecord.objects.filter(user=request.user)
-  training=TrainingRecord.objects.filter(user=request.user)
-  competition=CompetitionRecord.objects.filter(user=request.user)
-  guest_lecture=GuestLectureRecord.objects.filter(user=request.user)
-  return render(request,'consolidatedview.html',{'workshop':workshop,'training':training,'competition':competition,
-                    'seminar':seminar,'guest_lecture':guest_lecture, 'now':timezone.now()} )
-=======
 
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')
@@ -205,7 +34,6 @@ def workshop_search(request, year, month):
     return render(request, 'workshop.html',
                   {'event_list': workshop_list, 'year_list': year_list, 'months_list': months_list})
 
->>>>>>> b1454372638987108ef24748797f91e1633ad4f4
 def update_workshop(request,slug):
   try:
     event=WorkshopRecord.objects.get(slug=slug)
@@ -234,8 +62,8 @@ def update_workshop(request,slug):
   except ObjectDoesNotExist:
     messages.error(request,'Workshop does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def workshop_registration(request,slug):
   obj=WorkshopRecord.objects.get(slug=slug)
@@ -335,10 +163,10 @@ def update_seminar(request,slug):
     else:
       raise PermissionDenied
   except ObjectDoesNotExist:
-    messages.error(request,'Workshop does not exist')
+    messages.error(request,'Seminar does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def seminar_registration(request,slug):
   obj=SeminarRecord.objects.get(slug=slug)
@@ -438,10 +266,10 @@ def update_training(request,slug):
     else:
       raise PermissionDenied
   except ObjectDoesNotExist:
-    messages.error(request,'Workshop does not exist')
+    messages.error(request,'Training does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def training_registration(request,slug):
   obj=TrainingRecord.objects.get(slug=slug)
@@ -543,8 +371,8 @@ def update_competition(request,slug):
   except ObjectDoesNotExist:
     messages.error(request,'Workshop does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def competition_registration(request,slug):
   obj=CompetitionRecord.objects.get(slug=slug)
@@ -817,15 +645,6 @@ def add_event(request):
     return render(request, 'add_event.html', {'form': form})
 
 
-<<<<<<< HEAD
-def guest_lecture(request):
-    guest_lecture_list = GuestLectureRecord.objects.all().order_by('-pk')
-    year_list = YearRecord.objects.all().order_by('-year')
-    months_list = MonthRecordguest_lecture.objects.all()
-    print(year_list, months_list)
-    return render(request, 'guest_lecture.html',
-                  {'event_list': guest_lecture_list, 'year_list': year_list, 'months_list': months_list})
-=======
 def add_user(request):
   if request.user.is_staff:
     if request.method=="POST":
@@ -841,7 +660,6 @@ def add_user(request):
       form=UserCreationForm()
     return render(request,'add_user.html',{'form':form})
   return redirect('superuser')
->>>>>>> b1454372638987108ef24748797f91e1633ad4f4
 
 def edit_user(request,username):
   try:
