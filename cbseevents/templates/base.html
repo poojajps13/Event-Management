@@ -79,7 +79,7 @@
         </div><!-- /.container -->
     </nav>
     <!-- site-navigation end -->
-
+    {% for m in messages %}{{ m }}{% endfor %}
     {% block content %}{% endblock content %}
 
     <footer>
