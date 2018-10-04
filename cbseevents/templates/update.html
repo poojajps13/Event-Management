@@ -4,30 +4,31 @@
 <u><h2>Event Information</h2></u>
 <form method="post">{% csrf_token %}
 	<label>Event name:</label>
-<input type="text" name="event_name" placeholder="event_name" required maxlength="" value="{{ event.event_name }}"><br>
-<label>Description:</label>
-<input type="text" name="description" placeholder="description" required maxlength="" value="{{ event.description }}"><br>
-<label>Duration:</label>
-<input type="text" name="duration" placeholder="duration" required maxlength="" value="{{ event.duration }}"><br>
-<label>Resource person:</label>
-<input type="text" name="resource_person" placeholder="resource_person" required maxlength="" value="{{ event.resource_person }}"><br>
-<label>Resource person data:</label>
-<input type="text" name="resource_person_data" placeholder="resource_person_data" required maxlength="" value="{{ event.resource_person_data}}"><br>
- <label>Registration start:</label>
-<input type="text" name="registration_start" placeholder="registration_start" required maxlength="" value="{{ event.registration_start|date:'Y-m-d' }}"><br>
-<label>Registration end:</label>
-<input type="text" name="registration_end" placeholder="registration_end" required maxlength="" value="{{ event.registration_end|date:'Y-m-d' }}"><br>
- <label>Event start:</label>
-<input type="text" name="event_date" placeholder="event_date" required maxlength="" value="{{ event.event_date }}">
-<input type="text" name="event_month" placeholder="event_month" required maxlength="" value="{{ event.event_month }}">
-<input type="text" name="event_year" placeholder="event_year" required maxlength="" value="{{ event.event_year }}"><br>
-<label>Eligible branches:</label>
-<input type="text" name="eligible_branches" placeholder="eligible_branches" required maxlength="" value="{{ event.eligible_branches }}"><br>
- <label>Outside students allowed</label>
-<input type="text" name="outside_student" placeholder="outside_student" required maxlength="" value="{{ event.outside_student }}"><br>
-<label>Venue:</label>
-<input type="text" name="venue" placeholder="venue" required maxlength="" value="{{ event.venue }}"><br>
- <label>Fees:</label>
-<input type="text" name="fees" placeholder="fees" required maxlength="" value="{{ event.fees }}"><br>
-<button type="submit" url="{% url 'update_workshop' slug=event.slug %}">Save Changes</button></form>
+	<input type="text" name="event_name" placeholder="event_name" required maxlength="" value="{{ event.event_name }}"><br>
+	<label>Description:</label>
+	<input type="text" name="description" placeholder="description" required maxlength="" value="{{ event.description }}"><br>
+	<label>Duration:</label>
+	<input type="text" name="duration" placeholder="duration" required maxlength="" value="{{ event.duration }}"><br>
+	<label>Resource person:</label>
+	<input type="text" name="resource_person" placeholder="resource_person" required maxlength="" value="{{ event.resource_person }}"><br>
+	<label>Resource person data:</label>
+	<input type="text" name="resource_person_data" placeholder="resource_person_data" required maxlength="" value="{{ event.resource_person_data}}"><br>
+	 <label>Registration start:</label>
+	<input type="text" name="registration_start" placeholder="registration_start" required maxlength="" value="{{ event.registration_start|date:'Y-m-d' }}"><br>
+	<label>Registration end:</label>
+	<input type="text" name="registration_end" placeholder="registration_end" required maxlength="" value="{{ event.registration_end|date:'Y-m-d' }}"><br>
+	 <label>Event start:</label>
+	<input type="text" name="event_date" placeholder="event_date" required maxlength="" value="{{ event.event_date }}">
+	<input type="text" name="event_month" placeholder="event_month" required maxlength="" value="{{ event.event_month }}">
+	<input type="text" name="event_year" placeholder="event_year" required maxlength="" value="{{ event.event_year }}"><br>
+	<label>Eligible branches:</label>
+	<input type="text" name="eligible_branches" placeholder="eligible_branches" required maxlength="" value="{{ event.eligible_branches }}"><br>
+	 <label>Outside students allowed</label>
+	<input type="text" name="outside_student" placeholder="outside_student" required maxlength="" value="{{ event.outside_student }}"><br>
+	<label>Venue:</label>
+	<input type="text" name="venue" placeholder="venue" required maxlength="" value="{{ event.venue }}"><br>
+	 <label>Fees:</label>
+	<input type="text" name="fees" placeholder="fees" required maxlength="" value="{{ event.fees }}"><br>
+	<button type="submit" url="{% url 'update_workshop' slug=event.slug %}">Save Changes</button>
+</form>
 {% endblock %}

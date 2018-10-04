@@ -37,20 +37,16 @@
                     {% endfor %}
                 </main>
 
-
-                <!-- begin sidebar -->
                 <aside class="col-md-3 sticky-top">
-
-                    
-
                     <!-- begin archieve-widget  -->
                     <div class="archive-widget">
                         <h4>All Guest Lectures:</h4>
                         <ul class="archives">
                             {% for year in year_list %}
-                            {{ year }}
+                            {{ year }} 
                                 {% for month in months_list %}
                                 <li>
+                                     
                                     <a href="{% url 'guest_lecture_search' year=year month=month.month_code %}">{{ month }} </a>
                                 </li>
                             {% endfor %}{% endfor %}
@@ -58,7 +54,6 @@
                     </div> <!-- /.archieve-widget -->
                 </aside>
                 <!-- end sidebar -->
-
             </div>
         </div>
     </section>

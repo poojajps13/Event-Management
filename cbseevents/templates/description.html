@@ -40,10 +40,34 @@
                                 <div class="blog-heading">
                                    <i> <h2 class="text-capitalize">{{ obj.event_name }}</h2></i>
                                    {% if user.is_authenticated %}
-                                   <a href="{% url 'update_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                   <a href="{% url 'delete_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% if event == 'workshop' %}
+                                       <a href="{% url 'update_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
+                                        <a href="{% url 'delete_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% elif event == 'seminar' %}
+                                       <a href="{% url 'update_seminar' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
+                                        <a href="{% url 'delete_seminar' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% elif event == 'competition' %}
+                                       <a href="{% url 'update_competition' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
+                                        <a href="{% url 'delete_competition' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% elif event == 'training' %}
+                                       <a href="{% url 'update_training' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
+                                        <a href="{% url 'delete_training' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% elif event == 'guest_lecture' %}
+                                       <a href="{% url 'update_guestlecture' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
+                                        <a href="{% url 'delete_guestlecture' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
+                                        {% endif %}
                                    {% else %}
-                                 <a href="{% url 'workshop_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                       {% if event == 'workshop' %}
+                                        <a href="{% url 'workshop_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                        {% elif event == 'seminar' %}
+                                        <a href="{% url 'seminar_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                        {% elif event == 'training' %}
+                                        <a href="{% url 'training_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                        {% elif event == 'competition' %}
+                                        <a href="{% url 'competition_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                        {% elif event == 'guest_lecture' %}
+                                        <a href="{% url 'guest_lecture_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
+                                        {% endif %}
                                  {% endif %}
                                      <p class="text-capitalize" style="color:red;"> EVENT CODE :{{ obj.slug }} </p>
                                  
