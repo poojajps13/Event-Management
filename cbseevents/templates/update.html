@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <u><h2>Event Information</h2></u>
 <form method="post">{% csrf_token %}
 	<label>Event name:</label>
@@ -29,6 +30,9 @@
 	<input type="text" name="venue" placeholder="venue" required maxlength="" value="{{ event.venue }}"><br>
 	 <label>Fees:</label>
 	<input type="text" name="fees" placeholder="fees" required maxlength="" value="{{ event.fees }}"><br>
+	<br>
+				 			<div class="g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
+				 			<br/>
 	<button type="submit" url="{% url 'update_workshop' slug=event.slug %}">Save Changes</button>
 </form>
 {% endblock %}

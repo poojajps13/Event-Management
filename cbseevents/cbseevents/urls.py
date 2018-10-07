@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from account.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
@@ -12,7 +13,7 @@ urlpatterns = [
     path('superuserlogin/',login_required(add_user),name='add_user'),
     path('form/', login_required(add_event), name='form'),
     path('logout/', login_required(logout), name='logout'),
-    path('login/', auth_views.LoginView.as_view(), {'template_name': 'login.html'}, name='login'),
+    path('login', Login.as_view(), name='login'),
     path('edit_user/<username>',login_required(edit_user),name='edit_user'),
     path('consolidated/<username>',login_required(consolidated),name='consolidated'),
     path('consolidatedview/',login_required(consolidatedview),name='consolidatedview'),
@@ -23,16 +24,16 @@ urlpatterns = [
     path('training/', training, name='training'),
     path('competition/', competition, name='competition'),
     path('guest_lecture/', guest_lecture, name='guest_lecture'),
-    path('delete/<slug>',login_required(delete_workshop),name='delete_workshop'),
-    path('delete/<slug>',login_required(delete_seminar),name='delete_seminar'),
-    path('delete/<slug>',login_required(delete_training),name='delete_training'),
-    path('delete/<slug>',login_required(delete_competition),name='delete_competition'),
-    path('delete/<slug>',login_required(delete_guestlecture),name='delete_guestlecture'),
-    path('update/<slug>',login_required(update_workshop),name='update_workshop'),
-    path('update/<slug>',login_required(update_seminar),name='update_seminar'),
-    path('update/<slug>',login_required(update_training),name='update_training'),
-    path('update/<slug>',login_required(update_competition),name='update_competition'),
-    path('update/<slug>',login_required(update_guestlecture),name='update_guestlecture'),
+    path('delete/workshop/<slug>',login_required(delete_workshop),name='delete_workshop'),
+    path('delete/seminar/<slug>',login_required(delete_seminar),name='delete_seminar'),
+    path('delete/training/<slug>',login_required(delete_training),name='delete_training'),
+    path('delete/competition/<slug>',login_required(delete_competition),name='delete_competition'),
+    path('delete/guest_lecture/<slug>',login_required(delete_guestlecture),name='delete_guestlecture'),
+    path('update/workshop/<slug>',login_required(update_workshop),name='update_workshop'),
+    path('update/seminar/<slug>',login_required(update_seminar),name='update_seminar'),
+    path('update/training/<slug>',login_required(update_training),name='update_training'),
+    path('update/competition/<slug>',login_required(update_competition),name='update_competition'),
+    path('update/guest_lecture/<slug>',login_required(update_guestlecture),name='update_guestlecture'),
     path('workshop/registration/<slug>',workshop_registration,name='workshop_registration'),
     path('seminar/registration/<slug>',seminar_registration,name='seminar_registration'),
     path('training/registration/<slug>',training_registration,name='training_registration'),

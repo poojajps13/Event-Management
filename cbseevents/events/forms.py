@@ -46,11 +46,11 @@ class StudentForm(forms.ModelForm):
 class EventForm(forms.Form):
     select_event = forms.CharField(label='SELECT_EVENT', widget=forms.Select(choices=EVENTS), required=True)
     slug = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    event_name = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    description = forms.CharField(widget=forms.Textarea(), required=True, max_length=1000)
+    event_name = forms.CharField(widget=forms.TextInput(), required=True, max_length=100)
+    description = forms.CharField(widget=forms.Textarea(), required=True, max_length=2000)
     duration = forms.CharField(widget=forms.TextInput(), required=True, max_length=20)
-    resource_person = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    resource_person_data = forms.CharField(widget=forms.Textarea(), required=False, max_length=500)
+    resource_person = forms.CharField(widget=forms.TextInput(), required=True, max_length=100)
+    resource_person_data = forms.CharField(widget=forms.Textarea(), required=False, max_length=2000)
     registration_start = forms.DateTimeField(widget=SelectDateWidget, required=True)
     registration_end = forms.DateTimeField(widget=SelectDateWidget, required=True)
     event_date = forms.IntegerField(label='DAY', widget=forms.Select(choices=DATE), required=True)
@@ -60,5 +60,5 @@ class EventForm(forms.Form):
                                         widget=forms.CheckboxSelectMultiple(choices=BRANCHES), required=True)
     outside_student = forms.CharField(label='OUTSIDE STUDENTS ALLOWED',
                                       widget=forms.RadioSelect(choices=CHOICE), required=True)
-    venue = forms.CharField(widget=forms.Textarea(), required=True, max_length=1000)
+    venue = forms.CharField(widget=forms.Textarea(), required=True, max_length=2000)
     fees = forms.FloatField(widget=forms.TextInput(), required=True)

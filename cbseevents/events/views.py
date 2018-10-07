@@ -62,8 +62,8 @@ def update_workshop(request,slug):
   except ObjectDoesNotExist:
     messages.error(request,'Workshop does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def workshop_registration(request,slug):
   obj=WorkshopRecord.objects.get(slug=slug)
@@ -102,7 +102,6 @@ def workshop_registration(request,slug):
   return redirect('home')
 
 def delete_workshop(request, slug):
-  workshop_list = WorkshopRecord.objects.all().order_by('-pk')
   year_list = YearRecord.objects.all().order_by('-year')
   months_list = MonthRecordworkshop.objects.all()
   try:
@@ -116,6 +115,7 @@ def delete_workshop(request, slug):
     messages.error(request,'Workshop does not exist')
   except PermissionDenied:
     messages.error(request,'Workshop does not exist !!!')
+  workshop_list = WorkshopRecord.objects.all().order_by('-pk')
   return render(request,'workshop.html',{'event_list': workshop_list, 'year_list': year_list, 'months_list': months_list})
 
 
@@ -163,10 +163,10 @@ def update_seminar(request,slug):
     else:
       raise PermissionDenied
   except ObjectDoesNotExist:
-    messages.error(request,'Workshop does not exist')
+    messages.error(request,'Seminar does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def seminar_registration(request,slug):
   obj=SeminarRecord.objects.get(slug=slug)
@@ -205,7 +205,6 @@ def seminar_registration(request,slug):
   return redirect('home')
 
 def delete_seminar(request, slug):
-  seminar_list = SeminarRecord.objects.all().order_by('-pk')
   year_list = YearRecord.objects.all().order_by('-year')
   months_list = MonthRecordseminar.objects.all()
   try:
@@ -219,6 +218,7 @@ def delete_seminar(request, slug):
     messages.error(request,'Seminar does not exist')
   except PermissionDenied:
     messages.error(request,'Seminar does not exist !!!')
+  seminar_list = SeminarRecord.objects.all().order_by('-pk')
   return render(request,'seminar.html',{'event_list': seminar_list, 'year_list': year_list, 'months_list': months_list})
 
 
@@ -266,10 +266,10 @@ def update_training(request,slug):
     else:
       raise PermissionDenied
   except ObjectDoesNotExist:
-    messages.error(request,'Workshop does not exist')
+    messages.error(request,'Training does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def training_registration(request,slug):
   obj=TrainingRecord.objects.get(slug=slug)
@@ -308,11 +308,10 @@ def training_registration(request,slug):
   return redirect('home')
 
 def delete_training(request, slug):
-  training_list = TrainingRecord.objects.all().order_by('-pk')
   year_list = YearRecord.objects.all().order_by('-year')
   months_list = MonthRecordtraining.objects.all()
   try:
-    obj=WorkshopRecord.objects.get(slug=slug)
+    obj=TrainingRecord.objects.get(slug=slug)
     if obj.user == request.user:
       obj.delete()
       messages.success(request, 'Training deleted')
@@ -322,6 +321,7 @@ def delete_training(request, slug):
     messages.error(request,'Training does not exist')
   except PermissionDenied:
     messages.error(request,'Training does not exist !!!')
+  training_list = TrainingRecord.objects.all().order_by('-pk')
   return render(request,'training.html',{'event_list': training_list, 'year_list': year_list, 'months_list': months_list})
 
 
@@ -371,8 +371,8 @@ def update_competition(request,slug):
   except ObjectDoesNotExist:
     messages.error(request,'Workshop does not exist')
   except PermissionDenied:
-    messages.error(request,'Workshop does not exist !!!')
-  return render(request,'update.html')
+    messages.error(request,'Permission Denied')
+  return redirect('home')
 
 def competition_registration(request,slug):
   obj=CompetitionRecord.objects.get(slug=slug)
@@ -411,7 +411,6 @@ def competition_registration(request,slug):
   return redirect('home')
 
 def delete_competition(request, slug):
-  competition_list = CompetitionRecord.objects.all().order_by('-pk')
   year_list = YearRecord.objects.all().order_by('-year')
   months_list = MonthRecordcompetition.objects.all()
   try:
@@ -425,7 +424,8 @@ def delete_competition(request, slug):
     messages.error(request,'Competition does not exist')
   except PermissionDenied:
     messages.error(request,'Competition does not exist !!!')
-  return render(request,'competition.html',{'event_list': workshop_list, 'year_list': year_list, 'months_list': months_list})
+  competition_list = CompetitionRecord.objects.all().order_by('-pk')
+  return render(request,'competition.html',{'event_list': competition_list, 'year_list': year_list, 'months_list': months_list})
 
 
 def guest_lecture(request):
@@ -514,7 +514,6 @@ def guest_lecture_registration(request,slug):
   return redirect('home')
 
 def delete_guestlecture(request, slug):
-  guestlecture_list = GuestLectureRecord.objects.all().order_by('-pk')
   year_list = YearRecord.objects.all().order_by('-year')
   months_list = MonthRecordguest_lecture.objects.all()
   try:
@@ -528,6 +527,7 @@ def delete_guestlecture(request, slug):
     messages.error(request,'Guest Lecture does not exist')
   except PermissionDenied:
     messages.error(request,'Guest Lecture  does not exist !!!')
+  guestlecture_list = GuestLectureRecord.objects.all().order_by('-pk')
   return render(request,'guest_lecture.html',{'event_list': guestlecture_list, 'year_list': year_list, 'months_list': months_list})
 
 
@@ -692,11 +692,13 @@ def del_user(request, username):
     return redirect('superuser')
 
 def consolidated(request,username):
-  workshop = WorkshopRecord.objects.filter(user=username)
-  seminar=SeminarRecord.objects.filter(user=username)
-  training=TrainingRecord.objects.filter(user=username)
-  competition=CompetitionRecord.objects.filter(user=username)
-  guest_lecture=GuestLectureRecord.objects.filter(user=username)
+  user = User.objects.get(username=username)
+  workshop = WorkshopRecord.objects.filter(user=user)
+  seminar=SeminarRecord.objects.filter(user=user)
+  training=TrainingRecord.objects.filter(user=user)
+  competition=CompetitionRecord.objects.filter(user=user)
+  guest_lecture=GuestLectureRecord.objects.filter(user=user)
+  print(workshop, seminar, training, competition, guest_lecture)
   return render(request,'consolidatedview.html',{'workshop':workshop,'training':training,'competition':competition,
                     'seminar':seminar,'guest_lecture':guest_lecture, 'now':timezone.now()} )
 

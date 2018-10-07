@@ -1,78 +1,120 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    body{
+        background: url('{% static "images/log.png" %}') no-repeat center center fixed ;
+        -webkit-background-size:cover;
+        -moz-background-size:cover;
+        -o-background-size:cover;
+        background-size: cover;
+    }
+    form{
+        background-color: white;
+       width: 60%;
+        margin: 0 auto;
+        padding: 5%;
+    }
+    p{
+        width: 70%;
+    }
+    span{
+        margin: 5%;
+    }
+    button{
+        margin:auto;
+      display:block;
+    }
+    .g-recaptcha {
+      margin: 0 auto;
+      width: 304px;
+    }
+    /* BUTTON STYLES */
+    button{
+      padding:16px 32px;
+      font-family:helvetica;
+      font-size:16px;
+      font-weight:100;
+      color:#fff;
+      background: #587286;
+      border:0;
+      font-weight:100;
+    }
+    button:hover{
+      background: #3B5C76;
+    }
+    /* END OF BUTTON STYLES */
+</style>
+<body>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <br/><br/><br/><br/><br/>
     {% for m in messages %}{{ m }}{% endfor %}
-    <form method="post" action="" style="background-color: #F2F3F4; padding-left:35%; ">
+    <form method="post" action="">
         {% csrf_token %}
         <label>Select Event:</label>
-        <br>
-        {{ form.select_event }}
-        <br>
+        <span>{{ form.select_event }}</span>
+        <br><br>
         <label>Event code:</label>
-        <br>
-        {{ form.slug }}
-        <br>
+        <span>{{ form.slug }}</span>
+        
         <label>Event name:</label>
-        <br>
-        {{ form.event_name }}
-        <br>
+        <span>{{ form.event_name }}</span>
+        <br><br>
         <label>Description:</label>
         <br>
+        <div class="form-group">
         {{ form.description }}
-        <br>
+        </div>
+        <br><br>
         <label>Duration:</label>
-        <br>
-        {{ form.duration }}
-        <br>
+        <span>{{ form.duration }}</span>
+
         <label>Resource person:</label>
-        <br>
-        {{ form.resource_person }}
-        <br>
+        <span>{{ form.resource_person }}</span>
+        <br><br>
         <label>Resource person data:</label>
         <br>
+        <div class="form-group">
         {{ form.resource_person_data }}
-        <br>
+        </div>
+        <br><br>
         <label>Registration start:</label>
-        <br>
-        {{ form.registration_start }}
-        <br><!-- 
-        <label>Registered:</label>
-        {{ form.registered }}
-        <br> -->
+        <span>{{ form.registration_start }}</span>
+        <br><br>
         <label>Registration end:</label>
-        <br>
-        {{ form.registration_end }}
-        <br>
+        <span>{{ form.registration_end }}</span>
+        <br><br>
         <label>Event start:</label>
-        <br>
-        {{ form.event_date }}
+        <span>{{ form.event_date }}
         {{ form.event_month }}
-        {{ form.event_year }}
-        <br>
+        {{ form.event_year }}</span>
+        <br><br>
         <label>Eligible branches:</label>
-        <br>
-        {{ form.eligible_branches }}
-        <br>
-        <label>Outside students allowed</label>
-        <br>
-        {{ form.outside_student }}
+        <span>{{ form.eligible_branches }}</span>
         <br>
         <label>Venue:</label>
         <br>
+        <div class="form-group">
         {{ form.venue }}
+        </div>
+        <br>
+        <label>Outside students allowed :</label>
+        <span>{{ form.outside_student }}</span>
         <br>
         <label>Fees:</label>
-        <br>
-        {{ form.fees }}
-        <br>
-        <div class="g-recaptcha" data-sitekey="6LdH0G4UAAAAAFwYlkDYIxQzT8i8OV4skUrNBDjc"></div>
-        <br>
-
+        <span>{{ form.fees }}</span>
+        <br><br>
+        <div class="g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
         <a href="{% url 'workshop' %}">
-            <button type="submit">Submit</button>
+            <br><br>
+            <div><button type="submit">Submit</button></div>
         </a>
-        <br><br><br><br><br><br><br><br>
     </form>
+    <br><br><br><br><br><br><br><br>
+</body>
 {% endblock content %}
