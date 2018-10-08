@@ -8,8 +8,9 @@
             <div class="form-row px-md-5">
                 <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.select_event }}</div>
                 <div class="pb-4 col-md-4"><label>Event code:</label>{{ form.slug }}</div>
+                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}</div>
+                <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}</div>
                 <div class="pb-4 col-md-4"><label>Duration</label>{{ form.duration }}</div>
-                <div class="pb-4 col-md-12"><label>Event name</label>{{ form.event_name }}</div>
                 <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
                 <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
@@ -22,7 +23,6 @@
                 <div class="pb-4 col-md-4"><label>Event Start</label>
                     {{ form.event_month }}{{ form.event_date }}{{ form.event_year }}</div>
                 <div class="pb-4 col-md-12"><label>Venue:</label>{{ form.venue }}</div>
-                <div class="pb-4 col-md-12"><label>Fees:</label>{{ form.fees }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person:</label>{{ form.resource_person }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
             </div>
