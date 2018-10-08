@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.forms.widgets import SelectDateWidget
 
 from .models import *
@@ -28,37 +30,108 @@ YEARS = [(2018, 2018), (2019, 2019), (2020, 2020), (2021, 2021), (2022, 2022), (
 CHOICE = [('YES', 'YES'), ('NO', 'NO'), ]
 YEAR = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
 SEM = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8)]
+
+
 class StudentForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(), required=True, max_length=150)
-    email = forms.EmailField(widget=forms.EmailInput(), required=True, max_length=150)
-    roll_no = forms.CharField(widget=forms.TextInput(), required=True, max_length=30)
-    college_name = forms.CharField(widget=forms.TextInput(), required=True, max_length=200)
-    branch = forms.CharField(label='BRANCHES', widget=forms.Select(choices=BRANCHES), required=True)
-    year = forms.CharField(label='YEAR', widget=forms.Select(choices=YEAR), required=True)
-    sem = forms.CharField(label='SEMESTER', widget=forms.Select(choices=SEM), required=True)
-    number = forms.CharField(widget=forms.TextInput(), required=True, max_length=10)
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name*'}),
+                           required=True, max_length=100)
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': 'abcd@gmail.com',
+               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=100)
+    roll_no = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Roll No*', 'pattern': "[0-9]{10}"}), required=True,
+        max_length=15)
+    college_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'College Name*'}), required=True,
+        max_length=200)
+    branch = forms.CharField(label='BRANCHES', widget=forms.Select(choices=BRANCHES, attrs={'class': 'form-control'}),
+                             required=True)
+    year = forms.CharField(label='YEAR', widget=forms.Select(choices=YEAR, attrs={'class': 'form-control'}),
+                           required=True)
+    sem = forms.CharField(label='SEMESTER', widget=forms.Select(choices=SEM, attrs={'class': 'form-control'}),
+                          required=True)
+    number = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Mobile Number*', 'pattern': "[789][0-9]{9}"}), required=True,
+        max_length=10)
 
     class Meta:
         model = StudentRecord
-        fields = ['name', 'email','roll_no','college_name', 'branch', 'year', 'sem', 'number']
+        fields = ['name', 'email', 'roll_no', 'college_name', 'branch', 'year', 'sem', 'number']
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        l = len(name)
+        if l > 3:
+            for i in range(l):
+                if ('a' <= name[i] and name[i] <= 'z') or ('A' <= name[i] and name[i] <= 'Z') or name[i] == ' ':
+                    pass
+                else:
+                    raise forms.ValidationError("Invalid Name")
+            print(name)
+            return name
+        return forms.ValidationError("Invalid Name")
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        try:
+            validate_email(email)
+            print(email)
+            return email
+        except ValidationError:
+            return forms.ValidationError("Email is not in correct format")
+
+    def clean_number(self):
+        number = self.cleaned_data['number']
+        l = len(number)
+        if l > 3:
+            for i in range(l):
+                if ('0' <= number[i] and number[i] <= '9'):
+                    pass
+                else:
+                    raise forms.ValidationError("Invalid Number")
+            print(number)
+            return number
+        return forms.ValidationError("Invalid Number")
 
 
 class EventForm(forms.Form):
-    select_event = forms.CharField(label='SELECT_EVENT', widget=forms.Select(choices=EVENTS), required=True)
-    slug = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    event_name = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    description = forms.CharField(widget=forms.Textarea(), required=True, max_length=1000)
-    duration = forms.CharField(widget=forms.TextInput(), required=True, max_length=20)
-    resource_person = forms.CharField(widget=forms.TextInput(), required=True, max_length=50)
-    resource_person_data = forms.CharField(widget=forms.Textarea(), required=False, max_length=500)
-    registration_start = forms.DateTimeField(widget=SelectDateWidget, required=True)
-    registration_end = forms.DateTimeField(widget=SelectDateWidget, required=True)
-    event_date = forms.IntegerField(label='DAY', widget=forms.Select(choices=DATE), required=True)
-    event_month = forms.CharField(label='MONTH', widget=forms.Select(choices=MONTHS), required=True)
-    event_year = forms.IntegerField(label='YEAR', widget=forms.Select(choices=YEARS), required=True)
-    eligible_branches = forms.CharField(label='ELIGIBLE BRANCHES',
-                                        widget=forms.CheckboxSelectMultiple(choices=BRANCHES), required=True)
-    outside_student = forms.CharField(label='OUTSIDE STUDENTS ALLOWED',
-                                      widget=forms.RadioSelect(choices=CHOICE), required=True)
-    venue = forms.CharField(widget=forms.Textarea(), required=True, max_length=1000)
-    fees = forms.FloatField(widget=forms.TextInput(), required=True)
+    select_event = forms.CharField(label='SELECT_EVENT',
+                                   widget=forms.Select(choices=EVENTS, attrs={'class': 'form-control'}), required=True)
+    slug = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+                           required=True, max_length=50)
+    event_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
+                                 required=True, max_length=100)
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': '4'}),
+        required=True, max_length=2000)
+    duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Duration'}),
+                               required=True, max_length=20)
+    resource_person = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Resource Person'}), required=True,
+        max_length=100)
+    resource_person_data = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+                                           required=False, max_length=2000)
+    registration_start = forms.DateTimeField(widget=SelectDateWidget(attrs={'class': 'form-control my-2'}),
+                                             required=True)
+    registration_end = forms.DateTimeField(widget=SelectDateWidget(attrs={'class': 'form-control my-2'}),
+                                           required=True)
+    event_date = forms.IntegerField(label='DAY',
+                                    widget=forms.Select(choices=DATE, attrs={'class': 'form-control my-2'}),
+                                    required=True)
+    event_month = forms.CharField(label='MONTH',
+                                  widget=forms.Select(choices=MONTHS, attrs={'class': 'form-control my-2'}),
+                                  required=True)
+    event_year = forms.IntegerField(label='YEAR',
+                                    widget=forms.Select(choices=YEARS, attrs={'class': 'form-control my-2'}),
+                                    required=True)
+    eligible_branches = forms.CharField(
+        label='ELIGIBLE BRANCHES', widget=forms.CheckboxSelectMultiple(
+            choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
+    outside_student = forms.CharField(
+        label='OUTSIDE STUDENTS ALLOWED',
+        widget=forms.RadioSelect(choices=CHOICE, attrs={'class': 'form-check-inline'}),
+        required=True)
+    venue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Venue', 'rows': '4'}),
+                            required=True, max_length=2000)
+    fees = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Fees'}),
+                            required=True)

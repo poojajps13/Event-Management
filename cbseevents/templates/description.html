@@ -1,155 +1,68 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
+{% extends 'base.html' %}{% load staticfiles %}{% block head_title %}Workshop Detail | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
 {% block content %}
-<html class="no-js"> <!--<![endif]-->
-    <head>
-        <title>Agency - Single Blog Page</title>
-        <!-- meta -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">      
-        <!-- stylesheets -->
-        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
-        <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-        <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css' %}">
-        <link rel="stylesheet" href="{% static 'assets/css/owl.theme.css' %}">
-        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    </head>
-    <body>
-        <div id="single-blog-full-width">    
-            <header class="page-head">
-                <div class="header-wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ol class="breadcrumb">
-                                    <li><a href="#">blog</a></li>
-                                    <li class="active">single blog</li>
-                                </ol> <!-- end of /.breadcrumb -->
-                            </div>
-                        </div>
-                    </div> <!-- /.container -->
-                </div> <!-- /.header-wrapper -->
-            </header> <!-- /.page-head (header end) -->
-            <section class="blog-content">
-                <div class="container">
-                    <div class="row">
-                        <main class="col-md-8 col-md-offset-2" style="display: block;">
-                            <article class="blog-item">
-                                <div class="blog-heading">
-                                   <i> <h2 class="text-capitalize">{{ obj.event_name }}</h2></i>
-                                   {% if user.is_authenticated %}
-                                        {% if event == 'workshop' %}
-                                       <a href="{% url 'update_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                        <a href="{% url 'delete_workshop' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
-                                        {% elif event == 'seminar' %}
-                                       <a href="{% url 'update_seminar' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                        <a href="{% url 'delete_seminar' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
-                                        {% elif event == 'competition' %}
-                                       <a href="{% url 'update_competition' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                        <a href="{% url 'delete_competition' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
-                                        {% elif event == 'training' %}
-                                       <a href="{% url 'update_training' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                        <a href="{% url 'delete_training' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
-                                        {% elif event == 'guest_lecture' %}
-                                       <a href="{% url 'update_guestlecture' slug=obj.slug %}"><button style="margin:5%; float: left;">UPDATE</button></a>
-                                        <a href="{% url 'delete_guestlecture' slug=obj.slug %}"><button style="margin:5%; float: left;">DELETE</button></a>
-                                        {% endif %}
-                                   {% else %}
-                                       {% if event == 'workshop' %}
-                                        <a href="{% url 'workshop_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
-                                        {% elif event == 'seminar' %}
-                                        <a href="{% url 'seminar_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
-                                        {% elif event == 'training' %}
-                                        <a href="{% url 'training_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
-                                        {% elif event == 'competition' %}
-                                        <a href="{% url 'competition_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
-                                        {% elif event == 'guest_lecture' %}
-                                        <a href="{% url 'guest_lecture_registration' slug=obj.slug %}"><button style="margin:5%; float: left;">REGISTER</button></a>
-                                        {% endif %}
-                                 {% endif %}
-                                     <p class="text-capitalize" style="color:red;"> EVENT CODE :{{ obj.slug }} </p>
-                                 
-                                 <div>
-                                    <span class="date" ><u>REGISTRATION STARTS :</u> {{ obj.registration_start }}</span>
-                                    <br/>
-                                    <span class="date"><u>REGISTRATION ENDS :</u> {{ obj.registration_end }}</span>
-
-                                </div>
-                                <p>
-                                 <bold style="color:yellow;">ABOUT :</bold>   {{ obj.description }}
-
-                                </p>
-
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <blockquote>
-                                            <p style="color: red;">FEES : Rs. {{ obj.fees }}</p>
-                                            <p style="color: red;">VENUE : {{ obj.venue }}</p>
-                                        </blockquote>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="article-summary">
-                                            <p style="margin-left: 60px;">
-                                               <h3> Event starts on </h3>
-                                               {{ obj.event_date }} 
-                                               {{ obj.event_month }}
-                                               {{ obj.event_year }}
-                                                
-                                            </p>
-
-                                            <p>
-                                                <h3> Event duration</h3>
-                                               {{ obj.duration }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="article-conclusion">
-                                           <u> <h4>Eligible Branches:</h4></u>
-                                           {{ obj.eligible_branches }}
-
-                                        </p>
-                                         <p class="article-conclusion">
-                                          <h4>  Is allowed for outside students   ???     
-                                            {{ obj.outside_student }}</h4>
-                                         </p>
-                                    </div>
-                                </div>
-                                <div class="author">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="about-author">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <p>
-                                                            <strong>About Resource Person</strong>
-                                                            <span class="author-name text-uppercase" style="color:red;">{{ obj.resource_person }}</span>
-                                                        </p>
-                                                        <p>
-                                                           {{ obj.resource_person_data }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </main>
-                    </div>
-                </div>
-            </section>
-       <script type="text/javascript" src="{% static 'assets/js/jquery-2.1.3.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-        
-    </body>
+    <div class="px-5 pt-4 pb-5 bg-white rounded shadow-sm">
+        <h2>{{ obj.event_name }}</h2>
+        <div class="clearfix pb-4">
+            <span class="lead pr-lg-5">Event Code: {{ obj.slug }} </span>
+            {% if user.is_authenticated %}
+                {% if event == 'workshop' %}
+                    <a href="{% url 'update_workshop' slug=obj.slug %}"
+                       class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                    <a href="{% url 'delete_workshop' slug=obj.slug %}" class="btn btn-outline-danger btn-sm">
+                        Delete</a>
+                {% elif event == 'seminar' %}
+                    <a href="{% url 'update_seminar' slug=obj.slug %}"
+                       class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                    <a href="{% url 'delete_seminar' slug=obj.slug %}" class="btn btn-outline-danger btn-sm">
+                        Delete</a>
+                {% elif event == 'competition' %}
+                    <a href="{% url 'update_competition' slug=obj.slug %}"
+                       class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                    <a href="{% url 'delete_competition' slug=obj.slug %}" class="btn btn-outline-danger btn-sm">
+                        Delete</a>
+                {% elif event == 'training' %}
+                    <a href="{% url 'update_training' slug=obj.slug %}"
+                       class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                    <a href="{% url 'delete_training' slug=obj.slug %}" class="btn btn-outline-danger btn-sm">
+                        Delete</a>
+                {% elif event == 'guest_lecture' %}
+                    <a href="{% url 'update_guestlecture' slug=obj.slug %}"
+                       class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                    <a href="{% url 'delete_guestlecture' slug=obj.slug %}" class="btn btn-outline-danger btn-sm">
+                        Delete</a>
+                {% endif %}
+            {% else %}
+                {% if event == 'workshop' %}
+                    <a href="{% url 'workshop_registration' slug=obj.slug %}"
+                       class="btn btn-outline-success btn-sm">Register</a>
+                {% elif event == 'seminar' %}
+                    <a href="{% url 'seminar_registration' slug=obj.slug %}"
+                       class="btn btn-outline-success btn-sm">Register</a>
+                {% elif event == 'training' %}
+                    <a href="{% url 'training_registration' slug=obj.slug %}"
+                       class="btn btn-outline-success btn-sm">Register</a>
+                {% elif event == 'competition' %}
+                    <a href="{% url 'competition_registration' slug=obj.slug %}"
+                       class="btn btn-outline-success btn-sm">Register</a>
+                {% elif event == 'guest_lecture' %}
+                    <a href="{% url 'guest_lecture_registration' slug=obj.slug %}"
+                       class="btn btn-outline-success btn-sm">Register</a>
+                {% endif %}
+            {% endif %}</div>
+        <div>
+            <p>Registration Start : {{ obj.registration_start }}<br>Registration Ends : {{ obj.registration_end }}</p>
+        </div>
+        <h2>About :</h2>
+        <p>{{ obj.description }}</p>
+        <h4>Fees: Rs. {{ obj.fees }}</h4>
+        <h4>Venue: {{ obj.venue }}</h4>
+        <h4>Event starts on: {{ obj.event_date }} {{ obj.event_month }} {{ obj.event_year }}</h4>
+        <h4>Event duration: {{ obj.duration }}</h4>
+        <h4>Eligible Branches: {{ obj.eligible_branches }}</h4>
+        <h4>Is allowed for outside students ??? {{ obj.outside_student }}</h4>
+        <h3>About Resource Person</h3>
+        <p>{{ obj.resource_person }}</p>
+        <p>{{ obj.resource_person_data }}</p>
+    </div>
 {% endblock content %}

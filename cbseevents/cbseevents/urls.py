@@ -5,14 +5,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from account.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('superuser/',login_required(superuser),name='superuser'),
     path('superuserlogin/',login_required(add_user),name='add_user'),
-    path('form/', login_required(add_event), name='form'),
+    path('form/', add_event, name='form'),
     path('logout/', login_required(logout), name='logout'),
-    path('login/', auth_views.LoginView.as_view(), {'template_name': 'login.html'}, name='login'),
+    path('login', Login.as_view(), name='login'),
     path('edit_user/<username>',login_required(edit_user),name='edit_user'),
     path('consolidated/<username>',login_required(consolidated),name='consolidated'),
     path('consolidatedview/',login_required(consolidatedview),name='consolidatedview'),
