@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from events.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,10 +34,7 @@ urlpatterns = [
     path('update/training/<slug>',login_required(update_training),name='update_training'),
     path('update/competition/<slug>',login_required(update_competition),name='update_competition'),
     path('update/guest_lecture/<slug>',login_required(update_guestlecture),name='update_guestlecture'),
-    path('workshop/registration/<slug>',workshop_registration,name='workshop_registration'),
-    path('seminar/registration/<slug>',seminar_registration,name='seminar_registration'),
-    path('training/registration/<slug>',training_registration,name='training_registration'),
-    path('competition/registration/<slug>',competition_registration,name='competition_registration'),
+    path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
     path('guest_lecture/registration/<slug>',guest_lecture_registration,name='guest_lecture_registration'),
     path('workshop/description/<slug>',workshop_description,name='workshop_description_with_slug'),
     path('seminar/description/<slug>',seminar_description,name='seminar_description_with_slug'),
