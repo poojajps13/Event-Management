@@ -151,3 +151,19 @@ class GuestLectureRecord(models.Model):
 
     def __str__(self):
         return self.slug
+
+
+class StudentRecord(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.EmailField(max_length=150)
+    roll_no = models.CharField(max_length=30)
+    college_name = models.CharField(max_length=200)
+    branch = models.CharField(max_length=10)
+    year = models.CharField(max_length=50)
+    sem = models.CharField(max_length=50)
+    number = models.CharField(max_length=10)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    registered_event_code = models.CharField(max_length=55)
+
+    def __str__(self):
+        return self.name

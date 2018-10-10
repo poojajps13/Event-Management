@@ -11,19 +11,21 @@
 </head>
 <body>
 <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-light border-bottom shadow-sm">
-    <a class="mr-md-auto" href="#">
+    <a class="mr-md-auto" href="{% url 'home' %}">
         <img src="{% static 'images/logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
-        {% if user.is_authenticated %}Welcome {{ user.first_name }}{% endif %}
-        <a class="p-1 text-dark" href="{% url 'home' %}">Home</a>
+        <a class="p-1 text-dark" href="{% url 'home' %}">Home</a>{% if not user.is_authenticated %}
         <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
         <a class="p-1 text-dark" href="{% url 'seminar' %}">Seminar</a>
         <a class="p-1 text-dark" href="{% url 'training' %}">Training</a>
         <a class="p-1 text-dark" href="{% url 'competition' %}">Competition</a>
         <a class="p-1 text-dark" href="{% url 'guest_lecture' %}">Guest Lecture</a>
-        {% if user.is_authenticated %}{% if user.is_superuser or user.is_staff %}
+        <a class="p-1 text-dark" href="{% url 'excellence_center'  %}">Excellence Center</a>{% endif %}
+        {% if user.is_authenticated %}Welcome {{ user.first_name }}
+            {% if user.is_superuser or user.is_staff %}
             <a class="p-1 text-dark" href="{% url 'superuser' %}">USERS</a>{% endif %}
-            <a class="p-1 text-dark" href="{% url 'consolidatedview' %}">Profile</a>
+            <a class="p-1 text-dark" href="{% url 'form' %}">Add Event</a>
+            <a class="p-1 text-dark" href="{% url 'consolidatedview' %}">Consolidated View</a>
             <a class="p-1 text-danger" href="{% url 'logout' %}">Logout</a>
         {% else %}
             <a class="p-2" href="{% url 'login' %}">Login</a>
