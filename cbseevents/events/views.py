@@ -10,6 +10,58 @@ from django.utils import timezone
 from .forms import *
 from .models import *
 
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.views.generic import TemplateView
+
+class workshop_registration_first(TemplateView,slug,c_o_e,w):
+    template_name = 'login.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {})
+
+    def post(self, request):
+        try:
+            if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
+                try:
+                    ''' Begin reCAPTCHA validation '''
+                    re_captcha_response = request.POST.get('g-recaptcha-response')
+                    url = 'https://www.google.com/recaptcha/api/siteverify'
+                    values = {
+                        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                        'response': re_captcha_response
+                    }
+                    data = urllib.parse.urlencode(values).encode()
+                    req = urllib.request.Request(url, data=data)
+                    response = urllib.request.urlopen(req)
+                    result = json.loads(response.read().decode())
+                    ''' End reCAPTCHA validation '''
+                    if result['success']:
+                        username = request.POST['user']
+                        password = request.POST['pass']
+                        try:
+                            if w == 'workshop':
+                                WorkshopStudent.objects.get(username=username.lower())
+                                obj = WorkshopRecord.objects.get(slug=slug)
+                            if user is not None:
+                                obj.registered = obj.registered + 1
+                                obj.save(update_fields=['registered'])
+                                StudentRecordWorkshop.objects.create(name=name,registered_event_code=slug,c_o_e=c_o_e)
+                                messages.success(request, 'Successfully Registered')
+                            else:
+                                messages.error(request, "Username and password did not match")
+                        except ObjectDoesNotExist:
+                            messages.error(request, "User does not exist")
+                    else:
+                        messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+                except ObjectDoesNotExist:
+                    messages.error(request, 'Contact Us')
+                    return redirect("account:login")
+            else:
+                messages.error(request, 'REGISTRATION CLOSED')
+        except Exception:
+            messages.error(request, 'Try Later')
+        return render(request, self.template_name, {})
 
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')

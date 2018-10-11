@@ -7,6 +7,11 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from account.views import *
 urlpatterns = [
+    path('workshop/registration/<slug>/<c_o_e>/',workshop_registration,name='workshop_registration_first'),
+    path('seminar/registration/<slug>/<c_o_e>/',seminar_registration,name='seminar_registration_first'),
+    path('training/registration/<slug>/<c_o_e>/',training_registration,name='training_registration_first'),
+    path('competition/registration/<slug>/<c_o_e>/',competition_registration,name='competition_registration_first'),
+    path('guest_lecture/registration/<slug>/<c_o_e>/',guest_lecture_registration,name='guest_lecture_registration_first'),
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('superuser/',login_required(superuser),name='superuser'),
