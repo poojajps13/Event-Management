@@ -16,7 +16,7 @@
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
                             {% if user.is_authenticated %}
                             {% else %}
-                            <a href="{% url 'workshop_registration_first' slug=list.slug c_o_e=list.c_o_e %}"
+                            <a href="{% url 'workshop_registration' slug=list.slug c_o_e=list.c_o_e  %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
                             {% endif %}
                         </div>

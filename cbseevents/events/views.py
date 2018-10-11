@@ -14,7 +14,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 
-class workshop_registration_first(TemplateView,slug,c_o_e,w):
+"""class workshop_registration_first(TemplateView,slug,c_o_e,w):
     template_name = 'login.html'
 
     def get(self, request, *args, **kwargs):
@@ -62,7 +62,7 @@ class workshop_registration_first(TemplateView,slug,c_o_e,w):
         except Exception:
             messages.error(request, 'Try Later')
         return render(request, self.template_name, {})
-
+"""
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')
     semi = SeminarRecord.objects.all().order_by('-pk')
