@@ -783,7 +783,10 @@ def consolidatedview(request):
                   {'workshop': workshop, 'training': training, 'competition': competition,
                    'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})
 
-
+def studentlist(request,registered_event_code):
+    lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
+    return render(request,'studentlist.html',{'lists':lists})
+    
 def excellence_center(request):
     return render(request, 'excellence_center.html')
 

@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}ABES |{{ block.super }}{% endblock head_title %}
+{% block css %}{% endblock %}
+{% block content %}
+{% for i in lists %}
+{{ i.name }}
+{% endfor %}
+{% endblock %}
+{% block script %}{% endblock %}

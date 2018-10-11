@@ -19,6 +19,7 @@
                                class="btn btn-outline-danger btn-sm px-4">Delete</a>
                         </div>
                         Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist' registered_event_code=i.slug %}">Student List</a><br>
                     </div>
                 </div>{% endfor %}
             {% for i in seminar %}
@@ -37,6 +38,7 @@
                                class="btn btn-outline-danger btn-sm px-4">Delete</a>
                         </div>
                         Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist' %}">Student List</a><br>
                     </div>
                 </div>{% endfor %}
             {% for i in training %}
@@ -55,6 +57,7 @@
                                class="btn btn-outline-danger btn-sm px-4">Delete</a>
                         </div>
                         Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist' %}">Student List</a><br>
                     </div>
                 </div>{% endfor %}
             {% for i in competition %}
@@ -74,6 +77,7 @@
                                class="btn btn-outline-danger btn-sm px-4">Delete</a>
                         </div>
                         Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist' %}">Student List</a><br>
                     </div>
                 </div>{% endfor %}
             {% for i in guest_lecture %}
@@ -93,6 +97,7 @@
                                class="btn btn-outline-danger btn-sm px-4">Delete</a>
                         </div>
                         Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist' %}">Student List</a><br>
                     </div>
                 </div>{% endfor %}
         </div>

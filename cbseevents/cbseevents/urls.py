@@ -18,6 +18,7 @@ urlpatterns = [
     path('consolidated/<username>/',login_required(consolidated),name='consolidated'),
     path('consolidatedview/',login_required(consolidatedview),name='consolidatedview'),
     path('deleteuser/<username>/',login_required(del_user),name='deleteuser'),
+    path('studentlist/<registered_event_code>/',login_required(studentlist),name='studentlist'),
     path('excellence_center/',excellence_center,name='excellence_center'),
     path('seminar/', seminar, name='seminar'),
     path('workshop/', workshop, name='workshop'),
