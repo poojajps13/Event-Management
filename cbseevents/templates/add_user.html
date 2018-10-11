@@ -1,13 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<script src='https://www.google.com/recaptcha/api.js'></script>
 <h1>Add User</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <br>
-        <div class="g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
-        <br>
     <button type="submit" style="margin: 5%;">Sign up</button>
 </form>
 {% endblock %}

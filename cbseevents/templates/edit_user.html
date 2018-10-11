@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
-<script src='https://www.google.com/recaptcha/api.js'></script>
 <br/><br/><br/><br/><br/>
     {% for m in messages %}{{ m }}{% endfor %}
     <form method="post" action="" style="background-color: #F2F3F4; padding-left:35%; ">
@@ -13,9 +12,6 @@
         <label>Change password:</label>
         <br>
         <input type="text" name="password" placeholder="password" required maxlength=""><br>
-        <br>
-        <div class="g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
-        <br>
         <br>
         <button type="submit" ">SUBMIT</button>
     </form>

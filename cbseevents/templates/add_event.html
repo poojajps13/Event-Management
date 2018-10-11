@@ -1,120 +1,36 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Add Event | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
 {% block content %}
-<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
-    body{
-        background: url('{% static "images/log.png" %}') no-repeat center center fixed ;
-        -webkit-background-size:cover;
-        -moz-background-size:cover;
-        -o-background-size:cover;
-        background-size: cover;
-    }
-    form{
-        background-color: white;
-       width: 60%;
-        margin: 0 auto;
-        padding: 5%;
-    }
-    p{
-        width: 70%;
-    }
-    span{
-        margin: 5%;
-    }
-    button{
-        margin:auto;
-      display:block;
-    }
-    .g-recaptcha {
-      margin: 0 auto;
-      width: 304px;
-    }
-    /* BUTTON STYLES */
-    button{
-      padding:16px 32px;
-      font-family:helvetica;
-      font-size:16px;
-      font-weight:100;
-      color:#fff;
-      background: #587286;
-      border:0;
-      font-weight:100;
-    }
-    button:hover{
-      background: #3B5C76;
-    }
-    /* END OF BUTTON STYLES */
-</style>
-<body>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-    <br/><br/><br/><br/><br/>
-    {% for m in messages %}{{ m }}{% endfor %}
-    <form method="post" action="">
-        {% csrf_token %}
-        <label>Select Event:</label>
-        <span>{{ form.select_event }}</span>
-        <br><br>
-        <label>Event code:</label>
-        <span>{{ form.slug }}</span>
-        
-        <label>Event name:</label>
-        <span>{{ form.event_name }}</span>
-        <br><br>
-        <label>Description:</label>
-        <br>
-        <div class="form-group">
-        {{ form.description }}
-        </div>
-        <br><br>
-        <label>Duration:</label>
-        <span>{{ form.duration }}</span>
-
-        <label>Resource person:</label>
-        <span>{{ form.resource_person }}</span>
-        <br><br>
-        <label>Resource person data:</label>
-        <br>
-        <div class="form-group">
-        {{ form.resource_person_data }}
-        </div>
-        <br><br>
-        <label>Registration start:</label>
-        <span>{{ form.registration_start }}</span>
-        <br><br>
-        <label>Registration end:</label>
-        <span>{{ form.registration_end }}</span>
-        <br><br>
-        <label>Event start:</label>
-        <span>{{ form.event_date }}
-        {{ form.event_month }}
-        {{ form.event_year }}</span>
-        <br><br>
-        <label>Eligible branches:</label>
-        <span>{{ form.eligible_branches }}</span>
-        <br>
-        <label>Venue:</label>
-        <br>
-        <div class="form-group">
-        {{ form.venue }}
-        </div>
-        <br>
-        <label>Outside students allowed :</label>
-        <span>{{ form.outside_student }}</span>
-        <br>
-        <label>Fees:</label>
-        <span>{{ form.fees }}</span>
-        <br><br>
-        <div class="g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
-        <a href="{% url 'workshop' %}">
-            <br><br>
-            <div><button type="submit">Submit</button></div>
-        </a>
-    </form>
-    <br><br><br><br><br><br><br><br>
-</body>
-{% endblock content %}
+    <div class="p-3 pt-4 bg-white rounded shadow-sm">
+        <h2>Add Event</h2>
+        <form enctype="multipart/form-data" action="" method="post" class="px-md-2">{% csrf_token %}
+            <h3>Event Information*</h3>
+            <div class="form-row px-md-5">
+                <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.select_event }}</div>
+                <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}</div>
+                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}</div>
+                <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}</div>
+                <div class="pb-4 col-md-4"><label>Duration</label>{{ form.duration }}</div>
+                <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
+                <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
+                    <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
+                {% endfor %}</div>
+                <div class="pb-4 col-md-12">Outside students allowed{% for radio in form.outside_student %}
+                    <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
+                {% endfor %}</div>
+                <div class="pb-4 col-md-4"><label>Registration start</label>{{ form.registration_start }}</div>
+                <div class="pb-4 col-md-4"><label>Registration end</label>{{ form.registration_end }}</div>
+                <div class="pb-4 col-md-4"><label>Event Start</label>
+                    {{ form.event_month }}{{ form.event_date }}{{ form.event_year }}</div>
+                <div class="pb-4 col-md-12"><label>Venue:</label>{{ form.venue }}</div>
+                <div class="pb-4 col-md-12"><label>Resource person:</label>{{ form.resource_person }}</div>
+                <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
+            </div>
+            <div class="px-md-5 pt-3 pb-5 clearfix">
+                <button type="submit" class="px-5 btn btn-outline-primary">Submit</button>
+                <button type="reset" class="px-4 btn btn-outline-danger">Reset</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}{% endblock %}
