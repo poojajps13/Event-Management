@@ -12,13 +12,13 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'workshop_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        <div class="py-2">
-                            <a href="{% url 'update_workshop' slug=i.slug %}"
-                               class="btn btn-outline-primary btn-sm px-4">Update</a>
-                            <a href="{% url 'delete_workshop' slug=i.slug %}"
-                               class="btn btn-outline-danger btn-sm px-4">Delete</a>
-                        </div>
-                        Registered {{ i.registered }}<br>
+                        Registered Student {{ i.registered }}</div>
+                    <hr>
+                    <div class="pb-3 px-3">
+                        <a href="{% url 'update_workshop' slug=i.slug %}"
+                           class="btn btn-outline-primary btn-sm px-4">Update</a>
+                        <a href="{% url 'delete_workshop' slug=i.slug %}"
+                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                     </div>
                 </div>{% endfor %}
             {% for i in seminar %}
@@ -30,13 +30,13 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'seminar_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        <div class="py-2">
-                            <a href="{% url 'update_seminar' slug=i.slug %}"
-                               class="btn btn-outline-primary btn-sm px-4">Update</a>
-                            <a href="{% url 'delete_seminar' slug=i.slug %}"
-                               class="btn btn-outline-danger btn-sm px-4">Delete</a>
-                        </div>
-                        Registered {{ i.registered }}<br>
+                        Registered {{ i.registered }}</div>
+                    <hr>
+                    <div class="pb-3 px-3">
+                        <a href="{% url 'update_seminar' slug=i.slug %}"
+                           class="btn btn-outline-primary btn-sm px-4">Update</a>
+                        <a href="{% url 'delete_seminar' slug=i.slug %}"
+                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                     </div>
                 </div>{% endfor %}
             {% for i in training %}
@@ -48,13 +48,13 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'training_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        <div class="py-2">
-                            <a href="{% url 'update_training' slug=i.slug %}"
-                               class="btn btn-outline-primary btn-sm px-4">Update</a>
-                            <a href="{% url 'delete_training' slug=i.slug %}"
-                               class="btn btn-outline-danger btn-sm px-4">Delete</a>
-                        </div>
-                        Registered {{ i.registered }}<br>
+                        Registered {{ i.registered }}</div>
+                    <hr>
+                    <div class="pb-3 px-3">
+                        <a href="{% url 'update_training' slug=i.slug %}"
+                           class="btn btn-outline-primary btn-sm px-4">Update</a>
+                        <a href="{% url 'delete_training' slug=i.slug %}"
+                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                     </div>
                 </div>{% endfor %}
             {% for i in competition %}
@@ -67,13 +67,13 @@
                     <div class="card-body">
                         <h4><a href="{% url 'competition_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
                         </h4>
-                        <div class="py-2">
-                            <a href="{% url 'update_competition' slug=i.slug %}"
-                               class="btn btn-outline-primary btn-sm px-4">Update</a>
-                            <a href="{% url 'delete_competition' slug=i.slug %}"
-                               class="btn btn-outline-danger btn-sm px-4">Delete</a>
-                        </div>
-                        Registered {{ i.registered }}<br>
+                        Registered {{ i.registered }}</div>
+                    <hr>
+                    <div class="pb-3 px-3">
+                        <a href="{% url 'update_competition' slug=i.slug %}"
+                           class="btn btn-outline-primary btn-sm px-4">Update</a>
+                        <a href="{% url 'delete_competition' slug=i.slug %}"
+                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                     </div>
                 </div>{% endfor %}
             {% for i in guest_lecture %}
@@ -86,14 +86,14 @@
                     <div class="card-body">
                         <h4><a href="{% url 'guest_lecture_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
                         </h4>
-                        <div class="py-2">
+                        Registered {{ i.registered }}</div>
+                        <hr>
+                        <div class="pb-3 px-3">
                             <a href="{% url 'update_guest_lecture' slug=i.slug %}"
                                class="btn btn-outline-primary btn-sm px-4">Update</a>
                             <a href="{% url 'delete_guest_lecture' slug=i.slug %}"
-                               class="btn btn-outline-danger btn-sm px-4">Delete</a>
+                               class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                         </div>
-                        Registered {{ i.registered }}<br>
-                    </div>
                 </div>{% endfor %}
         </div>
     </div>

@@ -1,11 +1,8 @@
 from datetime import date
 
-from django.contrib import messages, auth
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.shortcuts import render, redirect
-from django.utils import timezone
 
 from .forms import *
 from .models import *
@@ -75,13 +72,14 @@ def update_workshop(request, slug):
     return redirect('home')
 
 
-def workshop_registration(request, slug):
+# noinspection PyBroadException
+def workshop_registration(request, slug, c_o_e):
     obj = WorkshopRecord.objects.get(slug=slug)
-    if True:
+    try:
         if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
             if request.method == "POST":
                 form = StudentForm(request.POST)
-                if True:
+                try:
                     if form.is_valid():
                         name = form.cleaned_data['name']
                         email = form.cleaned_data['email']
@@ -91,25 +89,27 @@ def workshop_registration(request, slug):
                         year = form.cleaned_data['year']
                         sem = form.cleaned_data['sem']
                         number = form.cleaned_data['number']
+                        password = form.cleaned_data['password']
                         obj.registered = obj.registered + 1
                         obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no, college_name=college_name,
-                                                     branch=branch, year=year, sem=sem, number=number)
-                        obj1.registered_event_code.add(obj)
+                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
+                                                            college_name=college_name,
+                                                            branch=branch, year=year, sem=sem, number=number,
+                                                            password=password, registered_event_code=slug)
+                        StudentRecordWorkshop.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
                         messages.success(request, 'Successfully Registered')
                     else:
                         messages.error(request, 'Invalid form')
-                # except Exception:
-                #     messages.error(request, 'Try again')
-                form = StudentForm()
+                except Exception:
+                    messages.error(request, 'Try again')
                 return render(request, 'studentform.html', {'form': form})
             else:
                 form = StudentForm()
             return render(request, 'studentform.html', {'form': form})
         else:
             messages.error(request, 'REGISTRATION CLOSED')
-    # except Exception:
-    #     messages.error(request, 'Try Later')
+    except Exception:
+        messages.error(request, 'Try Later')
     return redirect('home')
 
 
@@ -187,7 +187,8 @@ def update_seminar(request, slug):
     return redirect('home')
 
 
-def seminar_registration(request, slug):
+# noinspection PyBroadException
+def seminar_registration(request, slug, c_o_e):
     obj = SeminarRecord.objects.get(slug=slug)
     try:
         if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
@@ -203,11 +204,15 @@ def seminar_registration(request, slug):
                         year = form.cleaned_data['year']
                         sem = form.cleaned_data['sem']
                         number = form.cleaned_data['number']
-                        obj.registered = obj.registered + 1;
+                        password = form.cleaned_data['password']
+                        obj.registered = obj.registered + 1
                         obj.save(update_fields=['registered'])
-                        StudentRecord.objects.create(name=name, email=email, roll_no=roll_no, college_name=college_name,
-                                                     branch=branch,
-                                                     year=year, sem=sem, number=number, registered_event_code=slug)
+                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
+                                                            college_name=college_name,
+                                                            branch=branch, password=password,
+                                                            year=year, sem=sem, number=number,
+                                                            registered_event_code=slug)
+                        StudentRecordSeminar.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
                         messages.success(request, 'Successfully Registered')
                     else:
                         messages.error(request, 'Invalid form')
@@ -299,7 +304,8 @@ def update_training(request, slug):
     return redirect('home')
 
 
-def training_registration(request, slug):
+# noinspection PyBroadException
+def training_registration(request, slug, c_o_e):
     obj = TrainingRecord.objects.get(slug=slug)
     try:
         if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
@@ -315,11 +321,14 @@ def training_registration(request, slug):
                         year = form.cleaned_data['year']
                         sem = form.cleaned_data['sem']
                         number = form.cleaned_data['number']
-                        obj.registered = obj.registered + 1;
+                        password = form.cleaned_data['password']
+                        obj.registered = obj.registered + 1
                         obj.save(update_fields=['registered'])
-                        StudentRecord.objects.create(name=name, email=email, roll_no=roll_no, college_name=college_name,
-                                                     branch=branch, year=year, sem=sem, number=number,
-                                                     registered_event_code=slug)
+                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
+                                                            college_name=college_name,
+                                                            branch=branch, year=year, sem=sem, number=number,
+                                                            password=password, registered_event_code=slug)
+                        StudentRecordTraining.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
                         messages.success(request, 'Successfully Registered')
                     else:
                         messages.error(request, 'Invalid form')
@@ -411,7 +420,8 @@ def update_competition(request, slug):
     return redirect('home')
 
 
-def competition_registration(request, slug):
+# noinspection PyBroadException
+def competition_registration(request, slug, c_o_e):
     obj = CompetitionRecord.objects.get(slug=slug)
     try:
         if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
@@ -427,11 +437,14 @@ def competition_registration(request, slug):
                         year = form.cleaned_data['year']
                         sem = form.cleaned_data['sem']
                         number = form.cleaned_data['number']
-                        obj.registered = obj.registered + 1;
+                        password = form.cleaned_data['password']
+                        obj.registered = obj.registered + 1
                         obj.save(update_fields=['registered'])
-                        StudentRecord.objects.create(name=name, email=email, roll_no=roll_no, college_name=college_name,
-                                                     branch=branch, year=year, sem=sem, number=number,
-                                                     registered_event_code=slug)
+                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
+                                                            college_name=college_name,
+                                                            branch=branch, year=year, sem=sem, number=number,
+                                                            password=password, registered_event_code=slug)
+                        StudentRecordCompetition.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
                         messages.success(request, 'Successfully Registered')
                     else:
                         messages.error(request, 'Invalid form')
@@ -524,7 +537,8 @@ def update_guestlecture(request, slug):
     return render(request, 'update.html')
 
 
-def guest_lecture_registration(request, slug):
+# noinspection PyBroadException
+def guest_lecture_registration(request, slug, c_o_e):
     obj = GuestLectureRecord.objects.get(slug=slug)
     try:
         if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
@@ -540,11 +554,14 @@ def guest_lecture_registration(request, slug):
                         year = form.cleaned_data['year']
                         sem = form.cleaned_data['sem']
                         number = form.cleaned_data['number']
+                        password = form.cleaned_data['password']
                         obj.registered = obj.registered + 1
                         obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no, college_name=college_name,
-                                                     branch=branch, year=year, sem=sem, number=number)
-                        obj1.registered_event_code.add(obj)
+                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
+                                                            college_name=college_name,
+                                                            branch=branch, year=year, sem=sem, number=number,
+                                                            password=password, registered_event_code=slug)
+                        StudentRecordGuestlecture.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
                         messages.success(request, 'Successfully Registered')
                         return redirect('home')
                     else:
@@ -587,7 +604,7 @@ def add_event(request):
         try:
             if form.is_valid():
                 select_event = form.cleaned_data['select_event']
-                slug = form.cleaned_data['slug']
+                c_o_e = form.cleaned_data['c_o_e']
                 event_name = form.cleaned_data['event_name']
                 description = form.cleaned_data['description']
                 duration = form.cleaned_data['duration']
@@ -603,7 +620,7 @@ def add_event(request):
                 venue = form.cleaned_data['venue']
                 fees = form.cleaned_data['fees']
                 if select_event == 'workshop':
-                    WorkshopRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
+                    WorkshopRecord.objects.create(c_o_e=c_o_e, event_name=event_name, duration=duration,
                                                   description=description, resource_person=resource_person,
                                                   resource_person_data=resource_person_data,
                                                   registration_start=registration_start,
@@ -613,7 +630,7 @@ def add_event(request):
                                                   outside_student=outside_student, venue=venue, fees=fees,
                                                   user=request.user)
                 if select_event == 'seminar':
-                    SeminarRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
+                    SeminarRecord.objects.create(c_o_e=c_o_e, event_name=event_name, duration=duration,
                                                  description=description, resource_person=resource_person,
                                                  resource_person_data=resource_person_data,
                                                  registration_start=registration_start,
@@ -623,7 +640,7 @@ def add_event(request):
                                                  outside_student=outside_student, venue=venue, fees=fees,
                                                  user=request.user)
                 if select_event == 'training':
-                    TrainingRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
+                    TrainingRecord.objects.create(c_o_e=c_o_e, event_name=event_name, duration=duration,
                                                   description=description, resource_person=resource_person,
                                                   resource_person_data=resource_person_data,
                                                   registration_start=registration_start,
@@ -633,7 +650,7 @@ def add_event(request):
                                                   outside_student=outside_student, venue=venue, fees=fees,
                                                   user=request.user)
                 if select_event == 'competition':
-                    CompetitionRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
+                    CompetitionRecord.objects.create(c_o_e=c_o_e, event_name=event_name, duration=duration,
                                                      description=description, resource_person=resource_person,
                                                      resource_person_data=resource_person_data,
                                                      registration_start=registration_start,
@@ -644,7 +661,7 @@ def add_event(request):
                                                      outside_student=outside_student, venue=venue, fees=fees,
                                                      user=request.user)
                 if select_event == 'guest lecture':
-                    GuestLectureRecord.objects.create(slug=slug, event_name=event_name, duration=duration,
+                    GuestLectureRecord.objects.create(c_o_e=c_o_e, event_name=event_name, duration=duration,
                                                       description=description, resource_person=resource_person,
                                                       resource_person_data=resource_person_data,
                                                       registration_start=registration_start,
@@ -683,99 +700,20 @@ def add_event(request):
                         MonthRecordguest_lecture.objects.get(month_code=event_month)
                     except ObjectDoesNotExist:
                         MonthRecordguest_lecture.objects.create(month_code=event_month)
-                    messages.success(request, 'Successfully add Event')
+                messages.success(request, 'Successfully added Event')
             else:
                 messages.error(request, 'Invalid form')
         except Exception:
             messages.error(request, 'Try again')
-        form = EventForm()
         return render(request, 'add_event.html', {'form': form})
     else:
         form = EventForm()
     return render(request, 'add_event.html', {'form': form})
 
 
-def add_user(request):
-    if request.user.is_staff:
-        if request.method == "POST":
-            form = UserCreationForm(request.POST)
-            if form.is_valid():
-                form.save()
-                username = form.cleaned_data.get('username')
-                raw_password = form.cleaned_data.get('password1')
-                user = authenticate(username=username, password=raw_password)
-                login(request, user)
-                return redirect('home')
-        else:
-            form = UserCreationForm()
-        return render(request, 'add_user.html', {'form': form})
-    return redirect('superuser')
-
-
-def edit_user(request, username):
-    try:
-        u = User.objects.get(username=username)
-        if request.user.is_staff:
-            if request.method == "POST":
-                u.Username = request.POST['username']
-                new_password = request.POST['password']
-                u.set_password(new_password)
-                u.save(update_fields=['username', 'password'])
-            return render(request, 'edit_user.html', {'u': u})
-        else:
-            raise PermissionDenied
-    except ObjectDoesNotExist:
-        messages.error(request, 'Edit not allowed!!!')
-    except PermissionDenied:
-        messages.error(request, 'User does not exist !!!')
-    return render(request, 'edit_user.html', {'u': u})
-
-
-def del_user(request, username):
-    try:
-        u = User.objects.get(username=username)
-        u.delete()
-        messages.success(request, "The user is deleted")
-    except User.DoesNotExist:
-        messages.error(request, "User doesnot exist")
-        return render(request, 'superuser.html')
-    except Exception as e:
-        return render(request, 'superuser.html', {'err': e.message})
-    return redirect('superuser')
-
-
-def consolidated(request, username):
-    user = User.objects.get(username=username)
-    workshop = WorkshopRecord.objects.filter(user=user)
-    seminar = SeminarRecord.objects.filter(user=user)
-    training = TrainingRecord.objects.filter(user=user)
-    competition = CompetitionRecord.objects.filter(user=user)
-    guest_lecture = GuestLectureRecord.objects.filter(user=user)
-    print(workshop, seminar, training, competition, guest_lecture)
-    return render(request, 'consolidatedview.html',
-                  {'workshop': workshop, 'training': training, 'competition': competition,
-                   'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})
-
-
-def superuser(request):
-    u = User.objects.all()
-    return render(request, 'superuser.html', {'u': u})
-
-
-def logout(request):
-    auth.logout(request)
-    return redirect('home')
-
-
-def consolidatedview(request):
-    workshop = WorkshopRecord.objects.filter(user=request.user)
-    seminar = SeminarRecord.objects.filter(user=request.user)
-    training = TrainingRecord.objects.filter(user=request.user)
-    competition = CompetitionRecord.objects.filter(user=request.user)
-    guest_lecture = GuestLectureRecord.objects.filter(user=request.user)
-    return render(request, 'consolidatedview.html',
-                  {'workshop': workshop, 'training': training, 'competition': competition,
-                   'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})
+def studentlist(request, registered_event_code):
+    lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists})
 
 
 def excellence_center(request):

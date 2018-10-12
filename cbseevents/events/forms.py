@@ -3,8 +3,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.forms.widgets import SelectDateWidget
 
-from .models import *
-
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
           ('guest lecture', 'Guest Lecture'), ]
 BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('OTHER', 'OTHER'), ]
@@ -13,26 +11,38 @@ DATE = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), 
         (21, 21), (22, 22), (23, 23), (24, 24), (25, 25), (26, 26), (27, 27), (28, 28), (29, 29), (30, 30),
         (31, 31), ]
 MONTHS = [
-    ('January', 'January'),
-    ('February', 'February'),
-    ('March', 'March'),
-    ('April', 'April'),
+    ('Jan', 'January'),
+    ('Feb', 'February'),
+    ('Mar', 'March'),
+    ('Apr', 'April'),
     ('May', 'May'),
     ('June', 'June'),
     ('July', 'July'),
-    ('August', 'August'),
-    ('September', 'September'),
-    ('October', 'October'),
-    ('November', 'November'),
-    ('December', 'December'),
+    ('Aug', 'August'),
+    ('Sep', 'September'),
+    ('Oct', 'October'),
+    ('Nov', 'November'),
+    ('Dec', 'December'),
 ]
 YEARS = [(2018, 2018), (2019, 2019), (2020, 2020), (2021, 2021), (2022, 2022), (2023, 2023), (2024, 2024), ]
 CHOICE = [('YES', 'YES'), ('NO', 'NO'), ]
 YEAR = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
 SEM = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8)]
+CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),
+                        ('NW', 'Cisco Networking Academy'),
+                        ('TIES', 'Texas Instruments Embedded System Lab'),
+                        ('SMC', 'SMC India Pvt Ltd.'),
+                        ('IARTC', 'Industrial Automation Research And Training Centre - IARTC'),
+                        ('VLSI', 'VLSI Design'),
+                        ('BigD', 'Big Data Analytics'),
+                        ('MobApp', 'Mobile Application Development'),
+                        ('SWD', 'Center For Enterprise Software Development'),
+                        ('TST', 'Testing'),
+                        ('NI', 'ABES-NI Innovation Centre'),
+                        ]
 
 
-class StudentForm(forms.ModelForm):
+class StudentForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name*'}),
                            required=True, max_length=100)
     email = forms.EmailField(widget=forms.EmailInput(
@@ -53,21 +63,19 @@ class StudentForm(forms.ModelForm):
     number = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Mobile Number*', 'pattern': "[789][0-9]{9}"}), required=True,
         max_length=10)
-
-    class Meta:
-        model = StudentRecord
-        fields = ['name', 'email', 'roll_no', 'college_name', 'branch', 'year', 'sem', 'number']
+    password = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Password*'}), required=True,
+        max_length=200)
 
     def clean_name(self):
         name = self.cleaned_data['name']
         l = len(name)
-        if l > 3:
+        if l >= 2:
             for i in range(l):
                 if ('a' <= name[i] and name[i] <= 'z') or ('A' <= name[i] and name[i] <= 'Z') or name[i] == ' ':
                     pass
                 else:
                     raise forms.ValidationError("Invalid Name")
-            print(name)
             return name
         return forms.ValidationError("Invalid Name")
 
@@ -75,7 +83,6 @@ class StudentForm(forms.ModelForm):
         email = self.cleaned_data['email']
         try:
             validate_email(email)
-            print(email)
             return email
         except ValidationError:
             return forms.ValidationError("Email is not in correct format")
@@ -83,13 +90,12 @@ class StudentForm(forms.ModelForm):
     def clean_number(self):
         number = self.cleaned_data['number']
         l = len(number)
-        if l > 3:
+        if l == 10:
             for i in range(l):
                 if ('0' <= number[i] and number[i] <= '9'):
                     pass
                 else:
                     raise forms.ValidationError("Invalid Number")
-            print(number)
             return number
         return forms.ValidationError("Invalid Number")
 
@@ -97,8 +103,9 @@ class StudentForm(forms.ModelForm):
 class EventForm(forms.Form):
     select_event = forms.CharField(label='SELECT_EVENT',
                                    widget=forms.Select(choices=EVENTS, attrs={'class': 'form-control'}), required=True)
-    slug = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
-                           required=True, max_length=50)
+    c_o_e = forms.CharField(
+        label='CENTER_OF_EXCELLENCE', widget=forms.Select(
+            choices=CENTER_OF_EXCELLENCE, attrs={'class': 'form-control'}), required=True, max_length=50)
     event_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
                                  required=True, max_length=100)
     description = forms.CharField(
@@ -132,6 +139,6 @@ class EventForm(forms.Form):
         widget=forms.RadioSelect(choices=CHOICE, attrs={'class': 'form-check-inline'}),
         required=True)
     venue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Venue', 'rows': '4'}),
-                            required=True, max_length=200)
+                            required=True, max_length=2000)
     fees = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Fees'}),
                             required=True)
