@@ -34,19 +34,19 @@
                 {% endif %}
             {% else %}
                 {% if event == 'workshop' %}
-                    <a href="{% url 'workshop_registration' slug=obj.slug  c_o_e=list.c_o_e%}"
+                    <a href="{% url 'workshop_registration' slug=obj.slug %}"
                        class="btn btn-outline-success btn-sm">Register</a>
                 {% elif event == 'seminar' %}
-                    <a href="{% url 'seminar_registration' slug=obj.slug c_o_e=list.c_o_e %}"
+                    <a href="{% url 'seminar_registration' slug=obj.slug %}"
                        class="btn btn-outline-success btn-sm">Register</a>
                 {% elif event == 'training' %}
-                    <a href="{% url 'training_registration' slug=obj.slug c_o_e=list.c_o_e %}"
+                    <a href="{% url 'training_registration' slug=obj.slug %}"
                        class="btn btn-outline-success btn-sm">Register</a>
                 {% elif event == 'competition' %}
-                    <a href="{% url 'competition_registration' slug=obj.slug c_o_e=list.c_o_e %}"
+                    <a href="{% url 'competition_registration' slug=obj.slug %}"
                        class="btn btn-outline-success btn-sm">Register</a>
                 {% elif event == 'guest_lecture' %}
-                    <a href="{% url 'guest_lecture_registration' slug=obj.slug c_o_e=list.c_o_e %}"
+                    <a href="{% url 'guest_lecture_registration' slug=obj.slug %}"
                        class="btn btn-outline-success btn-sm">Register</a>
                 {% endif %}
             {% endif %}</div>

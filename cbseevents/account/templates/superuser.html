@@ -1,0 +1,124 @@
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}User | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}{% block content %}{% if user.is_staff or user.is_superuser %}
+    <div class="bg-white pb-4 px-md-5 px-2 rounded shadow-sm">
+        <div class="pt-4 d-flex justify-content-between"><h2>List of User</h2>
+            <div style="width: 300px">
+                <input type="text" class="form-control" id="search" onkeyup="mySearch123()" placeholder="Search...">
+            </div>
+        </div>
+        <div class="py-3 pb-2 table-responsive-xl">{% if u %}
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
+                <tr style="font-weight: 600;">
+                    <th scope="col" width="5%">#</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">User Email</th>
+                    <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Detail</th>
+                    <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Edit</th>
+                    <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Delete</th>
+                </tr>
+                </thead>
+                <tbody>{% for i in u %}
+                    <tr>
+                        <td scope="row">{{ forloop.counter }}</td>
+                        <td>{{ i.username }}</td>
+                        <td>{{ i.first_name }} {{ i.last_name }}</td>
+                        <td>{{ i.email }}</td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <a href="{% url 'consolidated' username=i %}">
+                                <img src="{% static 'images/icons8-profile.png' %}"></a></td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <a href="{% url 'edit_user' username=i %}">
+                                <img src="{% static 'images/icons8-edit.png' %}"></a></td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <a href="{% url 'deleteuser' username=i %}">
+                                <img src="{% static 'images/icons8-cancel.png' %}"></a>
+                    </tr>{% endfor %}</tbody>
+            </table>{% else %}
+            <h3>No User yet</h3>{% endif %}</div>
+        <div class="clearfix">
+            <button class="btn btn-sm btn-outline-info" style="width:150px;" data-toggle="modal"
+                    data-target="#myModal">Add User
+            </button>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add User</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" class="px-md-2">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Username</label>
+                                {{ form.username }}{{ form.username.errors }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Email</label>
+                                {{ form.email }}{{ form.email.errors }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>First Name</label>
+                                {{ form.first_name }}{{ form.first_name.errors }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Last Name</label>
+                                {{ form.last_name }}{{ form.last_name.errors }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            {{ form.password }}{{ form.password.errors }}</div>
+                        <div class="mb-3" style="font-size: 14px">
+                            <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character
+                            </li>
+                            <li>Your password can&#39;t be a commonly used password.</li>
+                            <li>Your password can&#39;t be entirely numeric.</li>
+                            <li>Your password can&#39;t be too similar to your other personal information.</li>
+                        </div>
+                        <div class="mb-3">
+                            <label>Confirm Password</label>
+                            {{ form.confirm_password }}{{ form.confirm_password.errors }}
+                        </div>
+                        <div class="py-2 clearfix">
+                            <button type="submit" class="btn btn-outline-success btn-block mb-2">Submit</button>
+                            <button type="reset" class="btn btn-outline-danger btn-block mb-2">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>{% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        function mySearch123() {
+            let input, filter, table, tr, td1, td2, td3, i;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td1 = tr[i].getElementsByTagName("td")[1];
+                td2 = tr[i].getElementsByTagName("td")[2];
+                td3 = tr[i].getElementsByTagName("td")[3];
+                if (td1 || td2 || td3) {
+                    if ((td1.innerHTML.toUpperCase().indexOf(filter) > -1) ||
+                        (td2.innerHTML.toUpperCase().indexOf(filter) > -1) ||
+                        (td3.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>{% endblock %}

@@ -1,21 +1,8 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}ABES |{{ block.super }}{% endblock head_title %}
 {% block css %}{% endblock %}
 {% block content %}
-<table style="width:100%">
-	<tr>
-		<th>Name</th>
-		<th>Payment Id</th>
-		<th>Paid</th>
-	</tr>
-	<br>
-	{% for i in lists %}
-	<tr>
-	<td>{{ i.name }}</td>
-	<td>{{ i.payment_id }}</td>
-	<td>{{ i.paid }}</td>
-	</tr>
-	<br>
-	{% endfor %}
-</table>
+{% for i in lists %}
+{{ i.name }}
+{% endfor %}
 {% endblock %}
 {% block script %}{% endblock %}

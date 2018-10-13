@@ -31,7 +31,7 @@
                             </div>
                             <p>{{ list.description }}</p>
                             <div>By {{ list.resource_person }}
-                                <a href="{% url 'seminar_description_with_slug' slug=list.slug c_o_e=list.c_o_e %}" class="text-capitalize" style="float: right">read more...</a></div>
+                                <a href="{% url 'seminar_description_with_slug' slug=list.slug %}" class="text-capitalize" style="float: right">read more...</a></div>
                         </article>
                         <hr style="margin: 0">
                     {% endfor %}

@@ -3,8 +3,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.forms.widgets import SelectDateWidget
 
-from .models import *
-
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
           ('guest lecture', 'Guest Lecture'), ]
 BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('OTHER', 'OTHER'), ]
@@ -30,18 +28,19 @@ YEARS = [(2018, 2018), (2019, 2019), (2020, 2020), (2021, 2021), (2022, 2022), (
 CHOICE = [('YES', 'YES'), ('NO', 'NO'), ]
 YEAR = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
 SEM = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8)]
-CENTER_OF_EXCELLENCE = [('SDA','Structural Design And Analysis'),
-                        ('NW','Cisco Networking Academy'),
-                        ('TIES','Texas Instruments Embedded System Lab'),
-                        ('SMC','SMC India Pvt Ltd.'),
-                        ('IARTC','Industrial Automation Research And Training Centre - IARTC'),
-                        ('VLSI','VLSI Design'),
-                        ('BigD','Big Data Analytics'),
-                        ('MobApp','Mobile Application Development'),
-                        ('SWD','Center For Enterprise Software Development'),
-                        ('TST','Testing'),
-                        ('NI','ABES-NI Innovation Centre'),
+CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),
+                        ('NW', 'Cisco Networking Academy'),
+                        ('TIES', 'Texas Instruments Embedded System Lab'),
+                        ('SMC', 'SMC India Pvt Ltd.'),
+                        ('IARTC', 'Industrial Automation Research And Training Centre - IARTC'),
+                        ('VLSI', 'VLSI Design'),
+                        ('BigD', 'Big Data Analytics'),
+                        ('MobApp', 'Mobile Application Development'),
+                        ('SWD', 'Center For Enterprise Software Development'),
+                        ('TST', 'Testing'),
+                        ('NI', 'ABES-NI Innovation Centre'),
                         ]
+
 
 class StudentForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name*'}),
@@ -80,7 +79,7 @@ class StudentForm(forms.Form):
             return name
         return forms.ValidationError("Invalid Name")
 
-    def clean_email(self):  
+    def clean_email(self):
         email = self.cleaned_data['email']
         try:
             validate_email(email)
@@ -100,24 +99,25 @@ class StudentForm(forms.Form):
             return number
         return forms.ValidationError("Invalid Number")
 
+
 class EventForm(forms.Form):
     select_event = forms.CharField(label='SELECT_EVENT',
-                    widget=forms.Select(choices=EVENTS, attrs={'class': 'form-control'}), required=True)
-    c_o_e = forms.CharField(label='CENTER_OF_EXCELLENCE',
-                            widget=forms.Select(choices=CENTER_OF_EXCELLENCE,
-                            attrs={'class': 'form-control'}),required=True, max_length=50)
+                                   widget=forms.Select(choices=EVENTS, attrs={'class': 'form-control'}), required=True)
+    c_o_e = forms.CharField(
+        label='CENTER_OF_EXCELLENCE', widget=forms.Select(
+            choices=CENTER_OF_EXCELLENCE, attrs={'class': 'form-control'}), required=True, max_length=50)
     event_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
-                                                        required=True, max_length=100)
+                                 required=True, max_length=100)
     description = forms.CharField(
-                    widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': '4'}),
-                    required=True, max_length=2000)
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': '4'}),
+        required=True, max_length=2000)
     duration = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Duration'}),
-                                                         required=True, max_length=20)
+                               required=True, max_length=20)
     resource_person = forms.CharField(
-                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Resource Person'}), required=True,
-                                        max_length=100)
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Resource Person'}), required=True,
+        max_length=100)
     resource_person_data = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
-                                             required=False, max_length=2000)
+                                           required=False, max_length=2000)
     registration_start = forms.DateTimeField(widget=SelectDateWidget(attrs={'class': 'form-control my-2'}),
                                              required=True)
     registration_end = forms.DateTimeField(widget=SelectDateWidget(attrs={'class': 'form-control my-2'}),
@@ -132,12 +132,12 @@ class EventForm(forms.Form):
                                     widget=forms.Select(choices=YEARS, attrs={'class': 'form-control my-2'}),
                                     required=True)
     eligible_branches = forms.CharField(
-                                     label='ELIGIBLE BRANCHES', widget=forms.CheckboxSelectMultiple(
-                                    choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
+        label='ELIGIBLE BRANCHES', widget=forms.CheckboxSelectMultiple(
+            choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
     outside_student = forms.CharField(
-                        label='OUTSIDE STUDENTS ALLOWED',
-                        widget=forms.RadioSelect(choices=CHOICE, attrs={'class': 'form-check-inline'}),
-                         required=True)
+        label='OUTSIDE STUDENTS ALLOWED',
+        widget=forms.RadioSelect(choices=CHOICE, attrs={'class': 'form-check-inline'}),
+        required=True)
     venue = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Venue', 'rows': '4'}),
                             required=True, max_length=2000)
     fees = forms.FloatField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Fees'}),
