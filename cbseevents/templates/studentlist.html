@@ -1,8 +1,23 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}ABES |{{ block.super }}{% endblock head_title %}
 {% block css %}{% endblock %}
 {% block content %}
+<table>
+	<tr>
+		<th>Student Name</th>
+		<th>Registered Event</th>
+		<th>Payment Id</th>
+		<th>Paid</th>
+		<th>Registered</th>
+	</tr>
 {% for i in lists %}
-{{ i.name }}
+	<tr>
+		<th>{{ i.name }}</th>
+		<th>{{ i.registered_event_code }}</th>
+		<th>{{ i.payment_id }}</th>
+		<th>{{ i.paid }}</th>
+		<th> CHECKBOX </th>
+	</tr>
+</table>
 {% endfor %}
 {% endblock %}
 {% block script %}{% endblock %}

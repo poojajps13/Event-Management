@@ -712,8 +712,24 @@ def add_event(request):
     return render(request, 'add_event.html', {'form': form})
 
 
-def studentlist(request, registered_event_code):
-    lists = StudentRecord.objects.filter(registered_event_code=registered_event_code)
+def studentlist_workshop(request, registered_event_code):
+    lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists})
+
+def studentlist_seminar(request, registered_event_code):
+    lists = StudentRecordSeminar.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists})
+
+def studentlist_training(request, registered_event_code):
+    lists = StudentRecordTraining.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists})
+
+def studentlist_competition(request, registered_event_code):
+    lists = StudentRecordCompetition.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists})
+
+def studentlist_guestlecture(request, registered_event_code):
+    lists = StudentRecordGuestlecture.objects.filter(registered_event_code=registered_event_code)
     return render(request, 'studentlist.html', {'lists': lists})
 
 
