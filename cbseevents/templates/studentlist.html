@@ -1,7 +1,9 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}ABES |{{ block.super }}{% endblock head_title %}
 {% block css %}{% endblock %}
 {% block content %}
-<table>
+ <div class="py-3 pb-2 table-responsive-xl">
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
 	<tr>
 		<th>Student Name</th>
 		<th>Registered Event</th>
@@ -9,6 +11,8 @@
 		<th>Paid</th>
 		<th>Registered</th>
 	</tr>
+</thead>
+ <tbody>
 {% for i in lists %}
 	<tr>
 		<th>{{ i.name }}</th>
@@ -17,6 +21,7 @@
 		<th>{{ i.paid }}</th>
 		<th> CHECKBOX </th>
 	</tr>
+	</tbody>
 </table>
 {% endfor %}
 {% endblock %}
