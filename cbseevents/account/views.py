@@ -95,9 +95,12 @@ def edit_user(request, username):
         if request.user.is_staff:
             if request.method == "POST":
                 u.Username = request.POST['username']
+                u.first_name = request.POST['first_name']
+                u.last_name = request.POST['last_name']
+                u.email = request.POST['email']
                 new_password = request.POST['password']
                 u.set_password(new_password)
-                u.save(update_fields=['username', 'password'])
+                u.save(update_fields=['username', 'password','first_name','last_name','email'])
             return render(request, 'edit_user.html', {'u': u})
         else:
             raise PermissionDenied

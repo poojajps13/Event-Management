@@ -13,6 +13,18 @@
         <br>
         <input type="text" name="password" placeholder="password" required maxlength=""><br>
         <br>
+        <label>Change Email:</label>
+        <br>
+        <input type="text" name="email" placeholder="email" required maxlength="" value="{{ u.email }}"><br>
+        <br>
+        <label>Change First Name:</label>
+        <br>
+        <input type="text" name="first_name" placeholder="first_name" required maxlength="" value="{{ u.first_name }}"><br>
+        <br>
+        <label>Change Last Name:</label>
+        <br>
+        <input type="text" name="last_name" placeholder="last_name" required maxlength="" value="{{ u.last_name }}"><br>
+        <br>
         <button type="submit" ">SUBMIT</button>
     </form>
 {% endblock %}
