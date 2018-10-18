@@ -44,9 +44,11 @@
                 <div class="mb-3">
                     <label>College Name:</label>
                     {{ form.college_name }}{{ form.college_name.errors }}
+                    <label>Password:</label>
+                    {{ form.password }}
                 </div>
                 <script src='https://www.google.com/recaptcha/api.js'></script>
-                <div class="mb-3 g-recaptcha" data-sitekey="6LdH0G4UAAAAAFwYlkDYIxQzT8i8OV4skUrNBDjc"></div>
+                <div class="mb-3 g-recaptcha" data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Register</button>
                 <a href="{% url 'home' %}" class="btn btn-outline-info btn-block">Home</a>
             </form>

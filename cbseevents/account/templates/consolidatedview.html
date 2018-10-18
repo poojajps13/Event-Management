@@ -12,7 +12,8 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'workshop_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered Student {{ i.registered }}</div>
+                        Registered Student {{ i.registered }}<br>
+                        <a href="{% url 'studentlist_workshop' registered_event_code=i.slug %}">Student List</a></div>
                     <hr>
                     <div class="pb-3 px-3">
                         <a href="{% url 'update_workshop' slug=i.slug %}"
@@ -30,7 +31,9 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'seminar_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered {{ i.registered }}</div>
+                        Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist_seminar' registered_event_code=i.slug %}">Student List</a></div>
+
                     <hr>
                     <div class="pb-3 px-3">
                         <a href="{% url 'update_seminar' slug=i.slug %}"
@@ -48,7 +51,8 @@
                     </div>
                     <div class="card-body">
                         <h4><a href="{% url 'training_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered {{ i.registered }}</div>
+                        Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist_training' registered_event_code=i.slug %}">Student List</a></div>
                     <hr>
                     <div class="pb-3 px-3">
                         <a href="{% url 'update_training' slug=i.slug %}"
@@ -67,7 +71,8 @@
                     <div class="card-body">
                         <h4><a href="{% url 'competition_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
                         </h4>
-                        Registered {{ i.registered }}</div>
+                        Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist_competition' registered_event_code=i.slug %}">Student List</a></div>
                     <hr>
                     <div class="pb-3 px-3">
                         <a href="{% url 'update_competition' slug=i.slug %}"
@@ -86,7 +91,8 @@
                     <div class="card-body">
                         <h4><a href="{% url 'guest_lecture_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
                         </h4>
-                        Registered {{ i.registered }}</div>
+                        Registered {{ i.registered }}<br>
+                        <a href="{% url 'studentlist_guestlecture' registered_event_code=i.slug %}">Student List</a></div>
                         <hr>
                         <div class="pb-3 px-3">
                             <a href="{% url 'update_guest_lecture' slug=i.slug %}"

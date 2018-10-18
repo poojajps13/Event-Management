@@ -14,8 +14,10 @@
                                 <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
                             <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            <a href="{% url 'workshop_registration' slug=list.slug %}"
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'workshop_registration' slug=list.slug c_o_e=list.c_o_e %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
+                            {% endif %}
                         </div>
                         <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
                     </div>
@@ -34,8 +36,10 @@
                                 <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
                             <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            <a href="{% url 'seminar_registration' slug=list.slug %}"
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'seminar_registration' slug=list.slug c_o_e=list.c_o_e %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
+                            {% endif %}
                         </div>
                         <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
                     </div>
@@ -54,8 +58,10 @@
                                 <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
                             <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            <a href="{% url 'training_registration' slug=list.slug %}"
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'training_registration' slug=list.slug c_o_e=list.c_o_e %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
+                            {% endif %}
                         </div>
                         <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
                     </div>
@@ -74,8 +80,10 @@
                                 <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
                             <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            <a href="{% url 'competition_registration' slug=list.slug %}"
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'competition_registration' slug=list.slug c_o_e=list.c_o_e %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
+                            {% endif %}
                         </div>
                         <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
                     </div>
@@ -94,8 +102,10 @@
                                 <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
                             <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
                             <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            <a href="{% url 'guest_lecture_registration' slug=list.slug %}"
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'guest_lecture_registration' slug=list.slug c_o_e=list.c_o_e %}"
                                class="d-block mt-md-2 flex-md-row">Registration...</a>
+                            {% endif %}
                         </div>
                         <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
                     </div>

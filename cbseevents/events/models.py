@@ -217,7 +217,7 @@ class StudentRecordWorkshop(models.Model):
     registered_event_code = models.CharField(max_length=55)
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-
+    paid= models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.c_o_e)
@@ -232,7 +232,7 @@ class StudentRecordSeminar(models.Model):
     registered_event_code = models.CharField(max_length=55)
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-
+    paid= models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.c_o_e)
@@ -247,7 +247,7 @@ class StudentRecordTraining(models.Model):
     registered_event_code = models.CharField(max_length=55)
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-
+    paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.c_o_e)
@@ -262,7 +262,7 @@ class StudentRecordCompetition(models.Model):
     registered_event_code = models.CharField(max_length=55)
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-
+    paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.c_o_e)
@@ -277,7 +277,7 @@ class StudentRecordGuestlecture(models.Model):
     registered_event_code = models.CharField(max_length=55)
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-
+    paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.c_o_e)
