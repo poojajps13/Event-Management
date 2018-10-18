@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<br/><br/><br/><br/><br/>
+    {% for m in messages %}{{ m }}{% endfor %}
+    <form method="post" action="" style="background-color: #F2F3F4; padding-left:35%; ">
+    	{% csrf_token %}
+    	<label>Enter the registration amount:</label>
+    	<input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ p.paid }}"><br>
+        <br>
+        <button type="submit" ">SUBMIT</button>
+        <br>
+    </form>
+{% endblock %}

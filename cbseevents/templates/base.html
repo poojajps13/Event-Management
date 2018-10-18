@@ -14,7 +14,8 @@
     <a class="mr-md-auto" href="{% url 'home' %}">
         <img src="{% static 'images/logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
-        <a class="p-1 text-dark" href="{% url 'home' %}">Home</a>{% if not user.is_authenticated %}
+        {% if not user.is_authenticated %}
+        <a class="p-1 text-dark" href="{% url 'home' %}">Home</a>
         <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
         <a class="p-1 text-dark" href="{% url 'seminar' %}">Seminar</a>
         <a class="p-1 text-dark" href="{% url 'training' %}">Training</a>

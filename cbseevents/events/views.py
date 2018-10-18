@@ -7,6 +7,50 @@ from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 
+def edit_workshopamount(request,paymentid):
+    try:
+        p = StudentRecordWorkshop.objects.get(payment_id=paymentid)
+        if request.method == "POST":
+            p.paid = request.POST['paid']
+    except ObjectDoesNotExist:
+        messages.error(request, 'Edit not allowed!!!')
+    return render(request, 'edit_amount.html', {'p': p})
+
+def edit_seminaramount(request,paymentid):
+    try:
+        p = StudentRecordSeminar.objects.get(payment_id=paymentid)
+        if request.method == "POST":
+            p.paid = request.POST['paid']
+    except ObjectDoesNotExist:
+        messages.error(request, 'Edit not allowed!!!')
+    return render(request, 'edit_amount.html', {'p': p})
+
+def edit_trainingamount(request,paymentid):
+    try:
+        p = StudentRecordTraining.objects.get(payment_id=paymentid)
+        if request.method == "POST":
+            p.paid = request.POST['paid']
+    except ObjectDoesNotExist:
+        messages.error(request, 'Edit not allowed!!!')
+    return render(request, 'edit_amount.html', {'p': p})
+
+def edit_competitionamount(request,paymentid):
+    try:
+        p = StudentRecordCompetition.objects.get(payment_id=paymentid)
+        if request.method == "POST":
+            p.paid = request.POST['paid']
+    except ObjectDoesNotExist:
+        messages.error(request, 'Edit not allowed!!!')
+    return render(request, 'edit_amount.html', {'p': p})
+    
+def edit_guestlectureamount(request,paymentid):
+    try:
+        p = StudentRecordGuestlecture.objects.get(payment_id=paymentid)
+        if request.method == "POST":
+            p.paid = request.POST['paid']
+    except ObjectDoesNotExist:
+        messages.error(request, 'Edit not allowed!!!')
+    return render(request, 'edit_amount.html', {'p': p})
 
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')
@@ -714,23 +758,23 @@ def add_event(request):
 
 def studentlist_workshop(request, registered_event_code):
     lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists})
+    return render(request, 'studentlist.html', {'lists': lists,'workshop':workshop})
 
 def studentlist_seminar(request, registered_event_code):
     lists = StudentRecordSeminar.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists})
+    return render(request, 'studentlist.html', {'lists': lists,'seminar':seminar})
 
 def studentlist_training(request, registered_event_code):
     lists = StudentRecordTraining.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists})
+    return render(request, 'studentlist.html', {'lists': lists,'training':training})
 
 def studentlist_competition(request, registered_event_code):
     lists = StudentRecordCompetition.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists})
+    return render(request, 'studentlist.html', {'lists': lists,'competition':competition})
 
 def studentlist_guestlecture(request, registered_event_code):
     lists = StudentRecordGuestlecture.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists})
+    return render(request, 'studentlist.html', {'lists': lists,'guest_lecture':guest_lecture})
 
 
 def excellence_center(request):
