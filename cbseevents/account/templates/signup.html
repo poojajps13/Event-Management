@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Signup | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
+{% block content %}
+    <main role="main" class="container col-md-6 bg-white">
+        <div class="px-md-3 px-2 pt-4 pb-5">
+            <div style="text-align: center">
+                <h3>Create Your Account</h3>
+            </div>
+            <form method="post" onsubmit="fun()">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>First Name</label>{{ form.first_name }}{{ form.first_name.errors }}</div>
+                    <div class="col-md-6 mb-3">
+                        <label>Last Name</label>{{ form.last_name }}{{ form.last_name.errors }}</div>
+                </div>
+                <div class="mb-3"><label>Email</label>{{ form.email }}{{ form.email.errors }}</div>
+                <div class="mb-3"><label>Password</label>{{ form.password }}{{ form.password.errors }}</div>
+                <div class="mb-3" style="font-size: 14px">
+                    <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character</li>
+                    <li>Your password can&#39;t be a commonly used password.</li>
+                    <li>Your password can&#39;t be too similar to your other personal information.</li>
+                </div>
+                <div class="mb-3">
+                    <label>Confirm Password</label>
+                    {{ form.confirm_password }}{{ form.confirm_password.errors }}
+                </div>
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="mb-3 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired"
+                     data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>
+                <button type="submit" class="btn btn-outline-success btn-block mb-3">Signup</button>
+                <a href="{% url 'login' %}" class="btn btn-outline-info btn-block">Login</a>
+            </form>
+        </div>
+    </main>
+{% endblock %}
+{% block script %}{% endblock %}

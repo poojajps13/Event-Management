@@ -12,6 +12,8 @@ def edit_workshopamount(request,paymentid):
         p = StudentRecordWorkshop.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
+            p.save(
+                    update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -21,6 +23,8 @@ def edit_seminaramount(request,paymentid):
         p = StudentRecordSeminar.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
+            p.save(
+                    update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -30,6 +34,8 @@ def edit_trainingamount(request,paymentid):
         p = StudentRecordTraining.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
+            p.save(
+                    update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -39,6 +45,8 @@ def edit_competitionamount(request,paymentid):
         p = StudentRecordCompetition.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
+            p.save(
+                    update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -48,6 +56,8 @@ def edit_guestlectureamount(request,paymentid):
         p = StudentRecordGuestlecture.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
+            p.save(
+                    update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -766,7 +776,7 @@ def studentlist_seminar(request, registered_event_code):
 
 def studentlist_training(request, registered_event_code):
     lists = StudentRecordTraining.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'training':training})
+    return render(request, 'studentlist.html', {'lists': lists,'training':True})
 
 def studentlist_competition(request, registered_event_code):
     lists = StudentRecordCompetition.objects.filter(registered_event_code=registered_event_code)

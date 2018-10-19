@@ -3,10 +3,8 @@ from django.contrib.auth import models, password_validation
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.validators import validate_email
 
+
 class SignupForm(forms.ModelForm):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}), required=True,
-        max_length=30)
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}), required=True,
         max_length=20)
@@ -14,7 +12,7 @@ class SignupForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}), required=False,
         max_length=30)
     email = forms.CharField(widget=forms.EmailInput(
-        attrs={'class': 'form-control', 'placeholder': 'abcd@gmail.com',
+        attrs={'class': 'form-control', 'placeholder': 'Email',
                'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}),
@@ -25,7 +23,7 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = models.User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+        fields = ['email', 'first_name', 'last_name', 'password']
 
     def clean_username(self):
         user = self.cleaned_data['username']
@@ -46,6 +44,45 @@ class SignupForm(forms.ModelForm):
         except ObjectDoesNotExist:
             return email
         raise forms.ValidationError("Email already exits")
+
+    def clean_confirm_password(self):
+        password1 = self.cleaned_data['password']
+        password2 = self.cleaned_data['confirm_password']
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError("Password does not match")
+            else:
+                password_validation.validate_password(password2)
+
+
+class LoginForm(forms.Form):
+    email = forms.CharField(widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': 'Email',
+               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Password'}),
+        required=True, max_length=30)
+
+
+class EmailForm1(forms.Form):
+    email1 = forms.CharField(widget=forms.EmailInput(
+        attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
+               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
+
+
+class EmailForm2(forms.Form):
+    email2 = forms.CharField(widget=forms.EmailInput(
+        attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
+               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
+
+
+class ResetPasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class':'form-control', 'placeholder': 'New Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
+               'title': 'New Password'}), required=True, max_length=20)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class':'form-control', 'placeholder': 'Confirm Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
+               'title': 'Confirm Password'}), required=True, max_length=20)
 
     def clean_confirm_password(self):
         password1 = self.cleaned_data['password']
