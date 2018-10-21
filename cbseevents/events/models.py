@@ -209,7 +209,7 @@ class StudentRecord(models.Model):
     password = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class StudentRecordWorkshop(models.Model):
@@ -220,11 +220,11 @@ class StudentRecordWorkshop(models.Model):
     paid= models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
-            self.payment_id = unique_slug(self, self.c_o_e)
+            self.payment_id = unique_slug(self, self.registered_event_code)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class StudentRecordSeminar(models.Model):
@@ -235,11 +235,11 @@ class StudentRecordSeminar(models.Model):
     paid= models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
-            self.payment_id = unique_slug(self, self.c_o_e)
+            self.payment_id = unique_slug(self, self.registered_event_code)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class StudentRecordTraining(models.Model):
@@ -250,11 +250,11 @@ class StudentRecordTraining(models.Model):
     paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
-            self.payment_id = unique_slug(self, self.c_o_e)
+            self.payment_id = unique_slug(self, self.registered_event_code)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class StudentRecordCompetition(models.Model):
@@ -265,11 +265,11 @@ class StudentRecordCompetition(models.Model):
     paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
-            self.payment_id = unique_slug(self, self.c_o_e)
+            self.payment_id = unique_slug(self, self.registered_event_code)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class StudentRecordGuestlecture(models.Model):
@@ -280,8 +280,8 @@ class StudentRecordGuestlecture(models.Model):
     paid = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         if not self.payment_id:
-            self.payment_id = unique_slug(self, self.c_o_e)
+            self.payment_id = unique_slug(self, self.registered_event_code)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
