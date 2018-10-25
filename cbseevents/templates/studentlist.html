@@ -2,47 +2,52 @@
 {% block css %}{% endblock %}
 {% block content %}
     <div class="py-3 pb-2 table-responsive-xl">
-    <table class="table table-bordered table-hover" id="myTable">
-        <thead>
-        <tr>
-            <th>Student Name</th>
-            <th>Registered Event</th>
-            <th>Payment Id</th>
-            <th>Paid</th>
-            <th>Registered</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in lists %}
+        <table class="table table-bordered table-hover" id="myTable">
+            <thead>
             <tr>
-                <th>{{ i.name }}</th>
-                <th>{{ i.registered_event_code }}</th>
-                <th>{{ i.payment_id }}</th>
-                <th>{{ i.paid }}</th>
-                {% if workshop %}
-                    <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
-                        <button href="{% url 'editworkshopamt' paymentid=payment_id %}">SAVE</button>
-                    </th>
-                {% elif seminar %}
-                    <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
-                        <button href="{% url 'editseminaramt' paymentid=payment_id %}">SAVE</button>
-                    </th>
-                {% elif training %}
-                    <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
-                        <a href="{% url 'edittrainingamt' paymentid=i.payment_id %}"
-                           class="btn btn-outline-info btn-sm">SAVE</a></th>
-                {% elif competition %}
-                    <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
-                        <button href="{% url 'editcompetitionbamt' paymentid=payment_id %}">SAVE</button>
-                    </th>
-                {% elif guest_lecture %}
-                    <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
-                        <button href="{% url 'editguestlectureamt' paymentid=payment_id %}">SAVE</button>
-                    </th>
-                {% endif %}
+                <th>Student Name</th>
+                <th>Registered Event</th>
+                <th>Payment Id</th>
+                <th>Paid</th>
+                <th>Registered</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table></div>
+            </thead>
+            <tbody>
+            {% for i in lists %}
+                <tr>
+                    <th>{{ i.name }}</th>
+                    <th>{{ i.registered_event_code }}</th>
+                    <th>{{ i.payment_id }}</th>
+                    <th>{{ i.paid }}</th>
+                    {% if workshop %}
+                        <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
+                            <a href="{% url 'editworkshopamt' paymentid=i.payment_id %}"
+                               class="btn btn-outline-info btn-sm">SAVE</a>
+                        </th>
+                    {% elif seminar %}
+                        <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
+                            <a href="{% url 'editseminaramt' paymentid=i.payment_id %}"
+                               class="btn btn-outline-info btn-sm">SAVE</a>
+                        </th>
+                    {% elif training %}
+                        <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
+                            <a href="{% url 'edittrainingamt' paymentid=i.payment_id %}"
+                               class="btn btn-outline-info btn-sm">SAVE</a></th>
+                    {% elif competition %}
+                        <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
+                            <a href="{% url 'editcompetitionbamt' paymentid=i.payment_id %}"
+                               class="btn btn-outline-info btn-sm">SAVE</a>
+                        </th>
+                    {% elif guest_lecture %}
+                        <th><input type="text" name="paid" placeholder="paid" required maxlength="" value="{{ 0 }}">
+                            <a href="{% url 'editguestlectureamt' paymentid=i.payment_id %}"
+                               class="btn btn-outline-info btn-sm">SAVE</a>
+                        </th>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 {% block script %}{% endblock %}

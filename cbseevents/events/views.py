@@ -83,20 +83,19 @@ class Registration(TemplateView):
         event = kwargs['type']
         if event == 'workshop':
             work = WorkshopRecord.objects.get(slug=kwargs['slug'])
-            StudentRecordWorkshop.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+            StudentRecordWorkshop.objects.create(name=request.user, registered_event_code=work, c_o_e=work.c_o_e)
         elif event == 'seminar':
             work = SeminarRecord.objects.get(slug=kwargs['slug'])
-            StudentRecordSeminar.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+            StudentRecordSeminar.objects.create(name=request.user, registered_event_code=work, c_o_e=work.c_o_e)
         elif event == 'training':
             work = TrainingRecord.objects.get(slug=kwargs['slug'])
-            StudentRecordTraining.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+            StudentRecordTraining.objects.create(name=request.user, registered_event_code=work, c_o_e=work.c_o_e)
         elif event == 'competition':
             work = CompetitionRecord.objects.get(slug=kwargs['slug'])
-            StudentRecordCompetition.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+            StudentRecordCompetition.objects.create(name=request.user, registered_event_code=work, c_o_e=work.c_o_e)
         else:
             work = GuestLectureRecord.objects.get(slug=kwargs['slug'])
-            StudentRecordGuestLecture.objects.create(name=request.username, registered_event_code=work,
-                                                     c_o_e=work.c_o_e)
+            StudentRecordGuestLecture.objects.create(name=request.user, registered_event_code=work, c_o_e=work.c_o_e)
         messages.success(request, 'Successfully Registered')
         return redirect('home')
 
@@ -585,28 +584,33 @@ def add_event(request):
 
 
 def studentlist_workshop(request, registered_event_code):
-    lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists, 'workshop': workshop})
+    event = WorkshopRecord.objects.get(slug=registered_event_code)
+    lists = StudentRecordWorkshop.objects.filter(registered_event_code=event)
+    return render(request, 'studentlist.html', {'lists': lists, 'workshop': True})
 
 
 def studentlist_seminar(request, registered_event_code):
-    lists = StudentRecordSeminar.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists, 'seminar': seminar})
+    event = SeminarRecord.objects.get(slug=registered_event_code)
+    lists = StudentRecordSeminar.objects.filter(registered_event_code=event)
+    return render(request, 'studentlist.html', {'lists': lists, 'seminar': True})
 
 
 def studentlist_training(request, registered_event_code):
-    lists = StudentRecordTraining.objects.filter(registered_event_code=registered_event_code)
+    event = TrainingRecord.objects.get(slug=registered_event_code)
+    lists = StudentRecordTraining.objects.filter(registered_event_code=event)
     return render(request, 'studentlist.html', {'lists': lists, 'training': True})
 
 
 def studentlist_competition(request, registered_event_code):
-    lists = StudentRecordCompetition.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists, 'competition': competition})
+    event = CompetitionRecord.objects.get(slug=registered_event_code)
+    lists = StudentRecordCompetition.objects.filter(registered_event_code=event)
+    return render(request, 'studentlist.html', {'lists': lists, 'competition': True})
 
 
 def studentlist_guestlecture(request, registered_event_code):
-    lists = StudentRecordGuestLecture.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists, 'guest_lecture': guest_lecture})
+    event = GuestLectureRecord.objects.get(slug=registered_event_code)
+    lists = StudentRecordGuestLecture.objects.filter(registered_event_code=event)
+    return render(request, 'studentlist.html', {'lists': lists, 'guest_lecture': True})
 
 
 def excellence_center(request):

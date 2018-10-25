@@ -33,22 +33,8 @@
                         Delete</a>
                 {% endif %}
             {% else %}
-                {% if event == 'workshop' %}
-                    <a href="{% url 'workshop_registration' slug=obj.slug %}"
-                       class="btn btn-outline-success btn-sm">Register</a>
-                {% elif event == 'seminar' %}
-                    <a href="{% url 'seminar_registration' slug=obj.slug %}"
-                       class="btn btn-outline-success btn-sm">Register</a>
-                {% elif event == 'training' %}
-                    <a href="{% url 'training_registration' slug=obj.slug %}"
-                       class="btn btn-outline-success btn-sm">Register</a>
-                {% elif event == 'competition' %}
-                    <a href="{% url 'competition_registration' slug=obj.slug %}"
-                       class="btn btn-outline-success btn-sm">Register</a>
-                {% elif event == 'guest_lecture' %}
-                    <a href="{% url 'guest_lecture_registration' slug=obj.slug %}"
-                       class="btn btn-outline-success btn-sm">Register</a>
-                {% endif %}
+                <a href="{% url 'registration' slug=obj.slug type=event %}"
+                   class="btn btn-outline-success btn-sm">Register</a>
             {% endif %}</div>
         <div>
             <p>Registration Start : {{ obj.registration_start }}<br>Registration Ends : {{ obj.registration_end }}</p>
