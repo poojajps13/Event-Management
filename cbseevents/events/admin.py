@@ -16,5 +16,5 @@ admin.site.register(StudentRecordWorkshop)
 admin.site.register(StudentRecordSeminar)
 admin.site.register(StudentRecordTraining)
 admin.site.register(StudentRecordCompetition)
-admin.site.register(StudentRecordGuestlecture)
+admin.site.register(StudentRecordGuestLecture)
 # Register your models here.
