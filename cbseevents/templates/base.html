@@ -30,20 +30,18 @@
             <a class="p-1 text-danger" href="{% url 'logout' %}">Logout</a>
         {% else %}
             <a class="p-2" href="{% url 'login' %}">Login</a>
+            <a class="p-2" href="{% url 'signup' %}">Signup</a>
         {% endif %}
     </nav>
 </div>
 <div class="mt-4">
-    <main role="main" class="container pb-4">
-        {% for m in messages %}
-            <div class="alert {% if m.tags == 'success' %}alert-success{% elif m.tags == 'warning' %}alert-warning{% else %}alert-danger{% endif %} alert-dismissible fade show col-md-4 offset-md-4"
-                 role="alert">
-                {{ m }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
+    <main role="main" class="container pb-4">{% for m in messages %}
+        <div class="alert alert-dismissible fade show container fit-text {% if m.tags == 'success' %}alert-success{% elif m.tags == 'warning' %}alert-warning{% elif m.tags == 'info' %}alert-info{% else %}alert-danger{% endif %}"
+             role="alert">{{ m }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>{% endfor %}
         <!-- - - - - - - - - - START - - - - - - - - - - - -->
         {% block content %}{% endblock content %}
         <!-- - - - - - - - - - END - - - - - - - - - - - - -->

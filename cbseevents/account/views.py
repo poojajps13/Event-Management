@@ -58,13 +58,15 @@ class Login(TemplateView):
                             auth.login(request, user)
                             if 'next' in request.POST:
                                 return redirect(request.POST.get('next'))
-                            return redirect("home")
+                            if u.is_staff:
+                                return redirect("consolidatedview")
+                            return redirect('home')
                         elif not u.is_active:
                             messages.warning(request, 'Please confirm the activation link from your Email')
                         else:
                             messages.error(request, "Email or password did not match")
                     except ObjectDoesNotExist:
-                        messages.error(request, "Email does not match Please a Account")
+                        messages.error(request, "Email or password did not match...")
                 else:
                     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
             elif form1.is_valid():
@@ -122,18 +124,20 @@ class Signup(TemplateView):
     template_name = 'signup.html'
 
     def get(self, request, *args, **kwargs):
-        form = SignupForm()
-        return render(request, self.template_name, {'form': form})
+        form1 = SignupForm()
+        form2 = StudentForm()
+        return render(request, self.template_name, {'form1': form1, 'form2': form2})
 
     def post(self, request):
-        form = SignupForm(request.POST)
-        if form.is_valid():
+        form1 = SignupForm(request.POST)
+        form2 = StudentForm(request.POST)
+        if form1.is_valid() and form2.is_valid():
             try:
                 ''' Begin reCAPTCHA validation '''
                 re_captcha_response = request.POST.get('g-recaptcha-response')
                 url = 'https://www.google.com/recaptcha/api/siteverify'
                 values = {
-                    'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                    'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
                     'response': re_captcha_response
                 }
                 data = urllib.parse.urlencode(values).encode()
@@ -142,13 +146,16 @@ class Signup(TemplateView):
                 result = json.loads(response.read().decode())
                 ''' End reCAPTCHA validation '''
                 if result['success']:
-                    username = form.cleaned_data['email']
-                    first_name = form.cleaned_data['first_name']
-                    last_name = form.cleaned_data['last_name']
-                    email = form.cleaned_data['email']
-                    password = form.cleaned_data['password']
+                    username = form1.cleaned_data['email']
+                    first_name = form1.cleaned_data['first_name']
+                    last_name = form1.cleaned_data['last_name']
+                    email = form1.cleaned_data['email']
+                    password = form1.cleaned_data['password']
                     user = User.objects.create_user(username=username.lower(), email=email.lower(), password=password,
                                                     first_name=first_name, last_name=last_name, is_active=False)
+                    temp = form2.save(commit=False)
+                    temp.user = user
+                    temp.save()
                     '''Begin Email Sending '''
                     current_site = get_current_site(request)
                     mail_subject = 'Activate your Conference Account.'
@@ -162,15 +169,15 @@ class Signup(TemplateView):
                     email.send()
                     '''End Email sending'''
                     messages.success(request, 'Please confirm your email address to complete the registration.')
-                    return redirect("account:login")
+                    return redirect("login")
                 else:
                     messages.error(request, "Invalid reCAPTCHA. Please try again.")
             except Exception:
                 messages.error(request, 'Problem to Sending Email. Please Contact Us.')
-                return redirect("account:signup")
+                return redirect("signup")
         else:
             messages.error(request, "Invalid Input. Please try again")
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form1': form1, 'form2': form2})
 
 
 def activate(request, uidb64, token):
@@ -240,20 +247,20 @@ def superuser(request):
             try:
                 form = SignupForm(request.POST)
                 if form.is_valid():
-                    username = form.cleaned_data['username']
+                    username = form.cleaned_data['email']
                     first_name = form.cleaned_data['first_name']
                     last_name = form.cleaned_data['last_name']
                     email = form.cleaned_data['email']
                     password = form.cleaned_data['password']
                     User.objects.create_user(username=username.lower(), email=email.lower(), password=password,
-                                             first_name=first_name, last_name=last_name, is_staff=True)
+                                             first_name=first_name, last_name=last_name, is_active=True, is_staff=True)
                     messages.success(request, 'User Created')
                 else:
                     messages.error(request, 'Invalid Inputs')
             except Exception:
                 messages.warning(request, 'User name and already exits')
         form = SignupForm()
-        user = User.objects.all()
+        user = User.objects.filter(is_staff=True)
         return render(request, 'superuser.html', {'u': user, 'form': form})
     else:
         raise PermissionDenied
@@ -262,23 +269,28 @@ def superuser(request):
 def edit_user(request, username):
     try:
         u = User.objects.get(username=username)
-        if request.user.is_staff:
+        if request.user.is_superuser:
             if request.method == "POST":
-                u.Username = request.POST['username']
-                u.first_name = request.POST['first_name']
-                u.last_name = request.POST['last_name']
-                u.email = request.POST['email']
-                new_password = request.POST['password']
-                u.set_password(new_password)
-                u.save(update_fields=['username', 'password', 'first_name', 'last_name', 'email'])
-            return render(request, 'edit_user.html', {'u': u})
+                form = EditUserForm(request.POST, instance=u)
+                if form.is_valid():
+                    u.first_name = form.cleaned_data['first_name']
+                    u.last_name = form.cleaned_data['last_name']
+                    u.email = form.cleaned_data['email']
+                    new_password = form.cleaned_data['password']
+                    u.set_password(new_password)
+                    u.save(update_fields=['username', 'password', 'first_name', 'last_name', 'email'])
+                    messages.success(request, 'Updated')
+                else:
+                    messages.info(request, 'Invalid Input')
+            form = EditUserForm(instance=u)
+            return render(request, 'edit_user.html', {'form': form})
         else:
             raise PermissionDenied
-    except ObjectDoesNotExist:
-        messages.error(request, 'Edit not allowed!!!')
     except PermissionDenied:
+        messages.error(request, 'Edit not allowed!!!')
+    except ObjectDoesNotExist:
         messages.error(request, 'User does not exist !!!')
-    return render(request, 'edit_user.html', {'u': u})
+    return redirect('superuser')
 
 
 def del_user(request, username):
@@ -290,7 +302,7 @@ def del_user(request, username):
         messages.error(request, "User doesnot exist")
         return render(request, 'superuser.html')
     except Exception as e:
-        return render(request, 'superuser.html', {'err': e.message})
+        return render(request, 'superuser.html', {'err': e})
     return redirect('superuser')
 
 
@@ -301,7 +313,6 @@ def consolidated(request, username):
     training = TrainingRecord.objects.filter(user=user)
     competition = CompetitionRecord.objects.filter(user=user)
     guest_lecture = GuestLectureRecord.objects.filter(user=user)
-    print(workshop, seminar, training, competition, guest_lecture)
     return render(request, 'consolidatedview.html',
                   {'workshop': workshop, 'training': training, 'competition': competition,
                    'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})

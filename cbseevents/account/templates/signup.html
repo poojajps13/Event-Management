@@ -6,15 +6,28 @@
             <div style="text-align: center">
                 <h3>Create Your Account</h3>
             </div>
-            <form method="post" onsubmit="fun()">{% csrf_token %}
+            <form method="post">{% csrf_token %}
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label>First Name</label>{{ form.first_name }}{{ form.first_name.errors }}</div>
+                        <label>First Name</label>{{ form1.first_name }}{{ form1.first_name.errors }}</div>
                     <div class="col-md-6 mb-3">
-                        <label>Last Name</label>{{ form.last_name }}{{ form.last_name.errors }}</div>
+                        <label>Last Name</label>{{ form1.last_name }}{{ form1.last_name.errors }}</div>
                 </div>
-                <div class="mb-3"><label>Email</label>{{ form.email }}{{ form.email.errors }}</div>
-                <div class="mb-3"><label>Password</label>{{ form.password }}{{ form.password.errors }}</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label>Email</label>{{ form1.email }}{{ form1.email.errors }}</div>
+                    <div class="col-md-6 mb-3">
+                        <label>Roll Number</label>{{ form2.roll_no }}{{ form2.roll_no.errors }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label>College Name</label>{{ form2.college_name }}</div>
+                    <div class="col-md-6 mb-3"><label>Phone Number</label>{{ form2.number }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label>Batch Start</label>{{ form2.batch_start }}</div>
+                    <div class="col-md-4 mb-3"><label>Batch End</label>{{ form2.batch_end }}</div>
+                    <div class="col-md-4 mb-3"><label>Branch</label>{{ form2.branch }}</div>
+                </div>
+                <div class="mb-3"><label>Password</label>{{ form1.password }}{{ form1.password.errors }}</div>
                 <div class="mb-3" style="font-size: 14px">
                     <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character</li>
                     <li>Your password can&#39;t be a commonly used password.</li>
@@ -22,7 +35,7 @@
                 </div>
                 <div class="mb-3">
                     <label>Confirm Password</label>
-                    {{ form.confirm_password }}{{ form.confirm_password.errors }}
+                    {{ form1.confirm_password }}{{ form1.confirm_password.errors }}
                 </div>
                 <script src='https://www.google.com/recaptcha/api.js'></script>
                 <div class="mb-3 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired"

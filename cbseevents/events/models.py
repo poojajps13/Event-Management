@@ -1,5 +1,4 @@
-from django.contrib.auth.models import User
-from django.db import models
+from account.models import *
 from .utils import get_unique_slug, unique_slug
 
 
@@ -195,29 +194,13 @@ class GuestLectureRecord(models.Model):
         return self.slug
 
 
-class StudentRecord(models.Model):
-    name = models.CharField(max_length=150)
-    email = models.EmailField(max_length=150)
-    roll_no = models.CharField(max_length=30)
-    college_name = models.CharField(max_length=200)
-    branch = models.CharField(max_length=10)
-    year = models.CharField(max_length=50)
-    sem = models.CharField(max_length=50)
-    number = models.CharField(max_length=10)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    registered_event_code = models.CharField(max_length=55)
-    password = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class StudentRecordWorkshop(models.Model):
-    name = models.ForeignKey(StudentRecord, on_delete=models.CASCADE, related_name='workshop_student')
-    registered_event_code = models.CharField(max_length=55)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workshop_student')
+    registered_event_code = models.ForeignKey(WorkshopRecord, on_delete=models.CASCADE, related_name='workshop_event')
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-    paid= models.IntegerField(default=0)
+    paid = models.IntegerField(default=0)
+
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.registered_event_code)
@@ -228,11 +211,12 @@ class StudentRecordWorkshop(models.Model):
 
 
 class StudentRecordSeminar(models.Model):
-    name = models.ForeignKey(StudentRecord, on_delete=models.CASCADE, related_name='seminar_student')
-    registered_event_code = models.CharField(max_length=55)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seminar_student')
+    registered_event_code = models.ForeignKey(SeminarRecord, on_delete=models.CASCADE, related_name='seminar_event')
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
-    paid= models.IntegerField(default=0)
+    paid = models.IntegerField(default=0)
+
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.registered_event_code)
@@ -243,11 +227,12 @@ class StudentRecordSeminar(models.Model):
 
 
 class StudentRecordTraining(models.Model):
-    name = models.ForeignKey(StudentRecord, on_delete=models.CASCADE, related_name='training_student')
-    registered_event_code = models.CharField(max_length=55)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='training_student')
+    registered_event_code = models.ForeignKey(TrainingRecord, on_delete=models.CASCADE, related_name='training_event')
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
     paid = models.IntegerField(default=0)
+
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.registered_event_code)
@@ -258,11 +243,12 @@ class StudentRecordTraining(models.Model):
 
 
 class StudentRecordCompetition(models.Model):
-    name = models.ForeignKey(StudentRecord, on_delete=models.CASCADE, related_name='competition_student')
-    registered_event_code = models.CharField(max_length=55)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='competition_student')
+    registered_event_code = models.ForeignKey(CompetitionRecord, on_delete=models.CASCADE, related_name='competition')
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
     paid = models.IntegerField(default=0)
+
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.registered_event_code)
@@ -272,12 +258,13 @@ class StudentRecordCompetition(models.Model):
         return str(self.name)
 
 
-class StudentRecordGuestlecture(models.Model):
-    name = models.ForeignKey(StudentRecord, on_delete=models.CASCADE, related_name='guest_lecture_student')
-    registered_event_code = models.CharField(max_length=55)
+class StudentRecordGuestLecture(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='guest_student')
+    registered_event_code = models.ForeignKey(GuestLectureRecord, on_delete=models.CASCADE, related_name='guest_event')
     payment_id = models.SlugField(unique=True)
     c_o_e = models.CharField(max_length=75)
     paid = models.IntegerField(default=0)
+
     def save(self, *args, **kwargs):
         if not self.payment_id:
             self.payment_id = unique_slug(self, self.registered_event_code)

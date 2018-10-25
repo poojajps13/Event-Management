@@ -54,29 +54,19 @@
                 </div>
                 <div class="modal-body">
                     <form action="" method="post" class="px-md-2">{% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Username</label>
-                                {{ form.username }}{{ form.username.errors }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Email</label>
-                                {{ form.email }}{{ form.email.errors }}
-                            </div>
+                        <div class="mb-3">
+                            <label>Email</label>{{ form.email }}{{ form.email.errors }}
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label>First Name</label>
-                                {{ form.first_name }}{{ form.first_name.errors }}
+                                <label>First Name</label>{{ form.first_name }}{{ form.first_name.errors }}
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label>Last Name</label>
-                                {{ form.last_name }}{{ form.last_name.errors }}
+                                <label>Last Name</label>{{ form.last_name }}{{ form.last_name.errors }}
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label>Password</label>
-                            {{ form.password }}{{ form.password.errors }}</div>
+                            <label>Password</label>{{ form.password }}{{ form.password.errors }}</div>
                         <div class="mb-3" style="font-size: 14px">
                             <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character
                             </li>
@@ -85,8 +75,7 @@
                             <li>Your password can&#39;t be too similar to your other personal information.</li>
                         </div>
                         <div class="mb-3">
-                            <label>Confirm Password</label>
-                            {{ form.confirm_password }}{{ form.confirm_password.errors }}
+                            <label>Confirm Password</label>{{ form.confirm_password }}{{ form.confirm_password.errors }}
                         </div>
                         <div class="py-2 clearfix">
                             <button type="submit" class="btn btn-outline-success btn-block mb-2">Submit</button>

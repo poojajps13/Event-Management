@@ -1,66 +1,72 @@
-from datetime import date
-
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
+from django.views.generic import TemplateView
 
+from events.models import *
 from .forms import *
-from .models import *
 
-def edit_workshopamount(request,paymentid):
+
+def edit_workshopamount(request, paymentid):
     try:
         p = StudentRecordWorkshop.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
             p.save(
-                    update_fields=['paid'])
+                update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
 
-def edit_seminaramount(request,paymentid):
+
+def edit_seminaramount(request, paymentid):
     try:
         p = StudentRecordSeminar.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
             p.save(
-                    update_fields=['paid'])
+                update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
 
-def edit_trainingamount(request,paymentid):
+
+def edit_trainingamount(request, paymentid):
     try:
         p = StudentRecordTraining.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
             p.save(
-                    update_fields=['paid'])
+                update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
 
-def edit_competitionamount(request,paymentid):
+
+def edit_competitionamount(request, paymentid):
     try:
         p = StudentRecordCompetition.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
             p.save(
-                    update_fields=['paid'])
+                update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
-    
-def edit_guestlectureamount(request,paymentid):
+
+
+def edit_guestlectureamount(request, paymentid):
     try:
-        p = StudentRecordGuestlecture.objects.get(payment_id=paymentid)
+        p = StudentRecordGuestLecture.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
             p.save(
-                    update_fields=['paid'])
+                update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
+
 
 def home(request):
     work = WorkshopRecord.objects.all().order_by('-pk')
@@ -69,6 +75,30 @@ def home(request):
     comp = CompetitionRecord.objects.all().order_by('-pk')
     guest = GuestLectureRecord.objects.all().order_by('-pk')
     return render(request, 'index.html', {'work': work, 'semi': semi, 'train': train, 'comp': comp, 'guest': guest})
+
+
+class Registration(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        event = kwargs['type']
+        if event == 'workshop':
+            work = WorkshopRecord.objects.get(slug=kwargs['slug'])
+            StudentRecordWorkshop.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+        elif event == 'seminar':
+            work = SeminarRecord.objects.get(slug=kwargs['slug'])
+            StudentRecordSeminar.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+        elif event == 'training':
+            work = TrainingRecord.objects.get(slug=kwargs['slug'])
+            StudentRecordTraining.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+        elif event == 'competition':
+            work = CompetitionRecord.objects.get(slug=kwargs['slug'])
+            StudentRecordCompetition.objects.create(name=request.username, registered_event_code=work, c_o_e=work.c_o_e)
+        else:
+            work = GuestLectureRecord.objects.get(slug=kwargs['slug'])
+            StudentRecordGuestLecture.objects.create(name=request.username, registered_event_code=work,
+                                                     c_o_e=work.c_o_e)
+        messages.success(request, 'Successfully Registered')
+        return redirect('home')
 
 
 def workshop(request):
@@ -114,8 +144,7 @@ def update_workshop(request, slug):
                 event.save(
                     update_fields=['event_name', 'description', 'duration', 'resource_person', 'resource_person_data',
                                    'registration_start', 'registration_end', 'event_date', 'event_month', 'event_year',
-                                   'eligible_branches',
-                                   'outside_student', 'venue', 'fees'])
+                                   'eligible_branches', 'outside_student', 'venue', 'fees'])
             return render(request, 'update.html', {'event': event})
         else:
             raise PermissionDenied
@@ -123,47 +152,6 @@ def update_workshop(request, slug):
         messages.error(request, 'Workshop does not exist')
     except PermissionDenied:
         messages.error(request, 'Permission Denied')
-    return redirect('home')
-
-
-# noinspection PyBroadException
-def workshop_registration(request, slug, c_o_e):
-    obj = WorkshopRecord.objects.get(slug=slug)
-    try:
-        if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
-            if request.method == "POST":
-                form = StudentForm(request.POST)
-                try:
-                    if form.is_valid():
-                        name = form.cleaned_data['name']
-                        email = form.cleaned_data['email']
-                        roll_no = form.cleaned_data['roll_no']
-                        college_name = form.cleaned_data['college_name']
-                        branch = form.cleaned_data['branch']
-                        year = form.cleaned_data['year']
-                        sem = form.cleaned_data['sem']
-                        number = form.cleaned_data['number']
-                        password = form.cleaned_data['password']
-                        obj.registered = obj.registered + 1
-                        obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
-                                                            college_name=college_name,
-                                                            branch=branch, year=year, sem=sem, number=number,
-                                                            password=password, registered_event_code=slug)
-                        StudentRecordWorkshop.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
-                        messages.success(request, 'Successfully Registered')
-                    else:
-                        messages.error(request, 'Invalid form')
-                except Exception:
-                    messages.error(request, 'Try again')
-                return render(request, 'studentform.html', {'form': form})
-            else:
-                form = StudentForm()
-            return render(request, 'studentform.html', {'form': form})
-        else:
-            messages.error(request, 'REGISTRATION CLOSED')
-    except Exception:
-        messages.error(request, 'Try Later')
     return redirect('home')
 
 
@@ -241,49 +229,6 @@ def update_seminar(request, slug):
     return redirect('home')
 
 
-# noinspection PyBroadException
-def seminar_registration(request, slug, c_o_e):
-    obj = SeminarRecord.objects.get(slug=slug)
-    try:
-        if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
-            if request.method == "POST":
-                form = StudentForm(request.POST)
-                try:
-                    if form.is_valid():
-                        name = form.cleaned_data['name']
-                        email = form.cleaned_data['email']
-                        roll_no = form.cleaned_data['roll_no']
-                        college_name = form.cleaned_data['college_name']
-                        branch = form.cleaned_data['branch']
-                        year = form.cleaned_data['year']
-                        sem = form.cleaned_data['sem']
-                        number = form.cleaned_data['number']
-                        password = form.cleaned_data['password']
-                        obj.registered = obj.registered + 1
-                        obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
-                                                            college_name=college_name,
-                                                            branch=branch, password=password,
-                                                            year=year, sem=sem, number=number,
-                                                            registered_event_code=slug)
-                        StudentRecordSeminar.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
-                        messages.success(request, 'Successfully Registered')
-                    else:
-                        messages.error(request, 'Invalid form')
-                except Exception:
-                    messages.error(request, 'Try again')
-                form = StudentForm()
-                return render(request, 'studentform.html', {'form': form})
-            else:
-                form = StudentForm()
-            return render(request, 'studentform.html', {'form': form})
-        else:
-            messages.error(request, 'REGISTRATION CLOSED')
-    except Exception:
-        messages.error(request, 'Registration Closed')
-    return redirect('home')
-
-
 def delete_seminar(request, slug):
     year_list = YearRecord.objects.all().order_by('-year')
     months_list = MonthRecordseminar.objects.all()
@@ -355,49 +300,6 @@ def update_training(request, slug):
         messages.error(request, 'Training does not exist')
     except PermissionDenied:
         messages.error(request, 'Permission Denied')
-    return redirect('home')
-
-
-# noinspection PyBroadException
-def training_registration(request, slug, c_o_e):
-    print(slug)
-    obj = TrainingRecord.objects.get(slug=slug)
-    try:
-        if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
-            if request.method == "POST":
-                form = StudentForm(request.POST)
-                try:
-                    if form.is_valid():
-                        name = form.cleaned_data['name']
-                        email = form.cleaned_data['email']
-                        roll_no = form.cleaned_data['roll_no']
-                        college_name = form.cleaned_data['college_name']
-                        branch = form.cleaned_data['branch']
-                        year = form.cleaned_data['year']
-                        sem = form.cleaned_data['sem']
-                        number = form.cleaned_data['number']
-                        password = form.cleaned_data['password']
-                        obj.registered = obj.registered + 1
-                        obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
-                                                            college_name=college_name,
-                                                            branch=branch, year=year, sem=sem, number=number,
-                                                            password=password, registered_event_code=slug)
-                        StudentRecordTraining.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
-                        messages.success(request, 'Successfully Registered')
-                    else:
-                        messages.error(request, 'Invalid form')
-                except Exception:
-                    messages.error(request, 'Try again')
-                form = StudentForm()
-                return render(request, 'studentform.html', {'form': form})
-            else:
-                form = StudentForm()
-            return render(request, 'studentform.html', {'form': form})
-        else:
-            messages.error(request, 'REGISTRATION CLOSED')
-    except Exception:
-        messages.error(request, 'Registration Closed')
     return redirect('home')
 
 
@@ -475,48 +377,6 @@ def update_competition(request, slug):
     return redirect('home')
 
 
-# noinspection PyBroadException
-def competition_registration(request, slug, c_o_e):
-    obj = CompetitionRecord.objects.get(slug=slug)
-    try:
-        if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
-            if request.method == "POST":
-                form = StudentForm(request.POST)
-                try:
-                    if form.is_valid():
-                        name = form.cleaned_data['name']
-                        email = form.cleaned_data['email']
-                        roll_no = form.cleaned_data['roll_no']
-                        college_name = form.cleaned_data['college_name']
-                        branch = form.cleaned_data['branch']
-                        year = form.cleaned_data['year']
-                        sem = form.cleaned_data['sem']
-                        number = form.cleaned_data['number']
-                        password = form.cleaned_data['password']
-                        obj.registered = obj.registered + 1
-                        obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
-                                                            college_name=college_name,
-                                                            branch=branch, year=year, sem=sem, number=number,
-                                                            password=password, registered_event_code=slug)
-                        StudentRecordCompetition.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
-                        messages.success(request, 'Successfully Registered')
-                    else:
-                        messages.error(request, 'Invalid form')
-                except Exception:
-                    messages.error(request, 'Try again')
-                form = StudentForm()
-                return render(request, 'studentform.html', {'form': form})
-            else:
-                form = StudentForm()
-            return render(request, 'studentform.html', {'form': form})
-        else:
-            messages.error(request, 'REGISTRATION CLOSED')
-    except Exception:
-        messages.error(request, 'Registration Closed')
-    return redirect('home')
-
-
 def delete_competition(request, slug):
     year_list = YearRecord.objects.all().order_by('-year')
     months_list = MonthRecordcompetition.objects.all()
@@ -590,48 +450,6 @@ def update_guestlecture(request, slug):
     except PermissionDenied:
         messages.error(request, 'Workshop does not exist !!!')
     return render(request, 'update.html')
-
-
-# noinspection PyBroadException
-def guest_lecture_registration(request, slug, c_o_e):
-    obj = GuestLectureRecord.objects.get(slug=slug)
-    try:
-        if obj.registration_end.strftime('%Y-%m-%d') > date.today().strftime('%Y-%m-%d'):
-            if request.method == "POST":
-                form = StudentForm(request.POST)
-                try:
-                    if form.is_valid():
-                        name = form.cleaned_data['name']
-                        email = form.cleaned_data['email']
-                        roll_no = form.cleaned_data['roll_no']
-                        college_name = form.cleaned_data['college_name']
-                        branch = form.cleaned_data['branch']
-                        year = form.cleaned_data['year']
-                        sem = form.cleaned_data['sem']
-                        number = form.cleaned_data['number']
-                        password = form.cleaned_data['password']
-                        obj.registered = obj.registered + 1
-                        obj.save(update_fields=['registered'])
-                        obj1 = StudentRecord.objects.create(name=name, email=email, roll_no=roll_no,
-                                                            college_name=college_name,
-                                                            branch=branch, year=year, sem=sem, number=number,
-                                                            password=password, registered_event_code=slug)
-                        StudentRecordGuestlecture.objects.create(name=obj1, registered_event_code=slug, c_o_e=c_o_e)
-                        messages.success(request, 'Successfully Registered')
-                        return redirect('home')
-                    else:
-                        messages.error(request, 'Invalid form')
-                except Exception:
-                    messages.error(request, 'Try again')
-                return render(request, 'studentform.html', {'form': form})
-            else:
-                form = StudentForm()
-            return render(request, 'studentform.html', {'form': form})
-        else:
-            messages.error(request, 'REGISTRATION CLOSED')
-    except Exception:
-        messages.error(request, 'Registration Closed')
-    return redirect('home')
 
 
 def delete_guestlecture(request, slug):
@@ -768,23 +586,27 @@ def add_event(request):
 
 def studentlist_workshop(request, registered_event_code):
     lists = StudentRecordWorkshop.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'workshop':workshop})
+    return render(request, 'studentlist.html', {'lists': lists, 'workshop': workshop})
+
 
 def studentlist_seminar(request, registered_event_code):
     lists = StudentRecordSeminar.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'seminar':seminar})
+    return render(request, 'studentlist.html', {'lists': lists, 'seminar': seminar})
+
 
 def studentlist_training(request, registered_event_code):
     lists = StudentRecordTraining.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'training':True})
+    return render(request, 'studentlist.html', {'lists': lists, 'training': True})
+
 
 def studentlist_competition(request, registered_event_code):
     lists = StudentRecordCompetition.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'competition':competition})
+    return render(request, 'studentlist.html', {'lists': lists, 'competition': competition})
+
 
 def studentlist_guestlecture(request, registered_event_code):
-    lists = StudentRecordGuestlecture.objects.filter(registered_event_code=registered_event_code)
-    return render(request, 'studentlist.html', {'lists': lists,'guest_lecture':guest_lecture})
+    lists = StudentRecordGuestLecture.objects.filter(registered_event_code=registered_event_code)
+    return render(request, 'studentlist.html', {'lists': lists, 'guest_lecture': guest_lecture})
 
 
 def excellence_center(request):

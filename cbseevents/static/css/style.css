@@ -72,3 +72,5 @@ h4 {
 .card-deck .card {
   min-width: 220px;
 }
+.fit-text{max-width: fit-content;}
+@media screen and (max-width: 992px){ .fit-text{max-width: 100%;}}
