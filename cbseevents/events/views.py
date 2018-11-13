@@ -13,8 +13,7 @@ def edit_workshopamount(request, paymentid):
         p = StudentRecordWorkshop.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
-            p.save(
-                update_fields=['paid'])
+            p.save(update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -25,8 +24,7 @@ def edit_seminaramount(request, paymentid):
         p = StudentRecordSeminar.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
-            p.save(
-                update_fields=['paid'])
+            p.save(update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -37,8 +35,7 @@ def edit_trainingamount(request, paymentid):
         p = StudentRecordTraining.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
-            p.save(
-                update_fields=['paid'])
+            p.save(update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -49,8 +46,7 @@ def edit_competitionamount(request, paymentid):
         p = StudentRecordCompetition.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
-            p.save(
-                update_fields=['paid'])
+            p.save(update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})
@@ -61,8 +57,7 @@ def edit_guestlectureamount(request, paymentid):
         p = StudentRecordGuestLecture.objects.get(payment_id=paymentid)
         if request.method == "POST":
             p.paid = request.POST['paid']
-            p.save(
-                update_fields=['paid'])
+            p.save(update_fields=['paid'])
     except ObjectDoesNotExist:
         messages.error(request, 'Edit not allowed!!!')
     return render(request, 'edit_amount.html', {'p': p})

@@ -15,6 +15,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView
 
 from events.models import *
+from student.models import *
 from .forms import *
 from .tokens import account_activation_token, password_reset_token
 

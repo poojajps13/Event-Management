@@ -1,4 +1,4 @@
-from account.models import *
+from student.models import *
 from .utils import get_unique_slug, unique_slug
 
 

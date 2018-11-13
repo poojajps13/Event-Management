@@ -3,7 +3,7 @@ from django.contrib.auth import models, password_validation
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.validators import validate_email
 
-from .models import StudentRecord
+from student.models import StudentRecord
 
 BATCH_START = [('2015', '2015'), ('2016', '2016'), ('2017', '2017'), ('2018', '2018'), ('2019', '2019'),
                ('2020', '2020')]

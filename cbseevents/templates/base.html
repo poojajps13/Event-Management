@@ -15,22 +15,19 @@
         <img src="{% static 'images/logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
         {% if not user.is_authenticated %}
-        <a class="p-1 text-dark" href="{% url 'home' %}">Home</a>
-        <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
-        <a class="p-1 text-dark" href="{% url 'seminar' %}">Seminar</a>
-        <a class="p-1 text-dark" href="{% url 'training' %}">Training</a>
-        <a class="p-1 text-dark" href="{% url 'competition' %}">Competition</a>
-        <a class="p-1 text-dark" href="{% url 'guest_lecture' %}">Guest Lecture</a>
-        <a class="p-1 text-dark" href="{% url 'excellence_center'  %}">Excellence Center</a>{% endif %}
+            <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
+            <a class="p-1 text-dark" href="{% url 'seminar' %}">Seminar</a>
+            <a class="p-1 text-dark" href="{% url 'training' %}">Training</a>
+            <a class="p-1 text-dark" href="{% url 'competition' %}">Competition</a>
+            <a class="p-1 text-dark" href="{% url 'guest_lecture' %}">Guest Lecture</a>
+            <a class="p-1 text-dark" href="{% url 'excellence_center' %}">Excellence Center</a>{% endif %}
         {% if user.is_authenticated %}Welcome {{ user.first_name }}
-            {% if user.is_superuser or user.is_staff %}
-            <a class="p-1 text-dark" href="{% url 'superuser' %}">USERS</a>{% endif %}
-            <a class="p-1 text-dark" href="{% url 'form' %}">Add Event</a>
+            {% if user.is_superuser %}<a class="p-1 text-dark" href="{% url 'superuser' %}">USERS</a>{% endif %}
+            {% if user.is_staff %}<a class="p-1 text-dark" href="{% url 'form' %}">Add Event</a>{% endif %}
             <a class="p-1 text-dark" href="{% url 'consolidatedview' %}">Consolidated View</a>
             <a class="p-1 text-danger" href="{% url 'logout' %}">Logout</a>
         {% else %}
-            <a class="p-2" href="{% url 'login' %}">Login</a>
-            <a class="p-2" href="{% url 'signup' %}">Signup</a>
+            <a class="p-2" href="{% url 'login' %}">Login</a><a class="p-2" href="{% url 'signup' %}">Signup</a>
         {% endif %}
     </nav>
 </div>
