@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.urls import path
+from django.urls import path, include
 
 from account.views import *
 from events.views import *
@@ -9,11 +9,13 @@ from events.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('event/', include(('event.urls', 'event'), namespace='event')),
     path('superuser/', login_required(superuser), name='superuser'),
     path('form/', login_required(add_event), name='form'),
     path('login', Login.as_view(), name='login'),
     path('signup', Signup.as_view(), name='signup'),
     path('logout', login_required(logout), name='logout'),
+    path('pdf', some_view, name='pdf'),
     path('account/activate/<uidb64>/<token>/', activate, name='activate'),
     path('account/forget-password/<uidb64>/<token>',ResetPassword.as_view(), name='forget-password'),
     path('<type>/registration/<slug>/', login_required(Registration.as_view()), name='registration'),

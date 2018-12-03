@@ -1,19 +1,19 @@
 from django.utils.text import slugify
 
 
-def get_unique_slug(instance, slugable_field_name_1, slugable_field_name_2, slugable_field_name_3, new_slug=None):
+def get_unique_slug(instance, slugable_field_name_1, slugable_field_name_2, new_slug=None):
     """
     Takes a model instance, sluggable field name (such as 'title') of that
     model as string, slug field name (such as 'slug') of the model as string;
     returns a unique slug as string.
     """
     count = 1
+    slug = new_slug
     if new_slug is None:
-        slug = "{slug1}-{slug2}-{slug3}-{slug4}".format(
+        slug = "{slug1}-{slug2}-{slug3}".format(
             slug1=slugable_field_name_1,
             slug2=slugable_field_name_2,
-            slug3=slugable_field_name_3,
-            slug4=count
+            slug3=count
         )
     new_slug = slug
 
@@ -25,8 +25,7 @@ def get_unique_slug(instance, slugable_field_name_1, slugable_field_name_2, slug
             count=count
         )
         return get_unique_slug(instance, slugable_field_name_1=slugable_field_name_1,
-                               slugable_field_name_2=slugable_field_name_2, slugable_field_name_3=slugable_field_name_3,
-                               new_slug=new_slug)
+                               slugable_field_name_2=slugable_field_name_2, new_slug=new_slug)
     return slug
 
 

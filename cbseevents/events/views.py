@@ -1,11 +1,37 @@
+from io import BytesIO
+
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.views.generic import TemplateView
+from xhtml2pdf import pisa
 
 from events.models import *
 from .forms import *
+
+
+def some_view(request):
+    # return render(request, 'report.html')
+    list = User.objects.all()
+    template = get_template('report.html')
+    context = {
+        'event': 'Workshop',
+        'student_list': list,
+    }
+    html = template.render(context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        response = HttpResponse(result.getvalue(), content_type='application/pdf')
+        filename = "Report.pdf"
+        content = "inline; filename='%s'" % (filename)
+        # content = "attachment; filename='%s'" % (filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")
 
 
 def edit_workshopamount(request, paymentid):

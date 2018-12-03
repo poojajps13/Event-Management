@@ -12,7 +12,7 @@
 <body>
 <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-light border-bottom shadow-sm">
     <a class="mr-md-auto" href="{% url 'home' %}">
-        <img src="{% static 'images/logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
+        <img src="{% static 'images/abes_logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
         {% if not user.is_authenticated %}
             <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
