@@ -7,14 +7,14 @@ EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Com
           ('guest_lecture', 'Guest Lecture')]
 BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('MCA', 'MCA'),
             ('OTHER', 'OTHER')]
-CHOICE = [(True, 'YES'), (False, 'NO')]
+CHOICE = [(1, 'YES'), (0, 'NO')]
 CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),
                         ('NW', 'Cisco Networking Academy'),
                         ('TIES', 'Texas Instruments Embedded System Lab'),
                         ('SMC', 'SMC India Pvt Ltd.'),
                         ('IARTC', 'Industrial Automation Research And Training Centre - IARTC'),
                         ('VLSI', 'VLSI Design'),
-                        ('BigD', 'Big Data Analytics'),
+                        ('BIGD', 'Big Data Analytics'),
                         ('MobApp', 'Mobile Application Development'),
                         ('SWD', 'Center For Enterprise Software Development'),
                         ('TST', 'Testing'),
@@ -51,7 +51,7 @@ class EventForm(forms.ModelForm):
         choices=DURATION_STRING, attrs={'class': 'form-control'}), required=True)
     eligible_branches = forms.CharField(widget=forms.CheckboxSelectMultiple(
         choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
-    outside_student = forms.BooleanField(widget=forms.RadioSelect(
+    outside_student = forms.IntegerField(widget=forms.RadioSelect(
         choices=CHOICE, attrs={'class': 'form-check-inline'}), required=True)
 
     class Meta:

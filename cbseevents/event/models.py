@@ -19,7 +19,7 @@ class EventRecord(models.Model):
     registration_end = models.DateField()
     event_date = models.DateField()
     eligible_branches = models.CharField(max_length=50)
-    outside_student = models.BooleanField()
+    outside_student = models.IntegerField(default=0)
     venue = models.TextField(max_length=2010)
     registered_student = models.IntegerField(default=0)
     fees = models.FloatField()

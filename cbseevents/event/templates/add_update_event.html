@@ -10,7 +10,12 @@
                 <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}</div>
                 <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}</div>
                 <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}</div>
-                <div class="pb-4 col-md-4"><label>Duration</label>{{ form.duration_number }}{{ form.duration_string }}</div>
+                <div class="col-md-4"><label>Duration</label>
+                    <div class="row">
+                        <div class="pb-4 col-md-7">{{ form.duration_number }}</div>
+                        <div class="pb-4 col-md-5">{{ form.duration_string }}</div>
+                    </div>
+                </div>
                 <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
                 <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>

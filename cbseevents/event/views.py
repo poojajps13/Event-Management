@@ -30,6 +30,7 @@ class AddEvent(TemplateView):
                     temp.user = request.user
                     form.save()
                     messages.success(request, 'Event Added')
+                    return redirect('home')
                 else:
                     messages.error(request, 'Invalid Input')
             else:

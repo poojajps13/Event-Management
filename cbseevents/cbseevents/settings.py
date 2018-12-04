@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'account',
     'student',
     'event',
+    'registration',
 ]
 
 MIDDLEWARE = [
