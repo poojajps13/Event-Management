@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('event/', include(('event.urls', 'event'), namespace='event')),
+    path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
     path('superuser/', login_required(superuser), name='superuser'),
     path('form/', login_required(add_event), name='form'),
     path('login', Login.as_view(), name='login'),

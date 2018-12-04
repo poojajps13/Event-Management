@@ -6,8 +6,8 @@ from .utils import *
 
 # Create your models here.
 class EventRecord(models.Model):
-    type = models.CharField(max_length=50)
     slug = models.SlugField(unique=True)
+    type = models.CharField(max_length=50)
     c_o_e = models.CharField(max_length=75)
     event_name = models.CharField(max_length=110)
     description = models.TextField(max_length=2010)
