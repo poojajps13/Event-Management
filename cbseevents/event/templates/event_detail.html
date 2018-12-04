@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}{% load staticfiles %}{% block head_title %}Event Detail | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
+{% block content %}
+    <div class="px-5 pt-4 pb-5 bg-white rounded shadow-sm">
+        <h2>{{ obj.event_name }}</h2>
+        <div class="clearfix pb-4">
+            <span class="lead pr-lg-5">Event Code: {{ obj.slug }} </span>
+            {% if user.is_authenticated %}
+                <a href="{% url 'event:update_event' slug=obj.slug %}" class="btn btn-outline-primary btn-sm pr-3">Update</a>
+                <a href="" class="btn btn-outline-danger btn-sm">Delete</a>
+            {% else %}
+                <a href="" class="btn btn-outline-success btn-sm">Register</a>
+            {% endif %}</div>
+        <div>
+            <p>Registration Start : {{ obj.registration_start }}<br>Registration Ends : {{ obj.registration_end }}</p>
+        </div>
+        <h2>About :</h2>
+        <p>{{ obj.description }}</p>
+        <h4>Fees: Rs. {{ obj.fees }}</h4>
+        <h4>Venue: {{ obj.venue }}</h4>
+        <h4>Event starts on: <span class="text-capitalize">{{ obj.event_date }}</span></h4>
+        <h4>Event duration: {{ obj.duration_number }} {{ obj.duration_string }}</h4>
+        <h4>Eligible Branches: {{ obj.eligible_branches }}</h4>
+        <h4>Is allowed for outside students ??? {% if obj.outside_student == 1 %}Yes{% else %}No{% endif %}</h4>
+        <h3>About Resource Person</h3>
+        <p>{{ obj.resource_person }}</p>
+        <p>{{ obj.resource_person_data }}</p>
+    </div>
+{% endblock content %}

@@ -3,103 +3,23 @@
 {% block content %}
     <div class="pt-4">
         <div class="card-deck mb-3">
-            {% for i in workshop %}
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header px-5">
-                        <span class="font-weight-normal">WorkShop</span>
-                        {% if now < i.registration_end %}<span class="text-success float-right">Active</span>
-                        {% else %}<span class="text-danger float-right">Not Active</span>{% endif %}
-                    </div>
-                    <div class="card-body">
-                        <h4><a href="{% url 'workshop_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered Student {{ i.registered }}<br>
-                        <a href="{% url 'studentlist_workshop' registered_event_code=i.slug %}">Student List</a></div>
-                    <hr>
-                    <div class="pb-3 px-3">
-                        <a href="{% url 'update_workshop' slug=i.slug %}"
-                           class="btn btn-outline-primary btn-sm px-4">Update</a>
-                        <a href="{% url 'delete_workshop' slug=i.slug %}"
-                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
-                    </div>
-                </div>{% endfor %}
-            {% for i in seminar %}
+            {% for event in event_list %}
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header">
-                        <span class="font-weight-normal">Seminar</span>
-                        {% if now < i.registration_end %}<span class="text-success float-right">Active</span>
+                        <span class="font-weight-normal text-capitalize">{{ event.type }}</span>
+                        {% if now < event.registration_end %}<span class="text-success float-right">Active</span>
                         {% else %}<span class="text-danger float-right">Not Active</span>{% endif %}
                     </div>
                     <div class="card-body">
-                        <h4><a href="{% url 'seminar_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered {{ i.registered }}<br>
-                        <a href="{% url 'studentlist_seminar' registered_event_code=i.slug %}">Student List</a></div>
-
+                        <h4><a href="{% url 'event:event_detail' slug=event.slug %}">{{ event.event_name }}</a></h4>
+                        Registered Student {{ event.registered_student }}<br>
+                        <a href="">Student List</a></div>
                     <hr>
                     <div class="pb-3 px-3">
-                        <a href="{% url 'update_seminar' slug=i.slug %}"
+                        <a href="{% url 'event:update_event' slug=event.slug %}"
                            class="btn btn-outline-primary btn-sm px-4">Update</a>
-                        <a href="{% url 'delete_seminar' slug=i.slug %}"
-                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
+                        <a href="" class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
                     </div>
-                </div>{% endfor %}
-            {% for i in training %}
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                        <span class="font-weight-normal">Training</span>
-                        {% if now < i.registration_end %}<span class="text-success float-right">Active</span>
-                        {% else %}<span class="text-danger float-right">Not Active</span>{% endif %}
-                    </div>
-                    <div class="card-body">
-                        <h4><a href="{% url 'training_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a></h4>
-                        Registered {{ i.registered }}<br>
-                        <a href="{% url 'studentlist_training' registered_event_code=i.slug %}">Student List</a></div>
-                    <hr>
-                    <div class="pb-3 px-3">
-                        <a href="{% url 'update_training' slug=i.slug %}"
-                           class="btn btn-outline-primary btn-sm px-4">Update</a>
-                        <a href="{% url 'delete_training' slug=i.slug %}"
-                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
-                    </div>
-                </div>{% endfor %}
-            {% for i in competition %}
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                        <span class="font-weight-normal">Competition</span>
-                        {% if now < i.registration_end %}<span class="text-success float-right">Active</span>
-                        {% else %}<span class="text-danger float-right">Not Active</span>{% endif %}
-                    </div>
-                    <div class="card-body">
-                        <h4><a href="{% url 'competition_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
-                        </h4>
-                        Registered {{ i.registered }}<br>
-                        <a href="{% url 'studentlist_competition' registered_event_code=i.slug %}">Student List</a></div>
-                    <hr>
-                    <div class="pb-3 px-3">
-                        <a href="{% url 'update_competition' slug=i.slug %}"
-                           class="btn btn-outline-primary btn-sm px-4">Update</a>
-                        <a href="{% url 'delete_competition' slug=i.slug %}"
-                           class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
-                    </div>
-                </div>{% endfor %}
-            {% for i in guest_lecture %}
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header">
-                        <span class="font-weight-normal">Guest Lecture</span>
-                        {% if now < i.registration_end %}<span class="text-success float-right">Active</span>
-                        {% else %}<span class="text-danger float-right">Not Active</span>{% endif %}
-                    </div>
-                    <div class="card-body">
-                        <h4><a href="{% url 'guest_lecture_description_with_slug' slug=i.slug %}">{{ i.event_name }}</a>
-                        </h4>
-                        Registered {{ i.registered }}<br>
-                        <a href="{% url 'studentlist_guestlecture' registered_event_code=i.slug %}">Student List</a></div>
-                        <hr>
-                        <div class="pb-3 px-3">
-                            <a href="{% url 'update_guest_lecture' slug=i.slug %}"
-                               class="btn btn-outline-primary btn-sm px-4">Update</a>
-                            <a href="{% url 'delete_guest_lecture' slug=i.slug %}"
-                               class="btn btn-outline-danger float-right btn-sm px-4">Delete</a>
-                        </div>
                 </div>{% endfor %}
         </div>
     </div>

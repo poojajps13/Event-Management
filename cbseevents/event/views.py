@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from .forms import *
 
 
@@ -15,7 +15,7 @@ class AddEvent(TemplateView):
             if request.user.is_staff:
                 form = EventForm()
             else:
-                raise PermissionError
+                raise PermissionDenied
             return render(request, self.template_name, {'form': form})
         except Exception:
             messages.error(request, 'Permission Denied')
@@ -30,11 +30,11 @@ class AddEvent(TemplateView):
                     temp.user = request.user
                     form.save()
                     messages.success(request, 'Event Added')
-                    return redirect('home')
+                    return redirect('event:event_detail', slug=temp.slug)
                 else:
                     messages.error(request, 'Invalid Input')
             else:
-                raise PermissionError
+                raise PermissionDenied
             return render(request, self.template_name, {'form': form})
         except Exception:
             messages.error(request, 'Permission Denied')
@@ -52,9 +52,9 @@ class UpdateEvent(TemplateView):
                 if obj.user == request.user or request.user.is_staff:
                     form = EventForm(instance=obj)
                 else:
-                    raise PermissionError
+                    raise PermissionDenied
             else:
-                raise PermissionError
+                raise PermissionDenied
             return render(request, self.template_name, {'form': form})
         except Exception:
             messages.error(request, 'Permission Denied')
@@ -69,13 +69,14 @@ class UpdateEvent(TemplateView):
                     if form.is_valid():
                         form.save()
                         messages.success(request, 'Event Updated')
+                        return redirect('event:event_detail', kwargs['slug'])
                     else:
                         messages.error(request, 'Invalid Input')
+                    return render(request, self.template_name, {'form': form})
                 else:
-                    raise PermissionError
+                    raise PermissionDenied
             else:
-                raise PermissionError
-            return render(request, self.template_name, {'form': form})
+                raise PermissionDenied
         except Exception:
             messages.error(request, 'Permission Denied')
             return redirect('home')

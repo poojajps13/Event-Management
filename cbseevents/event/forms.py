@@ -5,8 +5,8 @@ from .models import *
 
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
           ('guest_lecture', 'Guest Lecture')]
-BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('MCA', 'MCA'),
-            ('OTHER', 'OTHER')]
+BRANCHES = [('CSE', 'CSE'), ('CSIT', 'CSIT'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'),
+            ('CE', 'CE'), ('MCA', 'MCA'), ('OTHER', 'OTHER')]
 CHOICE = [(1, 'YES'), (0, 'NO')]
 CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),
                         ('NW', 'Cisco Networking Academy'),
@@ -37,11 +37,11 @@ class EventForm(forms.ModelForm):
         attrs={'class': 'form-control', 'placeholder': 'Venue', 'rows': '4'}), required=True, max_length=2000)
     fees = forms.FloatField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Fees'}), required=True)
-    registration_start = forms.DateField(widget=SelectDateWidget(
+    registration_start = forms.DateTimeField(widget=SelectDateWidget(
         attrs={'class': 'form-control my-2'}), required=True)
-    registration_end = forms.DateField(widget=SelectDateWidget(
+    registration_end = forms.DateTimeField(widget=SelectDateWidget(
         attrs={'class': 'form-control my-2'}), required=True)
-    event_date = forms.DateField(widget=SelectDateWidget(
+    event_date = forms.DateTimeField(widget=SelectDateWidget(
         attrs={'class': 'form-control my-2'}), required=True)
     type = forms.CharField(widget=forms.Select(
         choices=EVENTS, attrs={'class': 'form-control'}), required=True)

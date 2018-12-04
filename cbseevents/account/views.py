@@ -14,6 +14,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView
 
+from event.models import *
 from events.models import *
 from student.models import *
 from .forms import *
@@ -320,11 +321,12 @@ def consolidated(request, username):
 
 
 def consolidatedview(request):
+    event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
     workshop = WorkshopRecord.objects.filter(user=request.user)
     seminar = SeminarRecord.objects.filter(user=request.user)
     training = TrainingRecord.objects.filter(user=request.user)
     competition = CompetitionRecord.objects.filter(user=request.user)
     guest_lecture = GuestLectureRecord.objects.filter(user=request.user)
-    return render(request, 'consolidatedview.html',
-                  {'workshop': workshop, 'training': training, 'competition': competition,
-                   'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})
+    return render(request, 'consolidatedview.html', {'event_list':event_list, 'now': timezone.now(),
+                  'workshop': workshop, 'trainihng': training, 'competition': competition,
+                   'seminar': seminar, 'guest_lecture': guest_lecture})
