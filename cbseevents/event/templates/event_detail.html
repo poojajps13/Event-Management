@@ -4,13 +4,11 @@
     <div class="px-5 pt-4 pb-5 bg-white rounded shadow-sm">
         <h2>{{ obj.event_name }}</h2>
         <div class="clearfix pb-4">
-            <span class="lead pr-lg-5">Event Code: {{ obj.slug }} </span>
-            {% if user.is_authenticated %}
-                <a href="{% url 'event:update_event' slug=obj.slug %}" class="btn btn-outline-primary btn-sm pr-3">Update</a>
-                <a href="" class="btn btn-outline-danger btn-sm">Delete</a>
-            {% else %}
-                <a href="" class="btn btn-outline-success btn-sm">Register</a>
-            {% endif %}</div>
+            <span class="lead pr-lg-5">Event Code: {{ obj.slug }} </span>{% if user.is_authenticated %}
+            <a href="{% url 'event:update_event' obj.slug %}" class="btn btn-outline-primary btn-sm pr-3">Update</a>
+            <a href="" class="btn btn-outline-danger btn-sm">Delete</a>{% else %}
+            <a href="{% url 'registration:register_event' obj.slug %}"
+               class="btn btn-outline-success btn-sm">Register</a>{% endif %}</div>
         <div>
             <p>Registration Start : {{ obj.registration_start }}<br>Registration Ends : {{ obj.registration_end }}</p>
         </div>
