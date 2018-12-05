@@ -23,7 +23,7 @@ class AddEvent(TemplateView):
             return redirect('home')
 
     def post(self, request):
-        try:
+        if True:
             if request.user.is_staff:
                 form = EventForm(request.POST)
                 if form.is_valid():
@@ -37,9 +37,9 @@ class AddEvent(TemplateView):
             else:
                 raise PermissionDenied
             return render(request, self.template_name, {'form': form})
-        except Exception:
-            messages.error(request, 'Permission Denied')
-            return redirect('home')
+        # except Exception:
+        #     messages.error(request, 'Permission Denied')
+        #     return redirect('home')
 
 
 # noinspection PyBroadException

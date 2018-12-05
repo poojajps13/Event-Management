@@ -9,9 +9,10 @@ from django.template.loader import get_template
 from django.views.generic import TemplateView
 from xhtml2pdf import pisa
 
+from event.models import *
 from events.models import *
 from .forms import *
-from event.models import *
+
 
 def some_view(request):
     # return render(request, 'report.html')
@@ -97,7 +98,8 @@ def home(request):
     train = TrainingRecord.objects.all().order_by('-pk')
     comp = CompetitionRecord.objects.all().order_by('-pk')
     guest = GuestLectureRecord.objects.all().order_by('-pk')
-    return render(request, 'index.html', {'event_list':event_list ,'work': work, 'semi': semi, 'train': train, 'comp': comp, 'guest': guest})
+    return render(request, 'index.html',
+                  {'event_list': event_list, 'work': work, 'semi': semi, 'train': train, 'comp': comp, 'guest': guest})
 
 
 class Registration(TemplateView):

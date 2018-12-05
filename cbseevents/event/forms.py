@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.forms.widgets import SelectDateWidget
 
@@ -59,3 +61,32 @@ class EventForm(forms.ModelForm):
         fields = ['event_name', 'description', 'duration_number', 'resource_person', 'resource_person_data', 'venue',
                   'fees', 'registration_start', 'registration_end', 'event_date', 'type', 'c_o_e', 'duration_string',
                   'eligible_branches', 'outside_student']
+
+    def clean_registration_start(self):
+        try:
+            registration_start = self.cleaned_data['registration_start']
+            if True or registration_start.strftime('%Y-%m-%d') >= date.today().strftime('%Y-%m-%d'):
+                return registration_start
+            raise forms.ValidationError("Invalid Start Date")
+        except Exception:
+            raise forms.ValidationError("Invalid Start Date")
+
+    def clean_registration_end(self):
+        try:
+            registration_start = self.cleaned_data['registration_start']
+            registration_end = self.cleaned_data['registration_end']
+            if registration_start <= registration_end:
+                return registration_end
+            raise forms.ValidationError("Invalid End Date")
+        except Exception:
+            raise forms.ValidationError("Invalid End Date")
+
+    def clean_event_date(self):
+        try:
+            registration_end = self.cleaned_data['registration_end']
+            event_date = self.cleaned_data['event_date']
+            if registration_end <= event_date:
+                return event_date
+            raise forms.ValidationError("Invalid Event Date")
+        except Exception:
+            raise forms.ValidationError("Invalid Event Date")

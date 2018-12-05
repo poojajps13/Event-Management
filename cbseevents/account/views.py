@@ -262,7 +262,7 @@ def superuser(request):
             except Exception:
                 messages.warning(request, 'User name and already exits')
         form = SignupForm()
-        user = User.objects.filter(is_staff=True)
+        user = User.objects.filter(is_staff=True, is_superuser=False)
         return render(request, 'superuser.html', {'u': user, 'form': form})
     else:
         raise PermissionDenied
@@ -298,10 +298,13 @@ def edit_user(request, username):
 def del_user(request, username):
     try:
         u = User.objects.get(username=username)
-        u.delete()
-        messages.success(request, "The user is deleted")
+        if not u.is_superuser and request.user.is_superuser:
+            u.delete()
+            messages.success(request, "The user is deleted")
+        else:
+            messages.warning(request, 'Invalid Response')
     except ObjectDoesNotExist:
-        messages.error(request, "User doesnot exist")
+        messages.error(request, "User does not exist")
         return render(request, 'superuser.html')
     except Exception as e:
         return render(request, 'superuser.html', {'err': e})

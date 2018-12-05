@@ -55,6 +55,7 @@ class SignupForm(forms.ModelForm):
                 password_validation.validate_password(password2)
 
 
+
 class StudentForm(forms.ModelForm):
     roll_no = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Roll Number'}), required=True, max_length=15)
