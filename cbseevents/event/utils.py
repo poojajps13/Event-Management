@@ -1,6 +1,3 @@
-from django.utils.text import slugify
-
-
 def get_unique_slug(instance, field_name_1, field_name_2):
     count = 1
     field_name_2 = field_name_2.strftime("%y-%b-%d")

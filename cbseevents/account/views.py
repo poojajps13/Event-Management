@@ -38,19 +38,19 @@ class Login(TemplateView):
             form1 = EmailForm1(request.POST)
             form2 = EmailForm2(request.POST)
             if form.is_valid():
-                ''' Begin reCAPTCHA validation '''
-                re_captcha_response = request.POST.get('g-recaptcha-response')
-                url = 'https://www.google.com/recaptcha/api/siteverify'
-                values = {
-                    'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                    'response': re_captcha_response
-                }
-                data = urllib.parse.urlencode(values).encode()
-                req = urllib.request.Request(url, data=data)
-                response = urllib.request.urlopen(req)
-                result = json.loads(response.read().decode())
-                ''' End reCAPTCHA validation '''
-                if result['success']:
+                # ''' Begin reCAPTCHA validation '''
+                # re_captcha_response = request.POST.get('g-recaptcha-response')
+                # url = 'https://www.google.com/recaptcha/api/siteverify'
+                # values = {
+                #     'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                #     'response': re_captcha_response
+                # }
+                # data = urllib.parse.urlencode(values).encode()
+                # req = urllib.request.Request(url, data=data)
+                # response = urllib.request.urlopen(req)
+                # result = json.loads(response.read().decode())
+                # ''' End reCAPTCHA validation '''
+                if True: # result['success']:
                     email = form.cleaned_data['email']
                     password = form.cleaned_data['password']
                     try:
