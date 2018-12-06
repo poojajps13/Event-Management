@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <h4><a href="{% url 'event:event_detail' slug=event.slug %}">{{ event.event_name }}</a></h4>
                         Registered Student {{ event.registered_student }}<br>
-                        <a href="">Student List</a></div>
+                        <a href="{% url 'registration:register_student_list' slug=event.slug %}">Student List</a></div>
                     <hr>
                     <div class="pb-3 px-3">
                         <a href="{% url 'event:update_event' slug=event.slug %}"

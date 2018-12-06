@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
-from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -38,9 +38,25 @@ class RegisterEvent(TemplateView):
             return redirect('home')
         except PermissionDenied:
             messages.warning(request, 'You have not Permission to Register')
-        # except Exception:
-        #     messages.error(request, 'Try After Some Time')
-        #     return redirect('home')
+        except Exception:
+            messages.error(request, 'Try After Some Time')
+            return redirect('home')
+
+
+# noinspection PyBroadException
+class RegisterStudentList(TemplateView):
+    template_name = 'register_student_list.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            event = EventRecord.objects.get(slug=kwargs['slug'])
+            if request.user.is_superuser or request.user == event.user:
+                obj = RegistrationRecord.objects.filter(event=event)
+                return render(request, self.template_name, {'obj': obj})
+            raise PermissionDenied
+        except Exception:
+            messages.error(request, 'You Does not Permission')
+            return redirect('home')
 
 
 # noinspection PyBroadException
@@ -49,9 +65,10 @@ class RegistrationDetail(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            obj = RegistrationRecord.objects.get(transaction_id=kwargs['transaction_id'])
+            obj = RegistrationRecord.objects.get(registration_id=kwargs['registration_id'])
             if request.user.is_superuser or request.user == obj.event.user:
-                return render(request, self.template_name, {'obj': obj, 'staff': True})
+                form = TransactionForm()
+                return render(request, self.template_name, {'obj': obj, 'form': form, 'staff': True})
             student = StudentRecord.objects.get(user=request.user)
             if student == obj.student:
                 return render(request, self.template_name, {'obj': obj, 'staff': False})
@@ -62,14 +79,23 @@ class RegistrationDetail(TemplateView):
 
     def post(self, request, **kwargs):
         try:
-            obj = RegistrationRecord.objects.get(transaction_id=kwargs['transaction_id'])
+            obj = RegistrationRecord.objects.get(registration_id=kwargs['registration_id'])
             if request.user.is_superuser or request.user == obj.event.user:
-                obj.amount = request.POST['amount']
-                obj.save(update_fields=['amount'])
-                messages.success(request, 'Successfully Update')
+                form = TransactionForm(request.POST)
+                if form.is_valid():
+                    temp = form.save(commit=False)
+                    temp.registration_id = obj.registration_id
+                    obj.amount += temp.amount
+                    temp.save()
+                    obj.save(update_fields=['amount'])
+                    obj.transaction_id.add(temp)
+                    messages.success(request, 'Successfully Update')
+                    return redirect('registration:registration_detail', kwargs['slug'])
+                else:
+                    messages.error(request, 'Invalid Inputs')
+                    return render(request, self.template_name, {'obj': obj, 'form': form, 'staff': True})
             else:
                 raise PermissionDenied
-            return redirect('registration:registration_detail', kwargs['slug'])
         except Exception:
             messages.error(request, 'You Does not Permission')
             return redirect('home')
