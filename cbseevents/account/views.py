@@ -15,7 +15,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView
 
 from event.models import *
-from events.models import *
 from student.models import *
 from .forms import *
 from .tokens import account_activation_token, password_reset_token
@@ -50,7 +49,7 @@ class Login(TemplateView):
                 # response = urllib.request.urlopen(req)
                 # result = json.loads(response.read().decode())
                 # ''' End reCAPTCHA validation '''
-                if True: # result['success']:
+                if True:  # result['success']:
                     email = form.cleaned_data['email']
                     password = form.cleaned_data['password']
                     try:
@@ -313,23 +312,9 @@ def del_user(request, username):
 
 def consolidated(request, username):
     user = User.objects.get(username=username)
-    workshop = WorkshopRecord.objects.filter(user=user)
-    seminar = SeminarRecord.objects.filter(user=user)
-    training = TrainingRecord.objects.filter(user=user)
-    competition = CompetitionRecord.objects.filter(user=user)
-    guest_lecture = GuestLectureRecord.objects.filter(user=user)
-    return render(request, 'consolidatedview.html',
-                  {'workshop': workshop, 'training': training, 'competition': competition,
-                   'seminar': seminar, 'guest_lecture': guest_lecture, 'now': timezone.now()})
+    return render(request, 'consolidatedview.html', {'now': timezone.now()})
 
 
 def consolidatedview(request):
     event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
-    workshop = WorkshopRecord.objects.filter(user=request.user)
-    seminar = SeminarRecord.objects.filter(user=request.user)
-    training = TrainingRecord.objects.filter(user=request.user)
-    competition = CompetitionRecord.objects.filter(user=request.user)
-    guest_lecture = GuestLectureRecord.objects.filter(user=request.user)
-    return render(request, 'consolidatedview.html', {'event_list':event_list, 'now': timezone.now(),
-                  'workshop': workshop, 'trainihng': training, 'competition': competition,
-                   'seminar': seminar, 'guest_lecture': guest_lecture})
+    return render(request, 'consolidatedview.html', {'event_list': event_list, 'now': timezone.now()})

@@ -1,9 +1,13 @@
 from datetime import date
-
+from io import BytesIO
+from django.template.loader import get_template
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.views.generic import TemplateView
+from xhtml2pdf import pisa
 
 from .forms import *
 
@@ -60,6 +64,38 @@ class RegisterStudentList(TemplateView):
 
 
 # noinspection PyBroadException
+class RegisterStudentListReport(TemplateView):
+    template_name = 'report.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            event = EventRecord.objects.get(slug=kwargs['slug'])
+            if request.user.is_superuser or request.user == event.user:
+                student_list = RegistrationRecord.objects.filter(event=event)
+                context = {'event': event, 'student_list':student_list}
+                # return render(request, self.template_name, context)
+                template = get_template('report.html')
+                html = template.render(context)
+                result = BytesIO()
+                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+                if not pdf.err:
+                    response = HttpResponse(result.getvalue(), content_type='application/pdf')
+                    filename = "Report.pdf"
+                    content = "inline; filename='%s'" % filename
+                    # content = "attachment; filename='%s'" % filename
+                    response['Content-Disposition'] = content
+                    return response
+                return HttpResponse("Not found")
+            raise PermissionDenied
+        except PermissionDenied:
+            messages.error(request, 'You Does not Permission')
+            return redirect('home')
+        # except Exception:
+        #     messages.error(request, 'Something went wrong')
+        #     return redirect('home')
+
+
+# noinspection PyBroadException
 class RegistrationDetail(TemplateView):
     template_name = 'registration_detail.html'
 
@@ -90,12 +126,15 @@ class RegistrationDetail(TemplateView):
                     obj.save(update_fields=['amount'])
                     obj.transaction_id.add(temp)
                     messages.success(request, 'Successfully Update')
-                    return redirect('registration:registration_detail', kwargs['slug'])
+                    return redirect('registration:registration_detail', kwargs['registration_id'])
                 else:
                     messages.error(request, 'Invalid Inputs')
                     return render(request, self.template_name, {'obj': obj, 'form': form, 'staff': True})
             else:
                 raise PermissionDenied
-        except Exception:
+        except PermissionDenied:
             messages.error(request, 'You Does not Permission')
+            return redirect('home')
+        except Exception:
+            messages.error(request, 'Error, Contact to US')
             return redirect('home')

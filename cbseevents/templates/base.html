@@ -12,18 +12,11 @@
 <body>
 <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-light border-bottom shadow-sm">
     <a class="mr-md-auto" href="{% url 'home' %}">
-        <img src="{% static 'images/cbse_logo.png' %}" alt="ABES EC" style="width: 195px;"></a>
+        <img src="{% static 'images/cbse_logo.png' %}" alt="CBSE" style="width: 175px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
-        {% if not user.is_authenticated %}
-            <a class="p-1 text-dark" href="{% url 'workshop' %}">Workshop</a>
-            <a class="p-1 text-dark" href="{% url 'seminar' %}">Seminar</a>
-            <a class="p-1 text-dark" href="{% url 'training' %}">Training</a>
-            <a class="p-1 text-dark" href="{% url 'competition' %}">Competition</a>
-            <a class="p-1 text-dark" href="{% url 'guest_lecture' %}">Guest Lecture</a>
-            <a class="p-1 text-dark" href="{% url 'excellence_center' %}">Excellence Center</a>{% endif %}
         {% if user.is_authenticated %}Welcome {{ user.first_name }}
-            {% if user.is_superuser %}<a class="p-1 text-dark" href="{% url 'superuser' %}">USERS</a>{% endif %}
-            {% if user.is_staff %}<a class="p-1 text-dark" href="{% url 'event:add_event' %}">Add Event</a>{% endif %}
+            {% if user.is_superuser %}<a class="p-1 text-dark" href="{% url 'superuser' %}">Add User</a>
+            {% elif user.is_staff %}<a class="p-1 text-dark" href="{% url 'event:add_event' %}">Add Event</a>{% endif %}
             <a class="p-1 text-dark" href="{% url 'consolidatedview' %}">Consolidated View</a>
             <a class="p-1 text-danger" href="{% url 'logout' %}">Logout</a>
         {% else %}
@@ -86,15 +79,12 @@
 </div>
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-{#        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"#}
-{#        crossorigin="anonymous"></script>#}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
-<script src="{% static 'js/search.js' %}"></script>
 {% block script %}{% endblock script %}
 </body>
 </html>

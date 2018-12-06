@@ -1,38 +1,40 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Student List | {{ block.super }}{% endblock %}
 {% block css %}{% endblock %}
 {% block content %}
-    <div class="py-3 pb-2 table-responsive-xl">
-        <table class="table table-bordered table-hover" id="myTable">
-            <thead>
-            <tr>
-                <th>S No.</th>
-                <th>Student Name</th>
-                <th>Student Email</th>
-                <th>Roll No.</th>
-                <th>Payment Id</th>
-                <th>Paid</th>
-                <th>Status</th>
-                <th>Pay Amount</th>
-            </tr>
-            </thead>
-            <tbody>{% for i in obj %}
+    <div class="px-md-3 pt-4 bg-white rounded shadow-sm">
+        <div class="py-3 pb-2 table-responsive-xl">{% if obj %}
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
-                    <td>{{ i.student.user.email }}</td>
-                    <td>{{ i.student.roll_no }}</td>
-                    <td>
-                        <a href="{% url 'registration:registration_detail' i.registration_id %}">{{ i.registration_id }}</a>
-                    </td>
-                    <td>{{ i.amount }}</td>
-                    <td>{% if i.cancel %}<span class="text-danger">Cancel</span>{% elif i.status %}
-                        <span class="text-success">Paid</span>{% else %}Unpaid{% endif %}</td>
-                    <td><a class="btn btn-outline-success btn-sm"
-                           href="{% url 'registration:registration_detail' i.registration_id %}">Pay Amount</a></td>
+                    <th>S No.</th>
+                    <th>Student Name</th>
+                    <th>Student Email</th>
+                    <th>Roll No.</th>
+                    <th>Payment Id</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Pay Amount</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>{% for i in obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
+                        <td>{{ i.student.user.email }}</td>
+                        <td>{{ i.student.roll_no }}</td>
+                        <td>
+                            <a href="{% url 'registration:registration_detail' i.registration_id %}">{{ i.registration_id }}</a>
+                        </td>
+                        <td>{{ i.amount }}</td>
+                        <td>{% if i.cancel %}<span class="text-danger">Cancel</span>{% elif i.status %}
+                            <span class="text-success">Paid</span>{% else %}Unpaid{% endif %}</td>
+                        <td><a href="{% url 'registration:registration_detail' i.registration_id %}#transaction"
+                               class="btn btn-outline-success btn-sm">Pay Amount</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>{% else %}<h2>Student does not Register</h2>{% endif %}
+        </div>
     </div>
 {% endblock %}
 {% block script %}{% endblock %}

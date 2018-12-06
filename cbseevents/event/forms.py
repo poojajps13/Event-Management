@@ -7,7 +7,7 @@ from .models import *
 
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
           ('guest_lecture', 'Guest Lecture')]
-BRANCHES = [('CSE', 'CSE'), ('CSIT', 'CSIT'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'),
+BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'),
             ('CE', 'CE'), ('MCA', 'MCA'), ('OTHER', 'OTHER')]
 CHOICE = [(1, 'YES'), (0, 'NO')]
 CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),

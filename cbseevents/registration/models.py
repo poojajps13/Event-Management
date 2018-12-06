@@ -7,14 +7,14 @@ from .utils import *
 class TransactionRecord(models.Model):
     transaction_id = models.SlugField(unique=True)
     amount = models.FloatField()
-    remark = models.CharField(max_length=55, default="")
+    remark = models.CharField(max_length=55, default="-")
     registration_id = models.CharField(max_length=55)
     update = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.transaction_id:
-            self.transaction_id = "{slug}-{count}".format(slug=self.registration_id, count=self.pk)
+            self.transaction_id = transaction_unique_slug(self, self.registration_id)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class RegistrationRecord(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.registration_id:
-            self.registration_id = unique_slug(self, self.event)
+            self.registration_id = registration_unique_slug(self, self.event)
         super().save(*args, **kwargs)
 
     def __str__(self):

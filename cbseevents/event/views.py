@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from .forms import *
 
 
+
 # Create your views here.
 # noinspection PyBroadException
 class AddEvent(TemplateView):
@@ -23,7 +24,7 @@ class AddEvent(TemplateView):
             return redirect('home')
 
     def post(self, request):
-        if True:
+        try:
             if request.user.is_staff:
                 form = EventForm(request.POST)
                 if form.is_valid():
@@ -37,9 +38,9 @@ class AddEvent(TemplateView):
             else:
                 raise PermissionDenied
             return render(request, self.template_name, {'form': form})
-        # except Exception:
-        #     messages.error(request, 'Permission Denied')
-        #     return redirect('home')
+        except Exception:
+            messages.error(request, 'Permission Denied')
+            return redirect('home')
 
 
 # noinspection PyBroadException

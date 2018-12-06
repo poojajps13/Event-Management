@@ -4,17 +4,15 @@
     <div class="px-3 pt-4 pb-5 bg-white rounded shadow-sm">
         <h2>Event Information</h2>
         <div class="px-3">
-            <h4>Event Code</h4>
-            <p class="lead px-3">{{ obj.event }}</p>
-            <hr>
-            <h4>Event Name</h4>
-            <p class="px-3">{{ obj.event.event_name }}</p>
+            <h4>Event Code & Name</h4>
+            <p class="lead px-3"><strong>{{ obj.event }}</strong>, {{ obj.event.event_name }}</p>
             <hr>
             <h4>Description</h4>
             <p class="px-3">{{ obj.event.description }}</p>
             <hr>
             <h4>Timing</h4>
             <p class="px-3">{{ obj.event.event_date }}</p>
+            <hr>
         </div>{% if staff %}
         <h2>Student Information</h2>
         <div class="px-3">
@@ -28,14 +26,14 @@
             <p class="px-3">{{ obj.student.roll_no }}</p>
             <hr>
             <h4>Branch</h4>
-            <p class="px-3">{{ obj.student.branch }}</p>
-            <h4>Batch</h4>
-            <p class="px-3">{{ obj.student.batch_start }}-{{ obj.student.batch_end }}</p>
+            <p class="px-3">{{ obj.student.branch }}, {{ obj.student.batch_start }}-{{ obj.student.batch_end }}</p>
+            <hr>
             <h4>Contact Number</h4>
             <p class="px-3">{{ obj.student.number }}</p>
+            <hr>
         </div>{% endif %}
         <div class="px-4 table-responsive-xl">
-            <h4>Transaction Details</h4>{% if obj.transaction_id.all %}
+            <h2>Transaction Details</h2>{% if obj.transaction_id.all %}
             <table class="table table-bordered table-hover" id="myTable">
                 <thead>
                 <tr style="font-weight: 600;">
@@ -58,14 +56,17 @@
             </table>
             <h2 class="py-3">Total Amount: {{ obj.amount }}</h2>{% else %}
             <h2 class="text-danger">No Transaction Yet</h2>{% endif %}
+            <hr>
         </div>{% if staff %}
-        <form action="" method="post" class="px-md-2">{% csrf_token %}
-            <h3>Make A Transition</h3>
-            <div class="col-md-4 pb-3">Amount: {{ form.amount }}</div>
-            <div class="col-md-4 pb-3">Remark: {{ form.remark }}</div>
-            <div class="px-md-3 pt-3 pb-5 row">
-                <button type="submit" class="px-md-5 btn btn-outline-primary">Update</button>
-                <button type="reset" class="btn btn-outline-danger">Reset</button>
+        <form action="" method="post" class="px-md-5" id="transaction">{% csrf_token %}
+            <h3>Make A Transaction</h3>
+            <div class="col-md-5 p-2">Amount: {{ form.amount }}</div>
+            <div class="col-md-5 p-2">Remark: {{ form.remark }}</div>
+            <div class="col-md-5 p-2">
+                <button type="submit" class="btn btn-outline-primary btn-sm m-2 px-md-4">Update</button>
+                <button type="reset" class="btn btn-outline-danger btn-sm m-2">Reset</button>
+                <a href="{% url 'registration:register_student_list' obj.event %}"
+                   class="btn btn-sm btn-outline-info px-5 m-2 float-right">Back</a>
             </div>
         </form>{% endif %}
     </div>
