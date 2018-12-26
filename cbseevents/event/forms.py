@@ -3,10 +3,10 @@ from datetime import date
 from django import forms
 from django.forms.widgets import SelectDateWidget
 
-from .models import *
+from .models import EventRecord
 
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
-          ('guest_lecture', 'Guest Lecture')]
+          ('guest-lecture', 'Guest Lecture')]
 BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'),
             ('CE', 'CE'), ('MCA', 'MCA'), ('OTHER', 'OTHER')]
 CHOICE = [(1, 'YES'), (0, 'NO')]
@@ -90,3 +90,9 @@ class EventForm(forms.ModelForm):
             raise forms.ValidationError("Invalid Event Date")
         except Exception:
             raise forms.ValidationError("Invalid Event Date")
+
+    def clean_fees(self):
+        fee = self.cleaned_data['fees']
+        if 0 <= fee <= 10000:
+            return fee
+        raise forms.ValidationError('Invalid Amount')

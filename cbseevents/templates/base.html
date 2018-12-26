@@ -15,12 +15,14 @@
         <img src="{% static 'images/cbse_logo.png' %}" alt="CBSE" style="width: 175px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
         {% if user.is_authenticated %}Welcome {{ user.first_name }}
-            {% if user.is_superuser %}<a class="p-1 text-dark" href="{% url 'superuser' %}">Add User</a>
+            {% if user.is_superuser %}<a class="p-1 text-dark" href="{% url 'account:superuser' %}">Manage User</a>
+                <a class="p-1 text-dark" href="">Generate Report</a>
             {% elif user.is_staff %}<a class="p-1 text-dark" href="{% url 'event:add_event' %}">Add Event</a>{% endif %}
-            <a class="p-1 text-dark" href="{% url 'consolidatedview' %}">Consolidated View</a>
-            <a class="p-1 text-danger" href="{% url 'logout' %}">Logout</a>
+            <a class="p-1 text-dark" href="{% url 'account:consolidated_view_all' %}">Consolidated View</a>
+            <a class="p-1 text-danger" href="{% url 'account:logout' %}">Logout</a>
         {% else %}
-            <a class="p-2" href="{% url 'login' %}">Login</a><a class="p-2" href="{% url 'signup' %}">Signup</a>
+            <a class="p-2" href="{% url 'account:login' %}">Login</a>
+            <a class="p-2" href="{% url 'account:signup' %}">Signup</a>
         {% endif %}
     </nav>
 </div>
@@ -29,8 +31,7 @@
         <div class="alert alert-dismissible fade show container fit-text {% if m.tags == 'success' %}alert-success{% elif m.tags == 'warning' %}alert-warning{% elif m.tags == 'info' %}alert-info{% else %}alert-danger{% endif %}"
              role="alert">{{ m }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                <span aria-hidden="true">&times;</span></button>
         </div>{% endfor %}
         <!-- - - - - - - - - - START - - - - - - - - - - - -->
         {% block content %}{% endblock content %}
@@ -39,42 +40,8 @@
 </div>
 <!-- Footer -->
 <div class="bg-dark">
-    <footer class="pt-3 mt-4 text-white container">
-        <div class="row pt-md-5 pb-md-4 mx-lg-5">
-            <div class="col-12 col-md">
-                <img class="mb-2" src="" alt="ABES EC" width="24" height="24">
-                <small class="d-block mb-3 text-muted">&copy; Pooja</small>
-            </div>
-            <div class="col-6 col-md">
-                <h4 style="color: white">Other Links</h4>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Cool stuff</a></li>
-                    <li><a class="text-muted" href="#">Random feature</a></li>
-                    <li><a class="text-muted" href="#">Team feature</a></li>
-                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                    <li><a class="text-muted" href="#">Another one</a></li>
-                    <li><a class="text-muted" href="#">Last time</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h4 style="color: white">Contact Us</h4>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Resource</a></li>
-                    <li><a class="text-muted" href="#">Resource name</a></li>
-                    <li><a class="text-muted" href="#">Another resource</a></li>
-                    <li><a class="text-muted" href="#">Final resource</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h4 style="color: white">About</h4>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Team</a></li>
-                    <li><a class="text-muted" href="#">Locations</a></li>
-                    <li><a class="text-muted" href="#">Privacy</a></li>
-                    <li><a class="text-muted" href="#">Terms</a></li>
-                </ul>
-            </div>
-        </div>
+    <footer class="py-4 text-white container text-center">
+        <small class="d-block mb-3 text-muted">&copy; Pooja Singh</small>
     </footer>
 </div>
 <!-- Scripts -->
@@ -85,6 +52,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="{% static 'js/search.js' %}"></script>
 {% block script %}{% endblock script %}
 </body>
 </html>

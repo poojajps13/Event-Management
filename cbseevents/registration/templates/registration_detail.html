@@ -10,8 +10,8 @@
             <h4>Description</h4>
             <p class="px-3">{{ obj.event.description }}</p>
             <hr>
-            <h4>Timing</h4>
-            <p class="px-3">{{ obj.event.event_date }}</p>
+            <h4>Date</h4>
+            <p class="px-3">{{ obj.event.event_date|date:"F d, Y" }}</p>
             <hr>
         </div>{% if staff %}
         <h2>Student Information</h2>
@@ -43,6 +43,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Remark</th>
                     <th scope="col">Date</th>
+                    <th scope="col">User</th>
                 </thead>
                 <tbody>{% for name in obj.transaction_id.all %}
                     <tr>
@@ -52,6 +53,7 @@
                         <td>{{ name.amount }}</td>
                         <td>{{ name.remark }}</td>
                         <td>{{ name.timestamp }}</td>
+                        <td>{{ name.user }}</td>
                     </tr>{% endfor %}</tbody>
             </table>
             <h2 class="py-3">Total Amount: {{ obj.amount }}</h2>{% else %}

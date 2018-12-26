@@ -1,42 +1,57 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-ul {
-	color: grey;
-  list-style: none;
-}
-ul li::before {
-  content: "\2022";
-  color: red;
-  font-weight: bold;
-  display: inline-block; 
-  width: 1em;
-  margin-left: -1em;
-}
-</style>
-<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
-<h2 style="color: red;">Centre of Excellence for Mobile Application Development</h2>
-<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static9.png' %}"/>
-<p style="float: left;">Mobile App Development Training is a course that provides an opportunity to learn various mobile application development frameworks that run on the mobile platforms and the Internet. Learn relevant skills and develop an understanding of the issues surrounding the Mobile Platforms and SDKs including: iOS, Android, HTML5 Mobile Web, JQuery Mobile, PhoneGap, and Windows Mobile.</p>
-<p>
-The course covers every facet of mobile app development, including project management, requirements, architectural design, GUI and layout, data management, integration with existing web and legacy applications, web services, security, porting, and the management of mobile application development projects.</p>
-<h2 style="color: red;">Objective</h2>
-<ul>
-<li>Develop the skills required to create applications for the major mobile device players including Apple iOS, Google Android, Blackberry, and Windows Phone.</li>
-<li>Learn popular programming languages for mobile development including: Objective C, Java, C++, HTML5, Swift, C#,</li>
-<li>Develop the skills required to create applications using HTML5, jQuery Mobile and PhoneGap.</li>
-<li>Understand mobile development challenges including memory and processor limitations, intermittent network access, and limited battery power.</li>
-<li>Learn how to effectively use application architectures to build variety of Mobile Apps.</li>
-<li>Explain the factors to consider when designing software for multiple platforms.</li>
-<li>Implement applications using object oriented design, MVC pattern and test driven development.</li>
-<li>Understand how to use other technologies including cloud computing and social networking platforms such as Facebook, Twitter, and LinkedIn</li>
-<li>Gain insight into new trends and features in the mobile device marketplace</li>
-</ul>
-<h2 style="color: red;">Technologies Covered</h2>
-<ul>
-<li>IOS</li>
-<li>Android</li>
-</ul>
-</div>
+    <style>
+        ul {
+            color: grey;
+            list-style: none;
+        }
+
+        ul li::before {
+            content: "\2022";
+            color: red;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+    <div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+        <h2 style="color: red;">Centre of Excellence for Mobile Application Development</h2>
+        <img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static9.png' %}"/>
+        <p style="float: left;">Mobile App Development Training is a course that provides an opportunity to learn
+            various mobile application development frameworks that run on the mobile platforms and the Internet. Learn
+            relevant skills and develop an understanding of the issues surrounding the Mobile Platforms and SDKs
+            including: iOS, Android, HTML5 Mobile Web, JQuery Mobile, PhoneGap, and Windows Mobile.</p>
+        <p>
+            The course covers every facet of mobile app development, including project management, requirements,
+            architectural design, GUI and layout, data management, integration with existing web and legacy
+            applications, web services, security, porting, and the management of mobile application development
+            projects.</p>
+        <h2 style="color: red;">Objective</h2>
+        <ul>
+            <li>Develop the skills required to create applications for the major mobile device players including Apple
+                iOS, Google Android, Blackberry, and Windows Phone.
+            </li>
+            <li>Learn popular programming languages for mobile development including: Objective C, Java, C++, HTML5,
+                Swift, C#,
+            </li>
+            <li>Develop the skills required to create applications using HTML5, jQuery Mobile and PhoneGap.</li>
+            <li>Understand mobile development challenges including memory and processor limitations, intermittent
+                network access, and limited battery power.
+            </li>
+            <li>Learn how to effectively use application architectures to build variety of Mobile Apps.</li>
+            <li>Explain the factors to consider when designing software for multiple platforms.</li>
+            <li>Implement applications using object oriented design, MVC pattern and test driven development.</li>
+            <li>Understand how to use other technologies including cloud computing and social networking platforms such
+                as Facebook, Twitter, and LinkedIn
+            </li>
+            <li>Gain insight into new trends and features in the mobile device marketplace</li>
+        </ul>
+        <h2 style="color: red;">Technologies Covered</h2>
+        <ul>
+            <li>IOS</li>
+            <li>Android</li>
+        </ul>
+    </div>
 {% endblock content %}

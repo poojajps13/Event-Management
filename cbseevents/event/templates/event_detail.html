@@ -1,27 +1,58 @@
 {% extends 'base.html' %}{% load staticfiles %}{% block head_title %}Event Detail | {{ block.super }}{% endblock %}
 {% block css %}{% endblock %}
 {% block content %}
-    <div class="px-5 pt-4 pb-5 bg-white rounded shadow-sm">
-        <h2>{{ obj.event_name }}</h2>
-        <div class="clearfix pb-4">
-            <span class="lead pr-lg-5">Event Code: {{ obj.slug }} </span>{% if user.is_authenticated %}
-            <a href="{% url 'event:update_event' obj.slug %}" class="btn btn-outline-primary btn-sm pr-3">Update</a>
-            <a href="" class="btn btn-outline-danger btn-sm">Delete</a>{% else %}
-            <a href="{% url 'registration:register_event' obj.slug %}"
-               class="btn btn-outline-success btn-sm">Register</a>{% endif %}</div>
-        <div>
-            <p>Registration Start : {{ obj.registration_start }}<br>Registration Ends : {{ obj.registration_end }}</p>
+    <div class="container bg-white p-sm-3">
+        <h3 class="text-capitalize">{{ obj.type }}</h3>
+        <div class="card-deck my-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 style="margin: 0;"><strong>{{ obj.event_name }}</strong></h3>
+                    <span class="text-capitalize">(By {{ obj.resource_person }})</span><br>
+                    Event Code: <strong>{{ obj.slug }}</strong><br><br>
+                    <p>Location(s): <span class="text-capitalize">{{ obj.venue }}</span></p>
+                    <div class="pt-2 btn-toolbar justify-content-between">
+                        <div class="p-2">Event Date<br>
+                            <span style="color: red">{{ obj.event_date|date:'F d, Y' }}</span></div>
+                        <div class="p-2">Duration<br>{{ obj.duration_number }} {{ obj.duration_string }}</div>
+                        <div class="p-2">Fee<br>{{ obj.fees }}</div>
+                        <div class="p-2">Posted On<br>{{ obj.timestamp|date:'F d, Y' }}</div>
+                        <div class="p-2">Registration Start<br>
+                            <span class="text-capitalize">{{ obj.registration_start }}</span></div>
+                        <div class="p-2">Registration End<br>
+                            <span style="color: red" class="text-capitalize">{{ obj.registration_end }}</span></div>
+                    </div>
+                </div>
+                <div class="card-header">{% if owner %}
+                    <a href="{% url 'event:update_event' obj.slug %}" class="btn btn-outline-primary btn-sm">Update</a>
+                {% endif %}</div>
+            </div>
         </div>
-        <h2>About :</h2>
-        <p>{{ obj.description }}</p>
-        <h4>Fees: Rs. {{ obj.fees }}</h4>
-        <h4>Venue: {{ obj.venue }}</h4>
-        <h4>Event starts on: <span class="text-capitalize">{{ obj.event_date }}</span></h4>
-        <h4>Event duration: {{ obj.duration_number }} {{ obj.duration_string }}</h4>
-        <h4>Eligible Branches: {{ obj.eligible_branches }}</h4>
-        <h4>Is allowed for outside students ??? {% if obj.outside_student == 1 %}Yes{% else %}No{% endif %}</h4>
-        <h3>About Resource Person</h3>
-        <p>{{ obj.resource_person }}</p>
-        <p>{{ obj.resource_person_data }}</p>
+        <div class="card-deck my-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <strong>About {{ obj.event_name }}:</strong>
+                    <pre style="white-space: pre-wrap">{{ obj.description }}</pre>
+                    <strong>About the Resource Person ({{ obj.resource_person }}):</strong><br>
+                    <pre style="white-space: pre-wrap">{{ obj.resource_person_data }}</pre>
+                    <strong>Who can apply:</strong>
+                    <p>
+                        Branch: {{ obj.eligible_branches }}<br>
+                        Outside of ABES Engineering College: {% if obj.outside_student == 1 %}Yes{% else %}No{% endif %}
+                    </p>
+                    <strong>Perks:</strong>
+                    <p>Certificate</p>
+                    <div class="text-center">{% if owner %}
+                        <a href="{% url 'event:update_event' obj.slug %}"
+                           class="btn btn-outline-primary px-5">Update</a>
+                        {% else %}{% if now <= obj.registration_end and obj.registration_open %}
+                            <a onclick="return confirm('Are you sure to register in {{ obj.event_name }}')"
+                               href="{% url 'registration:register_event' obj %}" class="btn btn-outline-success px-5">
+                                Registration Open</a>{% else %}
+                            <button class="btn btn-outline-danger px-5" disabled>Registration Closed</button>
+                        {% endif %}{% endif %}</div>
+                </div>
+            </div>
+        </div>
     </div>
+
 {% endblock content %}

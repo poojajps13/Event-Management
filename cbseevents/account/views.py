@@ -1,11 +1,12 @@
-import json
-import urllib.parse
-import urllib.request
-
-from django.conf import settings
+# import json
+# import urllib.parse
+# import urllib.request
+#
+# from django.conf import settings
 from django.contrib import messages, auth
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -14,13 +15,19 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView
 
-from event.models import *
-from student.models import *
-from .forms import *
+from event.models import EventRecord
+from registration.models import RegistrationRecord
+from student.models import StudentRecord
+from .forms import SignupForm, LoginForm, ResetPasswordForm, EditUserForm, EmailForm1, EmailForm2, StudentForm
 from .tokens import account_activation_token, password_reset_token
 
 
 # Create your views here.
+def logout(request):
+    auth.logout(request)
+    return redirect('home')
+
+
 # noinspection PyBroadException
 class Login(TemplateView):
     template_name = 'login.html'
@@ -41,7 +48,7 @@ class Login(TemplateView):
                 # re_captcha_response = request.POST.get('g-recaptcha-response')
                 # url = 'https://www.google.com/recaptcha/api/siteverify'
                 # values = {
-                #     'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                #     'secret': settings.RECAPTCHA_PRIVATE_KEY,
                 #     'response': re_captcha_response
                 # }
                 # data = urllib.parse.urlencode(values).encode()
@@ -59,9 +66,7 @@ class Login(TemplateView):
                             auth.login(request, user)
                             if 'next' in request.POST:
                                 return redirect(request.POST.get('next'))
-                            if u.is_staff:
-                                return redirect("consolidatedview")
-                            return redirect('home')
+                            return redirect("account:consolidated_view_all")
                         elif not u.is_active:
                             messages.warning(request, 'Please confirm the activation link from your Email')
                         else:
@@ -76,7 +81,7 @@ class Login(TemplateView):
                     user = User.objects.get(username=email.lower())
                     if not user.is_active:
                         current_site = get_current_site(request)
-                        mail_subject = 'Activate your Conference Account.'
+                        mail_subject = 'Activate your CBSE Account.'
                         message = render_to_string('acc_active_email.txt', {
                             'user': user,
                             'domain': current_site.domain,
@@ -96,7 +101,7 @@ class Login(TemplateView):
                     user = User.objects.get(username=email.lower())
                     if user.is_active:
                         current_site = get_current_site(request)
-                        mail_subject = 'Password Reset link of your Conference Account.'
+                        mail_subject = 'Password Reset link of your CBSE Account.'
                         message = render_to_string('forget-password.txt', {
                             'user': user,
                             'domain': current_site.domain,
@@ -135,18 +140,18 @@ class Signup(TemplateView):
         if form1.is_valid() and form2.is_valid():
             try:
                 ''' Begin reCAPTCHA validation '''
-                re_captcha_response = request.POST.get('g-recaptcha-response')
-                url = 'https://www.google.com/recaptcha/api/siteverify'
-                values = {
-                    'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                    'response': re_captcha_response
-                }
-                data = urllib.parse.urlencode(values).encode()
-                req = urllib.request.Request(url, data=data)
-                response = urllib.request.urlopen(req)
-                result = json.loads(response.read().decode())
+                # re_captcha_response = request.POST.get('g-recaptcha-response')
+                # url = 'https://www.google.com/recaptcha/api/siteverify'
+                # values = {
+                #     'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                #     'response': re_captcha_response
+                # }
+                # data = urllib.parse.urlencode(values).encode()
+                # req = urllib.request.Request(url, data=data)
+                # response = urllib.request.urlopen(req)
+                # result = json.loads(response.read().decode())
                 ''' End reCAPTCHA validation '''
-                if result['success']:
+                if True:  # result['success']:
                     username = form1.cleaned_data['email']
                     first_name = form1.cleaned_data['first_name']
                     last_name = form1.cleaned_data['last_name']
@@ -159,7 +164,7 @@ class Signup(TemplateView):
                     temp.save()
                     '''Begin Email Sending '''
                     current_site = get_current_site(request)
-                    mail_subject = 'Activate your Conference Account.'
+                    mail_subject = 'Activate your CBSE Account.'
                     message = render_to_string('acc_active_email.txt', {
                         'user': user,
                         'domain': current_site.domain,
@@ -170,44 +175,41 @@ class Signup(TemplateView):
                     email.send()
                     '''End Email sending'''
                     messages.success(request, 'Please confirm your email address to complete the registration.')
-                    return redirect("login")
+                    return redirect("account:login")
                 else:
                     messages.error(request, "Invalid reCAPTCHA. Please try again.")
             except Exception:
                 messages.error(request, 'Problem to Sending Email. Please Contact Us.')
-                return redirect("signup")
+                return redirect("account:signup")
         else:
             messages.error(request, "Invalid Input. Please try again")
         return render(request, self.template_name, {'form1': form1, 'form2': form2})
 
 
-def activate(request, uidb64, token):
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except Exception:
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        auth.login(request, user)
-        messages.success(request, 'Thank you for Email Confirmation.')
-        return redirect("home")
-    elif user.is_active:
-        auth.login(request, user)
-        return redirect("home")
-    else:
-        messages.error(request, 'Activation link is invalid! Contact to Us')
-        return redirect("account:signup")
-
-
-def logout(request):
-    auth.logout(request)
-    return redirect('home')
+# noinspection PyBroadException
+class Activate(TemplateView):
+    def get(self, request, *args, **kwargs):
+        try:
+            uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
+            user = User.objects.get(pk=uid)
+        except Exception:
+            user = None
+        if user is not None and account_activation_token.check_token(user, kwargs['token']):
+            user.is_active = True
+            user.save()
+            auth.login(request, user)
+            messages.success(request, 'Thank you for Email Confirmation.')
+            return redirect("home")
+        elif user.is_active:
+            auth.login(request, user)
+            return redirect("home")
+        else:
+            messages.error(request, 'Activation link is invalid! Contact to Us')
+            return redirect("account:signup")
 
 
 # noinspection PyBroadException
-class ResetPassword(TemplateView):
+class ForgetPassword(TemplateView):
     template_name = 'reset-password.html'
 
     def get(self, request, *args, **kwargs):
@@ -238,6 +240,58 @@ class ResetPassword(TemplateView):
                 return render(request, self.template_name, {'form': form})
         except Exception:
             messages.error(request, 'Invalid Link')
+        return redirect('home')
+
+# noinspection PyBroadException
+class ResetPassword(TemplateView):
+    template_name = 'reset-password.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = User.objects.get(username=request.user)
+            if user.is_active:
+                form = ResetPasswordForm()
+                return render(request, self.template_name, {'form': form})
+        except Exception:
+            messages.error(request, 'User not Found')
+        return redirect('home')
+
+    def post(self, request, **kwargs):
+        try:
+            user = User.objects.get(username=request.user)
+            if user.is_active:
+                form = ResetPasswordForm(request.POST)
+                if form.is_valid():
+                    password = form.cleaned_data['password']
+                    user.set_password(password)
+                    user.save()
+                    messages.success(request, 'Password Updated')
+                    auth.login(request, user)
+                    return redirect('home')
+                messages.error(request, 'Password Does not Match')
+                return render(request, self.template_name, {'form': form})
+        except Exception:
+            messages.error(request, 'Invalid Link')
+        return redirect('home')
+
+def consolidated_view(request, c_o_e=None, username=None):
+    try:
+        if request.user.is_superuser:
+            if c_o_e:
+                event_list = EventRecord.objects.filter(c_o_e=c_o_e).order_by('-id')
+            elif username:
+                user = User.objects.get(username=username)
+                event_list = EventRecord.objects.filter(user=user).order_by('-id')
+            else:
+                event_list = EventRecord.objects.all().order_by('-id')
+        elif request.user.is_staff:
+            event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
+        else:
+            student = StudentRecord.objects.get(user=request.user)
+            event_list = RegistrationRecord.objects.filter(student=student)
+        return render(request, 'consolidated_view.html', {'event_list': event_list, 'now': timezone.now()})
+    except ObjectDoesNotExist:
+        messages.error(request, 'Record Not Found')
         return redirect('home')
 
 
@@ -308,13 +362,3 @@ def del_user(request, username):
     except Exception as e:
         return render(request, 'superuser.html', {'err': e})
     return redirect('superuser')
-
-
-def consolidated(request, username):
-    user = User.objects.get(username=username)
-    return render(request, 'consolidatedview.html', {'now': timezone.now()})
-
-
-def consolidatedview(request):
-    event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
-    return render(request, 'consolidatedview.html', {'event_list': event_list, 'now': timezone.now()})

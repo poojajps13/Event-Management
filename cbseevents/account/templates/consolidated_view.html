@@ -1,0 +1,85 @@
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Consolidated View |{{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
+{% block content %}
+    <div class="pt-3">{% if user.is_superuser %}
+        <div>
+            Center of Excellence:
+            <a href="{% url 'account:consolidated_view_all' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="All Event">All</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='SDA' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Structural Design And Analysis">SDA</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='NW' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Cisco Networking Academy">NW</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='TIES' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Texas Instruments Embedded System Lab">TIES</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='SMC' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="SMC India Pvt Ltd.">SMC</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='IARTC' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Industrial Automation Research And Training Centre">IARTC</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='VLSI' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="VLSI Design">VLSI</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='BIGD' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Big Data Analytics">BIGD</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='MobApp' %}" class="btn btn-sm btn-outline-primary m-2"
+               title="Mobile Application Development">MobApp</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='SWD' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Center For Enterprise Software Development">SWD</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='TST' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="Testing">TST</a>
+            <a href="{% url 'account:consolidated_c_o_e' c_o_e='NI' %}" class="btn btn-sm btn-outline-primary m-2"
+               style="width: 50px;" title="ABES-NI Innovation Centre">NI</a>
+        </div>{% endif %}
+        <div class="card-deck my-4">{% if user.is_staff or user.is_superuser %}{% for event in event_list %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header btn-toolbar justify-content-between">
+                    <span class="font-weight-normal text-capitalize">{{ event.type }}</span>
+                    {% if now <= event.registration_end %}<span class="text-success">Active</span>
+                    {% else %}<span class="text-danger">Not Active</span>{% endif %}
+                </div>
+                <div class="card-body">
+                    <p>Event Name: <a href="{% url 'event:event_detail' event.slug %}">{{ event.event_name }}</a><br>
+                        Event Code: <a href="{% url 'event:event_detail' event.slug %}">{{ event }}</a><br>
+                        Event Date: <span class="text-danger">{{ event.event_date|date:"F d, Y" }}</span><br>Trainer:
+                        {% if user.is_superuser %}<a href="{% url 'account:consolidated_username' event.user %}">
+                        {% endif %}{{ event.user.first_name }} {{ event.user.last_name }}</a></p>
+                    <p>No. of Student Registered {{ event.registered_student }}</p>
+                    <div class="pt-2 btn-toolbar justify-content-between">
+                        <a href="{% url 'registration:register_student_list' event.slug %}">Student List</a>
+                        <a href="{% url 'registration:print_student_list' event.slug %}">Generate Report</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="pb-3 px-3 btn-toolbar justify-content-between">
+                    <a href="{% url 'event:update_event' slug=event.slug %}"
+                       class="btn btn-outline-primary btn-sm px-4">Update</a>
+                    <a href="{% url 'event:delete_event' slug=event.slug timestamp=event.timestamp %}"
+                       class="btn btn-outline-danger btn-sm px-4"
+                       onclick="return confirm('Are you sure to Delete {{ event.event_name }} event?')">Delete</a>
+                </div>
+            </div>{% endfor %}{% if not event_list %}
+            <span class="text-danger">No Event Yet. Please create a Event</span>{% endif %}{% else %}
+            {% for reg in event_list %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header btn-toolbar justify-content-between">
+                    <span class="font-weight-normal text-capitalize">{{ reg.event.type }}</span>
+                    {% if now <= reg.event.registration_end %}<span class="text-success">Active</span>
+                    {% else %}<span class="text-danger">Not Active</span>{% endif %}
+                </div>
+                <div class="card-body">
+                    <p>Event Name: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event.event_name }}</a><br>
+                        Event Code: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event }}</a><br>
+                        Event Date: <span class="text-danger">{{ reg.event.event_date|date:"F d, Y" }}</span><br>
+                        Trainer: {{ reg.event.user.first_name }} {{ reg.event.user.last_name }}</p>
+                </div>
+                <hr>
+                <div class="pb-3 px-3 btn-toolbar justify-content-between">
+                    <a href="{% url 'event:event_detail' reg.event %}"
+                       class="btn btn-outline-primary btn-sm px-4">Detail</a>
+                    <a href="" class="btn btn-outline-danger btn-sm px-4">Feedback</a>
+                </div>
+            </div>{% endfor %}{% if not event_list %}
+            <span class="text-danger">No Event Yet. Please Register in Event</span>{% endif %}{% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block script %}{% endblock %}

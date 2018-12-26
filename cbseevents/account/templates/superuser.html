@@ -1,5 +1,5 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}User | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}{% block content %}{% if user.is_staff or user.is_superuser %}
+{% block css %}{% endblock %}{% block content %}{% if user.is_superuser %}
     <div class="bg-white pb-4 px-md-5 px-2 rounded shadow-sm">
         <div class="pt-4 d-flex justify-content-between"><h2>List of User</h2>
             <div style="width: 300px">
@@ -26,14 +26,14 @@
                         <td>{{ i.first_name }} {{ i.last_name }}</td>
                         <td>{{ i.email }}</td>
                         <td style="text-align: center; vertical-align: middle;">
-                            <a href="{% url 'consolidated' username=i %}">
-                                <img src="{% static 'images/icons8-profile.png' %}"></a></td>
+                            <a href="{% url 'account:consolidated_username' username=i %}">
+                                <img src="{% static 'images/icons8-profile.png' %}" alt="Profile"></a></td>
                         <td style="text-align: center; vertical-align: middle;">
-                            <a href="{% url 'edit_user' username=i %}">
-                                <img src="{% static 'images/icons8-edit.png' %}"></a></td>
+                            <a href="{% url 'account:edit_user' username=i %}">
+                                <img src="{% static 'images/icons8-edit.png' %}" alt=""></a></td>
                         <td style="text-align: center; vertical-align: middle;">
-                            <a href="{% url 'deleteuser' username=i %}">
-                                <img src="{% static 'images/icons8-cancel.png' %}"></a>
+                            <a href="{% url 'account:delete_user' username=i %}">
+                                <img src="{% static 'images/icons8-cancel.png' %}" alt="&times;"></a>
                     </tr>{% endfor %}</tbody>
             </table>{% else %}
             <h3>No User yet</h3>{% endif %}</div>

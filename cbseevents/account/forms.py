@@ -26,7 +26,7 @@ class SignupForm(forms.ModelForm):
         attrs={'class': 'form-control', 'placeholder': 'Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}),
         required=True, max_length=30)
     confirm_password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Confirm Password',
+        attrs={'class': 'form-control', 'placeholder': 'Re-Enter Password',
                'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}), required=True, max_length=30)
 
     class Meta:
@@ -48,20 +48,19 @@ class SignupForm(forms.ModelForm):
     def clean_confirm_password(self):
         password1 = self.cleaned_data['password']
         password2 = self.cleaned_data['confirm_password']
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError("Password does not match")
-            else:
-                password_validation.validate_password(password2)
-
+        if password1 != password2:
+            raise forms.ValidationError("Password does not match")
+        else:
+            password_validation.validate_password(password2)
+        return password2
 
 
 class StudentForm(forms.ModelForm):
     roll_no = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Roll Number'}), required=True, max_length=15)
-    college_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'College Name'}), required=True,
-        max_length=200)
+        attrs={'class': 'form-control', 'placeholder': 'Admission Number'}), required=True, max_length=15)
+    college_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'College Name', 'value': 'ABES Engineering College'}),
+        required=True, max_length=200)
     branch = forms.CharField(
         label='BRANCHES', widget=forms.Select(choices=BRANCHES, attrs={'class': 'form-control'}), required=True)
     batch_start = forms.CharField(
@@ -98,11 +97,25 @@ class EmailForm1(forms.Form):
         attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
                'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
 
+    def clean_email1(self):
+        email = self.cleaned_data['email1']
+        try:
+            validate_email(email)
+        except ValidationError:
+            return forms.ValidationError("Email is not in correct format")
+
 
 class EmailForm2(forms.Form):
     email2 = forms.CharField(widget=forms.EmailInput(
         attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
                'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
+
+    def clean_email2(self):
+        email = self.cleaned_data['email2']
+        try:
+            validate_email(email)
+        except ValidationError:
+            return forms.ValidationError("Email is not in correct format")
 
 
 class ResetPasswordForm(forms.Form):
@@ -110,27 +123,24 @@ class ResetPasswordForm(forms.Form):
         attrs={'class': 'form-control', 'placeholder': 'New Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
                'title': 'New Password'}), required=True, max_length=20)
     confirm_password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Confirm Password',
-               'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
-               'title': 'Confirm Password'}), required=True, max_length=20)
+        attrs={'class': 'form-control', 'placeholder': 'Re-Enter Password', 'title': 'Re-Enter Password',
+               'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}), required=True, max_length=20)
 
     def clean_confirm_password(self):
         password1 = self.cleaned_data['password']
         password2 = self.cleaned_data['confirm_password']
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError("Password does not match")
-            else:
-                password_validation.validate_password(password2)
+        if password1 != password2:
+            raise forms.ValidationError("Password does not match")
+        else:
+            password_validation.validate_password(password2)
+        return password2
 
 
 class EditUserForm(forms.ModelForm):
-    first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}), required=True,
-        max_length=20)
-    last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}), required=False,
-        max_length=30)
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'First Name'}), required=True, max_length=20)
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Last Name'}), required=False, max_length=30)
     email = forms.CharField(widget=forms.EmailInput(
         attrs={'class': 'form-control', 'placeholder': 'Email',
                'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from .utils import *
+from .utils import get_unique_slug
 
 
 # Create your models here.
@@ -13,17 +13,17 @@ class EventRecord(models.Model):
     description = models.TextField(max_length=2010)
     duration_number = models.CharField(max_length=10)
     duration_string = models.CharField(max_length=10)
-    resource_person = models.CharField(max_length=110)
-    resource_person_data = models.TextField(max_length=2010)
     registration_start = models.DateTimeField()
     registration_end = models.DateTimeField()
     event_date = models.DateTimeField()
+    fees = models.FloatField()
     eligible_branches = models.CharField(max_length=50)
     outside_student = models.IntegerField(default=0)
     venue = models.TextField(max_length=2010)
+    resource_person = models.CharField(max_length=110)
+    resource_person_data = models.TextField(max_length=2010)
     registered_student = models.IntegerField(default=0)
-    fees = models.FloatField()
-    close = models.BooleanField(default=False)
+    registration_open = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 

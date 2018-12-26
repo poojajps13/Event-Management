@@ -1,43 +1,50 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-ul {
-	color: grey;
-  list-style: none;
-}
-ul li::before {
-  content: "\2022";
-  color: red;
-  font-weight: bold;
-  display: inline-block; 
-  width: 1em;
-  margin-left: -1em;
-}
-</style>
-<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
-<h2 style="color: red;">Cisco Networking Academy</h2>
-<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static2.png' %}"/>
-<p style="float: left;">ABES Engineering College had set up the “Center of Excellence in Networking” in the year 2013. ABES Engineering College a CISCO academy provides CCNA course training on real Routers and switches. Cisco lab equipped with advanced networking simulation software like NS2, NS3 and Wireshark. CCNA is the associate level Certification in Networking offered by Cisco. CCNA in Routing and switching covers basics of Cisco Networking and Routing switching technologies along with IP addressing schemes, routing basics, switching and Wan Technologies. After completion of CCNA course, a candidate can easily install, configure and troubleshoot Cisco Routers and switches for small & Medium Networks.</p>
-<h2 style="color: red;">Objective</h2>
-<ul>
-<li>To provide Hands-on training that develops problem-solving skills.</li>
-<li>To make them attached with Industries for real world opportunities.</li>
-<li>To give benefits while receiving globally accepted industry-standard certification.</li>
-<li>To give an exciting careers in IT Sectors.</li>
-</ul>
-<h2 style="color: red;">Technologies Covered</h2>
-<ul>
-<li>CCNA Routing & Switching</li>
-	<ul>
-		<li>Module 1: Introduction to Network</li>
-		<li>Module 2: Routing and Switching</li>
-		<li>Module 3: Connecting Networks</li>
-		<li>Module 4: Scaling Networks</li>
-	</ul>
-<li>Mobility Fundamentals</li>
-<li>IoT and IoE.</li>
-<li>NS2/NS3</li>
-</ul>
-</div>
+    <style>
+        ul {
+            color: grey;
+            list-style: none;
+        }
+
+        ul li::before {
+            content: "\2022";
+            color: red;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+    <div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+        <h2 style="color: red;">Cisco Networking Academy</h2>
+        <img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static2.png' %}"/>
+        <p style="float: left;">ABES Engineering College had set up the “Center of Excellence in Networking” in the year
+            2013. ABES Engineering College a CISCO academy provides CCNA course training on real Routers and switches.
+            Cisco lab equipped with advanced networking simulation software like NS2, NS3 and Wireshark. CCNA is the
+            associate level Certification in Networking offered by Cisco. CCNA in Routing and switching covers basics of
+            Cisco Networking and Routing switching technologies along with IP addressing schemes, routing basics,
+            switching and Wan Technologies. After completion of CCNA course, a candidate can easily install, configure
+            and troubleshoot Cisco Routers and switches for small & Medium Networks.</p>
+        <h2 style="color: red;">Objective</h2>
+        <ul>
+            <li>To provide Hands-on training that develops problem-solving skills.</li>
+            <li>To make them attached with Industries for real world opportunities.</li>
+            <li>To give benefits while receiving globally accepted industry-standard certification.</li>
+            <li>To give an exciting careers in IT Sectors.</li>
+        </ul>
+        <h2 style="color: red;">Technologies Covered</h2>
+        <ul>
+            <li>CCNA Routing & Switching</li>
+            <ul>
+                <li>Module 1: Introduction to Network</li>
+                <li>Module 2: Routing and Switching</li>
+                <li>Module 3: Connecting Networks</li>
+                <li>Module 4: Scaling Networks</li>
+            </ul>
+            <li>Mobility Fundamentals</li>
+            <li>IoT and IoE.</li>
+            <li>NS2/NS3</li>
+        </ul>
+    </div>
 {% endblock content %}

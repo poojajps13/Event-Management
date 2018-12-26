@@ -1,27 +1,29 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Login | {{ block.super }}{% endblock %}
 {% block css %}{% endblock %}
 {% block content %}
-    <main role="main" class="container col-md-4 bg-white">
+    <main role="main" class="container col-lg-4 bg-white">
         <div class="px-md-3 px-2 pt-4 pb-5">
             <div style="text-align: center">
-                <h3>Login To Your Account</h3>{% if request.GET.next %}<h3>Required</h3>{% endif %}
+                <h3>Login To Your Account</h3>{% if request.GET.next %}<h3 class="text-danger">Required</h3>{% endif %}
             </div>
             <form method="post">{% csrf_token %}
                 <div class="mb-3"><label>Email</label>{{ form.email }}</div>
                 <div class="mb-3"><label>Password</label>{{ form.password }}</div>
                 {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
-{#                <script src='https://www.google.com/recaptcha/api.js'></script>#}
-{#                <div class="mb-3 g-recaptcha" data-expired-callback="capcha_expired" data-callback="capcha_filled"#}
-{#                     data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>#}
+                {# <script src='https://www.google.com/recaptcha/api.js'></script>#}
+                {# <div class="mb-3 g-recaptcha" data-expired-callback="capcha_expired" data-callback="capcha_filled"#}
+                {#      data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>#}
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Login</button>
             </form>
-            <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal1">Activate Your
-                Account
-            </button>
-            <button class="btn btn-sm btn-outline-info mb-3  float-right" data-toggle="modal" data-target="#myModal2">
-                Forget Password
-            </button>
-            <a href="{% url 'signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
+            <div class="btn-toolbar justify-content-between">
+                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal1">Activate
+                    Your Account
+                </button>
+                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget
+                    Password
+                </button>
+            </div>
+            <a href="{% url 'account:signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
         </div>
     </main>
     <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
