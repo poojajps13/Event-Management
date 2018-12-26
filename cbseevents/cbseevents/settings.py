@@ -136,8 +136,8 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mymohan100@gmail.com'
-EMAIL_HOST_PASSWORD = '8354060796'
+EMAIL_HOST_USER = '*********************'
+EMAIL_HOST_PASSWORD = '********************'
 EMAIL_PORT = 587
 
-RECAPTCHA_PRIVATE_KEY = '6LdO2nMUAAAAAApV6cTd40qDg1D7YMk0wcm6i3wR'
+RECAPTCHA_PRIVATE_KEY = '********************************'

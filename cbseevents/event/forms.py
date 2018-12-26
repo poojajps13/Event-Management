@@ -65,7 +65,7 @@ class EventForm(forms.ModelForm):
     def clean_registration_start(self):
         try:
             registration_start = self.cleaned_data['registration_start']
-            if True or registration_start.strftime('%Y-%m-%d') >= date.today().strftime('%Y-%m-%d'):
+            if registration_start.strftime('%Y-%m-%d') >= date.today().strftime('%Y-%m-%d'):
                 return registration_start
             raise forms.ValidationError("Invalid Start Date")
         except Exception:

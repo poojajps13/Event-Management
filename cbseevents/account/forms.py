@@ -101,6 +101,7 @@ class EmailForm1(forms.Form):
         email = self.cleaned_data['email1']
         try:
             validate_email(email)
+            return email
         except ValidationError:
             return forms.ValidationError("Email is not in correct format")
 
@@ -114,6 +115,7 @@ class EmailForm2(forms.Form):
         email = self.cleaned_data['email2']
         try:
             validate_email(email)
+            return email
         except ValidationError:
             return forms.ValidationError("Email is not in correct format")
 

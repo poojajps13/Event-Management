@@ -171,7 +171,24 @@ class TransactionReport(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            return redirect('home')
+            event = EventRecord.objects.get(slug=kwargs['slug'])
+            if request.user.is_superuser or request.user == event.user:
+                student_list = RegistrationRecord.objects.filter(event=event)
+                context = {'event': event, 'student_list': student_list}
+                # return render(request, self.template_name, context)
+                template = get_template('report.html')
+                html = template.render(context)
+                result = BytesIO()
+                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+                if not pdf.err:
+                    response = HttpResponse(result.getvalue(), content_type='application/pdf')
+                    filename = "Report.pdf"
+                    # content = "inline; filename='%s'" % filename
+                    content = "attachment; filename='%s'" % filename
+                    response['Content-Disposition'] = content
+                    return response
+                return HttpResponse("Not found")
+            raise PermissionDenied
         except PermissionDenied:
             messages.error(request, 'You Does not Permission')
             return redirect('home')
@@ -186,7 +203,24 @@ class EnrollmentReport(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            return redirect('home')
+            event = EventRecord.objects.get(slug=kwargs['slug'])
+            if request.user.is_superuser or request.user == event.user:
+                student_list = RegistrationRecord.objects.filter(event=event)
+                context = {'event': event, 'student_list': student_list}
+                # return render(request, self.template_name, context)
+                template = get_template('report.html')
+                html = template.render(context)
+                result = BytesIO()
+                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+                if not pdf.err:
+                    response = HttpResponse(result.getvalue(), content_type='application/pdf')
+                    filename = "Report.pdf"
+                    # content = "inline; filename='%s'" % filename
+                    content = "attachment; filename='%s'" % filename
+                    response['Content-Disposition'] = content
+                    return response
+                return HttpResponse("Not found")
+            raise PermissionDenied
         except PermissionDenied:
             messages.error(request, 'You Does not Permission')
             return redirect('home')

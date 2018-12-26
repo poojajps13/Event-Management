@@ -1,5 +1,17 @@
 {% autoescape off %}
-Hi {{ user.first_name }},
-Please click on the link to confirm your registration,
+Dear {{ user.first_name }},
+
+Welcome to Centre of Skill Development and Employability (CBSE)!
+
+You're almost there! Use the link to activate your account to access our courses. Note that you will not be able to log back into your account until you have activated it.
+
 http://{{ domain }}{% url 'account:activate' uidb64=uid token=token %}
+
+Enjoy learning with CBSE.
+
+The CBSE Team
+
+If you need help, please use our email {{ email }}.
+
+This email message was automatically sent by http://{{ domain }} because someone attempted to create an account on CBSE using this email address.
 {% endautoescape %}

@@ -1,12 +1,13 @@
+from datetime import date
+
 from django.shortcuts import render
-from django.utils import timezone
 
 from event.models import *
 
 
 def home(request):
     event_list = EventRecord.objects.all().order_by('-pk')
-    return render(request, 'index.html', {'event_list': event_list, 'now': timezone.now()})
+    return render(request, 'index.html', {'event_list': event_list, 'now': date.today()})
 
 
 def structural_design(request):

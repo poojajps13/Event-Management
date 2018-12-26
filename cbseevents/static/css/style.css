@@ -1,7 +1,7 @@
 body:before {
     content: ' ';
     background-size: cover;
-    background: url(../images/bg.jpg) no-repeat fixed;
+    /*background: url(../images/bg.jpg) no-repeat fixed;*/
     display: block;
     position: fixed;
     left: 0;

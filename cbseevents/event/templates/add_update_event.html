@@ -8,11 +8,13 @@
             <div class="form-row px-md-5">
                 <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.type }}</div>
                 <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}</div>
-                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}</div>
+                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}
+                    <span style="color:red;">{{ form.fees.errors }}</span></div>
                 <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}</div>
                 <div class="col-md-4"><label>Duration</label>
                     <div class="row">
-                        <div class="pb-4 col-md-7">{{ form.duration_number }}</div>
+                        <div class="pb-4 col-md-7">{{ form.duration_number }}
+                            <span style="color:red;">{{ form.duration_number.errors }}</span></div>
                         <div class="pb-4 col-md-5">{{ form.duration_string }}</div>
                     </div>
                 </div>
@@ -23,9 +25,12 @@
                 <div class="pb-4 col-md-12">Outside students allowed{% for radio in form.outside_student %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
                 {% endfor %}</div>
-                <div class="pb-4 col-md-4"><label>Registration start</label>{{ form.registration_start }}</div>
-                <div class="pb-4 col-md-4"><label>Registration end</label>{{ form.registration_end }}</div>
-                <div class="pb-4 col-md-4"><label>Event Start</label>{{ form.event_date }}</div>
+                <div class="pb-4 col-md-4"><label>Registration start</label>{{ form.registration_start }}
+                    <span style="color:red;">{{ form.registration_start.errors }}</span></div>
+                <div class="pb-4 col-md-4"><label>Registration end</label>{{ form.registration_end }}
+                    <span style="color:red;">{{ form.registration_end.errors }}</span></div>
+                <div class="pb-4 col-md-4"><label>Event Start</label>{{ form.event_date }}
+                    <span style="color:red;">{{ form.event_date.errors }}</span></div>
                 <div class="pb-4 col-md-12"><label>Venue:</label>{{ form.venue }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person:</label>{{ form.resource_person }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>

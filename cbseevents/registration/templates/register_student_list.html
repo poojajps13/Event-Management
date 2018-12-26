@@ -17,7 +17,7 @@
                     <th>Roll No.</th>
                     <th>Payment Id</th>
                     <th>Paid</th>
-                    <th>Status</th>
+                    <th>Balance</th>
                     <th>Pay Amount</th>
                 </tr>
                 </thead>
@@ -31,8 +31,7 @@
                             <a href="{% url 'registration:registration_detail' i.registration_id %}">{{ i.registration_id }}</a>
                         </td>
                         <td>{{ i.amount }}</td>
-                        <td>{% if i.cancel %}<span class="text-danger">Cancel</span>{% elif i.status %}
-                            <span class="text-success">Paid</span>{% else %}Unpaid{% endif %}</td>
+                        <td>{{ i.balance }}</td>
                         <td><a href="{% url 'registration:registration_detail' i.registration_id %}#transaction"
                                class="btn btn-outline-success btn-sm">Pay Amount</a></td>
                     </tr>

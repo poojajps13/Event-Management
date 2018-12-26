@@ -4,7 +4,7 @@
     <main role="main" class="container col-lg-4 bg-white">
         <div class="px-md-3 px-2 pt-4 pb-5">
             <div style="text-align: center">
-                <h3>Login To Your Account</h3>{% if request.GET.next %}<h3 class="text-danger">Required</h3>{% endif %}
+                <h3>{% if request.GET.next %}For Registration you have to {% endif %}Login To Your Account</h3>
             </div>
             <form method="post">{% csrf_token %}
                 <div class="mb-3"><label>Email</label>{{ form.email }}</div>
@@ -12,7 +12,7 @@
                 {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
                 {# <script src='https://www.google.com/recaptcha/api.js'></script>#}
                 {# <div class="mb-3 g-recaptcha" data-expired-callback="capcha_expired" data-callback="capcha_filled"#}
-                {#      data-sitekey="6LdO2nMUAAAAADnHJPz-hA5hq1GkUFMxw1yzo6EF"></div>#}
+                {#      data-sitekey="6LeumYQUAAAAAC47pBs3aJRatMHOcooqTsrQMgyZ"></div>#}
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Login</button>
             </form>
             <div class="btn-toolbar justify-content-between">

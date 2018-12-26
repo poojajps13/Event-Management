@@ -1,8 +1,9 @@
-# import json
-# import urllib.parse
-# import urllib.request
-#
-# from django.conf import settings
+import json
+import urllib.parse
+import urllib.request
+from datetime import date
+
+from django.conf import settings
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -10,7 +11,6 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.utils import timezone
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView
@@ -73,28 +73,31 @@ class Login(TemplateView):
                             messages.error(request, "Email or password did not match")
                     except ObjectDoesNotExist:
                         messages.error(request, "Email or password did not match...")
-                else:
-                    messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+                # else:
+                #     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+            # Account Activation
             elif form1.is_valid():
                 email = form1.cleaned_data['email1']
                 try:
                     user = User.objects.get(username=email.lower())
                     if not user.is_active:
                         current_site = get_current_site(request)
-                        mail_subject = 'Activate your CBSE Account.'
+                        mail_subject = 'Action Required: Activate your CBSE account'
                         message = render_to_string('acc_active_email.txt', {
                             'user': user,
                             'domain': current_site.domain,
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                             'token': account_activation_token.make_token(user),
+                            'email': settings.EMAIL_HOST_USER,
                         })
                         email = EmailMessage(mail_subject, message, to=[user.email])
                         email.send()
-                        messages.success(request, 'Check Your Email. Activation Link Resend')
+                        messages.success(request, 'Check Your Email. Activation link will send on Your email')
                     else:
                         messages.warning(request, 'Your Account is already Activated')
                 except ObjectDoesNotExist:
                     messages.error(request, 'Invalid Email. Try Again')
+            # Forget Password
             elif form2.is_valid():
                 email = form2.cleaned_data['email2']
                 try:
@@ -107,6 +110,7 @@ class Login(TemplateView):
                             'domain': current_site.domain,
                             'uid': urlsafe_base64_encode(force_bytes(user.email)).decode(),
                             'token': password_reset_token.make_token(user),
+                            'email': settings.EMAIL_HOST_USER,
                         })
                         email = EmailMessage(mail_subject, message, to=[user.email])
                         email.send()
@@ -140,18 +144,18 @@ class Signup(TemplateView):
         if form1.is_valid() and form2.is_valid():
             try:
                 ''' Begin reCAPTCHA validation '''
-                # re_captcha_response = request.POST.get('g-recaptcha-response')
-                # url = 'https://www.google.com/recaptcha/api/siteverify'
-                # values = {
-                #     'secret': settings.RECAPTCHA_PRIVATE_KEY,
-                #     'response': re_captcha_response
-                # }
-                # data = urllib.parse.urlencode(values).encode()
-                # req = urllib.request.Request(url, data=data)
-                # response = urllib.request.urlopen(req)
-                # result = json.loads(response.read().decode())
+                re_captcha_response = request.POST.get('g-recaptcha-response')
+                url = 'https://www.google.com/recaptcha/api/siteverify'
+                values = {
+                    'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                    'response': re_captcha_response
+                }
+                data = urllib.parse.urlencode(values).encode()
+                req = urllib.request.Request(url, data=data)
+                response = urllib.request.urlopen(req)
+                result = json.loads(response.read().decode())
                 ''' End reCAPTCHA validation '''
-                if True:  # result['success']:
+                if result['success']:
                     username = form1.cleaned_data['email']
                     first_name = form1.cleaned_data['first_name']
                     last_name = form1.cleaned_data['last_name']
@@ -164,12 +168,13 @@ class Signup(TemplateView):
                     temp.save()
                     '''Begin Email Sending '''
                     current_site = get_current_site(request)
-                    mail_subject = 'Activate your CBSE Account.'
+                    mail_subject = 'Action Required: Activate your CBSE account'
                     message = render_to_string('acc_active_email.txt', {
                         'user': user,
                         'domain': current_site.domain,
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                         'token': account_activation_token.make_token(user),
+                        'email': settings.EMAIL_HOST_USER,
                     })
                     email = EmailMessage(mail_subject, message, to=[user.email])
                     email.send()
@@ -242,6 +247,7 @@ class ForgetPassword(TemplateView):
             messages.error(request, 'Invalid Link')
         return redirect('home')
 
+
 # noinspection PyBroadException
 class ResetPassword(TemplateView):
     template_name = 'reset-password.html'
@@ -256,7 +262,7 @@ class ResetPassword(TemplateView):
             messages.error(request, 'User not Found')
         return redirect('home')
 
-    def post(self, request, **kwargs):
+    def post(self, request):
         try:
             user = User.objects.get(username=request.user)
             if user.is_active:
@@ -274,6 +280,7 @@ class ResetPassword(TemplateView):
             messages.error(request, 'Invalid Link')
         return redirect('home')
 
+
 def consolidated_view(request, c_o_e=None, username=None):
     try:
         if request.user.is_superuser:
@@ -289,7 +296,7 @@ def consolidated_view(request, c_o_e=None, username=None):
         else:
             student = StudentRecord.objects.get(user=request.user)
             event_list = RegistrationRecord.objects.filter(student=student)
-        return render(request, 'consolidated_view.html', {'event_list': event_list, 'now': timezone.now()})
+        return render(request, 'consolidated_view.html', {'event_list': event_list, 'now': date.today()})
     except ObjectDoesNotExist:
         messages.error(request, 'Record Not Found')
         return redirect('home')

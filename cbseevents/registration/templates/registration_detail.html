@@ -7,11 +7,11 @@
             <h4>Event Code & Name</h4>
             <p class="lead px-3"><strong>{{ obj.event }}</strong>, {{ obj.event.event_name }}</p>
             <hr>
-            <h4>Description</h4>
-            <p class="px-3">{{ obj.event.description }}</p>
-            <hr>
             <h4>Date</h4>
             <p class="px-3">{{ obj.event.event_date|date:"F d, Y" }}</p>
+            <hr>
+            <h4>Fee</h4>
+            <p class="px-3">{{ obj.event.fees }}</p>
             <hr>
         </div>{% if staff %}
         <h2>Student Information</h2>

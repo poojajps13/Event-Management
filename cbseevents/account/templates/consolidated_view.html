@@ -45,7 +45,11 @@
                     <p>No. of Student Registered {{ event.registered_student }}</p>
                     <div class="pt-2 btn-toolbar justify-content-between">
                         <a href="{% url 'registration:register_student_list' event.slug %}">Student List</a>
-                        <a href="{% url 'registration:print_student_list' event.slug %}">Generate Report</a>
+                        <a href="{% url 'registration:print_student_list' event.slug %}">Registration Report</a>
+                    </div>
+                    <div class="pt-2 btn-toolbar justify-content-between">
+                        <a href="{% url 'registration:print_transaction_list' event.slug %}">Transaction Report</a>
+                        <a href="{% url 'registration:print_enroll_list' event.slug %}">Enrollment Report</a>
                     </div>
                 </div>
                 <hr>
@@ -59,26 +63,25 @@
             </div>{% endfor %}{% if not event_list %}
             <span class="text-danger">No Event Yet. Please create a Event</span>{% endif %}{% else %}
             {% for reg in event_list %}
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header btn-toolbar justify-content-between">
-                    <span class="font-weight-normal text-capitalize">{{ reg.event.type }}</span>
-                    {% if now <= reg.event.registration_end %}<span class="text-success">Active</span>
-                    {% else %}<span class="text-danger">Not Active</span>{% endif %}
-                </div>
-                <div class="card-body">
-                    <p>Event Name: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event.event_name }}</a><br>
-                        Event Code: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event }}</a><br>
-                        Event Date: <span class="text-danger">{{ reg.event.event_date|date:"F d, Y" }}</span><br>
-                        Trainer: {{ reg.event.user.first_name }} {{ reg.event.user.last_name }}</p>
-                </div>
-                <hr>
-                <div class="pb-3 px-3 btn-toolbar justify-content-between">
-                    <a href="{% url 'event:event_detail' reg.event %}"
-                       class="btn btn-outline-primary btn-sm px-4">Detail</a>
-                    <a href="" class="btn btn-outline-danger btn-sm px-4">Feedback</a>
-                </div>
-            </div>{% endfor %}{% if not event_list %}
-            <span class="text-danger">No Event Yet. Please Register in Event</span>{% endif %}{% endif %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header btn-toolbar justify-content-between">
+                        <span class="font-weight-normal text-capitalize">{{ reg.event.type }}</span>
+                        {% if now <= reg.event.registration_end %}<span class="text-success">Active</span>
+                        {% else %}<span class="text-danger">Not Active</span>{% endif %}
+                    </div>
+                    <div class="card-body">
+                        <p>Event Name: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event.event_name }}</a><br>
+                            Event Code: <a href="{% url 'event:event_detail' reg.event %}">{{ reg.event }}</a><br>
+                            Event Date: <span class="text-danger">{{ reg.event.event_date|date:"F d, Y" }}</span><br>
+                            Trainer: {{ reg.event.user.first_name }} {{ reg.event.user.last_name }}</p>
+                    </div>
+                    <hr>
+                    <div class="pb-3 px-3 btn-toolbar justify-content-between">
+                        <a href="{% url 'event:event_detail' reg.event %}"
+                           class="btn btn-outline-primary btn-sm px-4">Detail</a>
+                        <a href="" class="btn btn-outline-danger btn-sm px-4">Feedback</a>
+                    </div>
+                </div>{% endfor %}{% endif %}
         </div>
     </div>
 {% endblock %}

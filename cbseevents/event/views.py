@@ -1,7 +1,8 @@
+from datetime import date
+
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.shortcuts import render, redirect
-from django.utils import timezone
 from django.views.generic import TemplateView
 
 from registration.models import RegistrationRecord
@@ -17,10 +18,17 @@ class EventDetail(TemplateView):
     def get(self, request, *args, **kwargs):
         try:
             owner = False
+            registered = True
             obj = EventRecord.objects.get(slug=kwargs['slug'])
             if obj.user == request.user or request.user.is_superuser:
                 owner = True
-            return render(request, self.template_name, {'obj': obj, 'owner': owner, 'now': timezone.now()})
+            else:
+                try:
+                    RegistrationRecord.objects.get(user=request.user, event=obj)
+                except Exception:
+                    registered = False
+            return render(request, self.template_name,
+                          {'obj': obj, 'owner': owner, 'registered': registered, 'now': date.today()})
         except ObjectDoesNotExist:
             messages.error(request, 'Event Not found')
             return redirect('home')
@@ -105,8 +113,7 @@ class DeleteEvent(TemplateView):
         try:
             obj = EventRecord.objects.get(slug=kwargs['slug'])
             if str(obj.timestamp) == kwargs['timestamp'] and (obj.user == request.user or request.user.is_superuser):
-                student = RegistrationRecord.objects.filter(event=obj)
-                if student:
+                if obj.registered_student > 0:
                     raise PermissionDenied('Student Registered, You can not delete this event.')
                 obj.delete()
                 messages.success(request, 'Event Deleted')

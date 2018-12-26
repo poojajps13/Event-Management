@@ -43,7 +43,8 @@
                     <p>Certificate</p>
                     <div class="text-center">{% if owner %}
                         <a href="{% url 'event:update_event' obj.slug %}"
-                           class="btn btn-outline-primary px-5">Update</a>
+                           class="btn btn-outline-primary px-5">Update</a>{% elif registered %}
+                        <button class="btn btn-outline-success px-5" disabled>Already Registered</button>
                         {% else %}{% if now <= obj.registration_end and obj.registration_open %}
                             <a onclick="return confirm('Are you sure to register in {{ obj.event_name }}')"
                                href="{% url 'registration:register_event' obj %}" class="btn btn-outline-success px-5">
@@ -56,3 +57,4 @@
     </div>
 
 {% endblock content %}
+

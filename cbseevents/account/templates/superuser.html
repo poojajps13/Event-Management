@@ -11,9 +11,8 @@
                 <thead>
                 <tr style="font-weight: 600;">
                     <th scope="col" width="5%">#</th>
-                    <th scope="col">User Name</th>
                     <th scope="col">Name</th>
-                    <th scope="col">User Email</th>
+                    <th scope="col">Email</th>
                     <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Detail</th>
                     <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Edit</th>
                     <th scope="col" width="10%" style="text-align: center; vertical-align: middle;">Delete</th>
@@ -22,7 +21,6 @@
                 <tbody>{% for i in u %}
                     <tr>
                         <td scope="row">{{ forloop.counter }}</td>
-                        <td>{{ i.username }}</td>
                         <td>{{ i.first_name }} {{ i.last_name }}</td>
                         <td>{{ i.email }}</td>
                         <td style="text-align: center; vertical-align: middle;">
