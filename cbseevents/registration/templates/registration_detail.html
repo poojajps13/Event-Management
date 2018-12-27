@@ -1,0 +1,76 @@
+{% extends "base.html" %}{% load staticfiles %}
+{% block head_title %}Registration Detail | {{ block.super }}{% endblock %}{% block css %}{% endblock %}
+{% block content %}
+    <div class="px-3 pt-4 pb-5 bg-white rounded shadow-sm">
+        <h2>Event Information</h2>
+        <div class="px-3">
+            <h4>Event Code & Name</h4>
+            <p class="lead px-3"><strong>{{ obj.event }}</strong>, {{ obj.event.event_name }}</p>
+            <hr>
+            <h4>Date</h4>
+            <p class="px-3">{{ obj.event.event_date|date:"F d, Y" }}</p>
+            <hr>
+            <h4>Fee</h4>
+            <p class="px-3">{{ obj.event.fees }}</p>
+            <hr>
+        </div>{% if staff %}
+        <h2>Student Information</h2>
+        <div class="px-3">
+            <h4>Name</h4>
+            <p class="lead px-3">{{ obj.student.user.first_name }} {{ obj.student.user.last_name }}</p>
+            <hr>
+            <h4>Email</h4>
+            <p class="px-3">{{ obj.student.user.email }}</p>
+            <hr>
+            <h4>Roll Number</h4>
+            <p class="px-3">{{ obj.student.roll_no }}</p>
+            <hr>
+            <h4>Branch</h4>
+            <p class="px-3">{{ obj.student.branch }}, {{ obj.student.batch_start }}-{{ obj.student.batch_end }}</p>
+            <hr>
+            <h4>Contact Number</h4>
+            <p class="px-3">{{ obj.student.number }}</p>
+            <hr>
+        </div>{% endif %}
+        <div class="px-4 table-responsive-xl">
+            <h2>Transaction Details</h2>{% if obj.transaction_id.all %}
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
+                <tr style="font-weight: 600;">
+                    <th scope="col">#</th>
+                    <th scope="col">Registration ID</th>
+                    <th scope="col">Transaction ID</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Remark</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">User</th>
+                </thead>
+                <tbody>{% for name in obj.transaction_id.all %}
+                    <tr>
+                        <td scope="row">{{ forloop.counter }}</td>
+                        <td>{{ obj.registration_id }}</td>
+                        <td>{{ name.transaction_id }}</td>
+                        <td>{{ name.amount }}</td>
+                        <td>{{ name.remark }}</td>
+                        <td>{{ name.timestamp }}</td>
+                        <td>{{ name.user }}</td>
+                    </tr>{% endfor %}</tbody>
+            </table>
+            <h2 class="py-3">Total Amount: {{ obj.amount }}</h2>{% else %}
+            <h2 class="text-danger">No Transaction Yet</h2>{% endif %}
+            <hr>
+        </div>{% if staff %}
+        <form action="" method="post" class="px-md-5" id="transaction">{% csrf_token %}
+            <h3>Make A Transaction</h3>
+            <div class="col-md-5 p-2">Amount: {{ form.amount }}</div>
+            <div class="col-md-5 p-2">Remark: {{ form.remark }}</div>
+            <div class="col-md-5 p-2">
+                <button type="submit" class="btn btn-outline-primary btn-sm m-2 px-md-4">Update</button>
+                <button type="reset" class="btn btn-outline-danger btn-sm m-2">Reset</button>
+                <a href="{% url 'registration:register_student_list' obj.event %}"
+                   class="btn btn-sm btn-outline-info px-5 m-2 float-right">Back</a>
+            </div>
+        </form>{% endif %}
+    </div>
+{% endblock %}
+{% block script %}{% endblock %}

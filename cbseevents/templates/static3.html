@@ -1,32 +1,38 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-ul {
-	color: grey;
-  list-style: none;
-}
-ul li::before {
-  content: "\2022";
-  color: red;
-  font-weight: bold;
-  display: inline-block; 
-  width: 1em;
-  margin-left: -1em;
-}
-</style>
-<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
-<h2 style="color: red;">Texas Instruments Embedded System Lab</h2>
-<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static3.png' %}"/>
-<p style="float: left;">This Centre of Excellence provides training on embedded systems so that students can meet the industry standards and can make projects based on the embedded systems. This Centre is currently providing training on PCB and circuit design and Microcontroller Programming. COE has latest microcontroller units of Texas instruments on which students can perform hands on experience.</p>
-<h2 style="color: red;">Objective</h2>
-<p>The main objective of setting up this COE is to provide a bridge between industry and academic needs. Also the purpose of setting up this COE is students will be able to design, describe, validate and optimize embedded electronic systems in different industrial application areas.</p>
-<h2 style="color: red;">Technologies Covered</h2>
-<ul>
-<li>PCB and Circuit Designing</li>
-<li>Programming of ATMEGA 16</li>
-<li>DSP Image and Video Processing</li>
-<li>Wireless Modules</li>
-</ul>
-</div>
+    <style>
+        ul {
+            color: grey;
+            list-style: none;
+        }
+
+        ul li::before {
+            content: "\2022";
+            color: red;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+    <div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+        <h2 style="color: red;">Texas Instruments Embedded System Lab</h2>
+        <img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static3.png' %}"/>
+        <p style="float: left;">This Centre of Excellence provides training on embedded systems so that students can
+            meet the industry standards and can make projects based on the embedded systems. This Centre is currently
+            providing training on PCB and circuit design and Microcontroller Programming. COE has latest microcontroller
+            units of Texas instruments on which students can perform hands on experience.</p>
+        <h2 style="color: red;">Objective</h2>
+        <p>The main objective of setting up this COE is to provide a bridge between industry and academic needs. Also
+            the purpose of setting up this COE is students will be able to design, describe, validate and optimize
+            embedded electronic systems in different industrial application areas.</p>
+        <h2 style="color: red;">Technologies Covered</h2>
+        <ul>
+            <li>PCB and Circuit Designing</li>
+            <li>Programming of ATMEGA 16</li>
+            <li>DSP Image and Video Processing</li>
+            <li>Wireless Modules</li>
+        </ul>
+    </div>
 {% endblock content %}
