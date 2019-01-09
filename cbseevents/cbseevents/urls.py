@@ -1,77 +1,28 @@
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
-from django.urls import path
+from django.urls import path, include
 
-from account.views import *
-from events.views import *
+from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('superuser/', login_required(superuser), name='superuser'),
-    path('form/', login_required(add_event), name='form'),
-    path('logout/', login_required(logout), name='logout'),
-    path('account/login', Login.as_view(), name='login'),
-    path('account/signup', Signup.as_view(), name='signup'),
-    path('logout', login_required(logout), name='logout'),
-    path('account/activate/<uidb64>/<token>/', activate, name='activate'),
-    path('account/forget-password/<uidb64>/<token>',ResetPassword.as_view(), name='forget-password'),
-    path('edit_user/<username>', login_required(edit_user), name='edit_user'),
-    path('consolidated/<username>', login_required(consolidated), name='consolidated'),
-    path('consolidatedview/', login_required(consolidatedview), name='consolidatedview'),
-    path('deleteuser/<username>', login_required(del_user), name='deleteuser'),
-    path('editamount/workshop/<paymentid>/',login_required(edit_workshopamount),name='editworkshopamt'),
-    path('editamount/seminar/<paymentid>/',login_required(edit_seminaramount),name='editseminaramt'),
-    path('editamount/training/<paymentid>/',login_required(edit_trainingamount),name='edittrainingamt'),
-    path('editamount/competition/<paymentid>/',login_required(edit_competitionamount),name='editcompetitionbamt'),
-    path('editamount/guestlecture/<paymentid>/',login_required(edit_guestlectureamount),name='editguestlectureamt'),
-    path('studentlist/workshop/<registered_event_code>/', login_required(studentlist_workshop), name='studentlist_workshop'),
-    path('studentlist/seminar/<registered_event_code>/', login_required(studentlist_seminar), name='studentlist_seminar'),
-    path('studentlist/training/<registered_event_code>/', login_required(studentlist_training), name='studentlist_training'),
-    path('studentlist/competition/<registered_event_code>/', login_required(studentlist_competition), name='studentlist_competition'),
-    path('studentlist/guest_lecture/<registered_event_code>/', login_required(studentlist_guestlecture), name='studentlist_guestlecture'),
-    path('excellence_center/', excellence_center, name='excellence_center'),
-    path('seminar/', seminar, name='seminar'),
-    path('workshop/', workshop, name='workshop'),
-    path('training/', training, name='training'),
-    path('competition/', competition, name='competition'),
-    path('guest_lecture/', guest_lecture, name='guest_lecture'),
-    path('delete/workshop/<slug>', login_required(delete_workshop), name='delete_workshop'),
-    path('delete/seminar/<slug>', login_required(delete_seminar), name='delete_seminar'),
-    path('delete/training/<slug>', login_required(delete_training), name='delete_training'),
-    path('delete/competition/<slug>', login_required(delete_competition), name='delete_competition'),
-    path('delete/guest_lecture/<slug>', login_required(delete_guestlecture), name='delete_guest_lecture'),
-    path('update/workshop/<slug>', login_required(update_workshop), name='update_workshop'),
-    path('update/seminar/<slug>', login_required(update_seminar), name='update_seminar'),
-    path('update/training/<slug>', login_required(update_training), name='update_training'),
-    path('update/competition/<slug>', login_required(update_competition), name='update_competition'),
-    path('update/guest_lecture/<slug>', login_required(update_guestlecture), name='update_guest_lecture'),
-    path('workshop/registration/<slug>/<c_o_e>/', workshop_registration, name='workshop_registration'),
-    path('seminar/registration/<slug>/<c_o_e>/', seminar_registration, name='seminar_registration'),
-    path('training/registration/<slug>/<c_o_e>/', training_registration, name='training_registration'),
-    path('competition/registration/<slug>/<c_o_e>/', competition_registration, name='competition_registration'),
-    path('guest_lecture/registration/<slug>/<c_o_e>/', guest_lecture_registration, name='guest_lecture_registration'),
-    path('workshop/description/<slug>', workshop_description, name='workshop_description_with_slug'),
-    path('seminar/description/<slug>', seminar_description, name='seminar_description_with_slug'),
-    path('training/description/<slug>', training_description, name='training_description_with_slug'),
-    path('competition/description/<slug>', competition_description, name='competition_description_with_slug'),
-    path('guest_lecture/description/<slug>', guest_lecture_description, name='guest_lecture_description_with_slug'),
-    path('workshop/<int:year>/<month>', workshop_search, name='workshop_search'),
-    path('seminar/<int:year>/<month>', seminar_search, name='seminar_search'),
-    path('training/<int:year>/<month>', training_search, name='training_search'),
-    path('competition/<int:year>/<month>', competition_search, name='competition_search'),
-    path('guest_lecture/<int:year>/<month>', guest_lecture_search, name='guest_lecture_search'),
-    path('Centre_of_Excellence_for_Structural_Design_and_Analysis/', structural_design, name='structural_design'),
-    path('Cisco_Networking_Academy/', cisco_networking_academy, name='cisco_networking_academy'),
-    path('Texas_Instruments_Embedded_System_Lab/', texas, name='texas'),
-    path('Centre_of_Excellence_for_SMC_India_PvtLtd./', smc_india, name='smc_india'),
-    path('Industrial_Automation_Research_&_Training_Centre_(IARTC)/', automation_research, name='automation_research'),
-    path('Centre_of_Excellence_VLSI_Design/', vlsi_design, name='vlsi_design'),
-    path('Center_of_Excellence_for_Big_Data_Analytics/', big_data, name='big_data'),
-    path('ABES_NI_Innovation_Centre/', innovation_centre, name='innovation_centre'),
-    path('Centre_of_Excellence_for_Mobile_Application_Development/', mobile_application, name='mobile_application'),
-    path('Center_for_Enterprise_Software_Development/', software_development, name='software_development'),
+    path('event/', include(('event.urls', 'event'), namespace='event')),
+    path('account/', include(('account.urls', 'account'), namespace='account')),
+    path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,
-                                                                                           document_root=settings.MEDIA_ROOT)
+    path('VLSI_Design/', vlsi_design, name='vlsi_design'),
+    path('Big_Data_Analytics/', big_data, name='big_data'),
+    path('SMC_India_PvtLtd./', smc_india, name='smc_india'),
+    path('Texas_Instruments_Embedded_System_Lab/', texas, name='texas'),
+    path('ABES_NI_Innovation_Centre/', innovation_centre, name='innovation_centre'),
+    path('Software_Development/', software_development, name='software_development'),
+    path('Structural_Design_and_Analysis/', structural_design, name='structural_design'),
+    path('Mobile_Application_Development/', mobile_application, name='mobile_application'),
+    path('Cisco_Networking_Academy/', cisco_networking_academy, name='cisco_networking_academy'),
+    path('Industrial_Automation_Research_&_Training_Centre_(IARTC)/', automation_research, name='automation_research'),
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

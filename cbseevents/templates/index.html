@@ -2,116 +2,27 @@
 {% block css %}{% endblock %}
 {% block content %}
     <div class="my-5 p-3 bg-white rounded shadow-sm">
-        {% if work %}
-            <div class="border-bottom border-gray d-flex justify-content-between">
-                <a class="text-dark" href="{% url 'workshop' %}"><h2>Workshop</h2></a>
-            </div>
-            {% for list in work %}
-                <div class="media text-muted px-4 pt-3">
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex align-items-center">
-                            <a href="{% url 'workshop_description_with_slug' slug=list.slug %}">
-                                <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
-                            <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
-                            <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'workshop_registration' slug=list.slug c_o_e=list.c_o_e %}"
-                               class="d-block mt-md-2 flex-md-row">Registration...</a>
-                            {% endif %}
-                        </div>
-                        <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                    </div>
+        <div class="border-bottom border-gray d-flex justify-content-between">
+            <a class="text-dark" href=""><h2>Events</h2></a>
+        </div>{% for event in event_list %}
+        <div class="media text-muted px-4 pt-3">
+            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <div class="d-flex align-items-center justify-content-between">
+                    <a href="{% url 'event:event_detail' event.slug %}">
+                        <h4 class="text-gray-dark" style="margin: 0;">{{ event.event_name }}</h4></a>
+                    <span>Event Date: {{ event.event_date|date:"F d, Y" }}</span>
+                    <span>Duration: {{ event.duration_number }} {{ event.duration_string }}</span>
+                    <span style="color:red">Registration End: {{ event.registration_end|date:"F d, Y" }}</span>
+                    {% if not user.is_staff %}{% if now <= event.registration_end and event.registration_open %}
+                        <a onclick="return confirm('Are you sure to register in {{ event.event_name }}')"
+                           href="{% url 'registration:register_event' event.slug %}"
+                           class="btn btn-sm btn-outline-success">Registration Open</a>
+                    {% else %}
+                        <button class="btn btn-sm btn-outline-danger" disabled>Registration Closed</button>
+                    {% endif %}{% endif %}
                 </div>
-            {% endfor %}
-        {% endif %}<br>
-        {% if semi %}
-            <div class="border-bottom border-gray d-flex justify-content-between">
-                <a class="text-dark" href="{% url 'seminar' %}"><h2>Seminar</h2></a>
             </div>
-            {% for list in semi %}
-                <div class="media text-muted px-4 pt-3">
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex align-items-center">
-                            <a href="{% url 'seminar_description_with_slug' slug=list.slug %}">
-                                <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
-                            <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
-                            <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'seminar_registration' slug=list.slug c_o_e=list.c_o_e %}"
-                               class="d-block mt-md-2 flex-md-row">Registration...</a>
-                            {% endif %}
-                        </div>
-                        <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}<br>
-        {% if train %}
-            <div class="border-bottom border-gray d-flex justify-content-between">
-                <a class="text-dark" href="{% url 'training' %}"><h2>Training</h2></a>
-            </div>
-            {% for list in train %}
-                <div class="media text-muted px-4 pt-3">
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex align-items-center">
-                            <a href="{% url 'training_description_with_slug' slug=list.slug %}">
-                                <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
-                            <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
-                            <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'training_registration' slug=list.slug c_o_e=list.c_o_e %}"
-                               class="d-block mt-md-2 flex-md-row">Registration...</a>
-                            {% endif %}
-                        </div>
-                        <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}<br>
-        {% if comp %}
-            <div class="border-bottom border-gray d-flex justify-content-between">
-                <a class="text-dark" href="{% url 'competition' %}"><h2>Competition</h2></a>
-            </div>
-            {% for list in comp %}
-                <div class="media text-muted px-4 pt-3">
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex align-items-center">
-                            <a href="{% url 'competition_description_with_slug' slug=list.slug %}">
-                                <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
-                            <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
-                            <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'competition_registration' slug=list.slug c_o_e=list.c_o_e %}"
-                               class="d-block mt-md-2 flex-md-row">Registration...</a>
-                            {% endif %}
-                        </div>
-                        <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}<br>
-        {% if guest %}
-            <div class="border-bottom border-gray d-flex justify-content-between">
-                <a class="text-dark" href="{% url 'guest_lecture' %}"><h2>Guest Lecture</h2></a>
-            </div>
-            {% for list in guest %}
-                <div class="media text-muted px-4 pt-3">
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex align-items-center">
-                            <a href="{% url 'guest_lecture_description_with_slug' slug=list.slug %}">
-                                <h3 class="text-gray-dark" style="margin: 0;">{{ list.event_name }}</h3></a>
-                            <span style="margin-left: 2.5%;">Duration: {{ list.duration }}</span>
-                            <span style="margin-left: 2.5%;color: red;">Registration End : {{ list.registration_end }}</span>
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'guest_lecture_registration' slug=list.slug c_o_e=list.c_o_e %}"
-                               class="d-block mt-md-2 flex-md-row">Registration...</a>
-                            {% endif %}
-                        </div>
-                        <span class="d-block">{{ list.event_month }} {{ list.event_date }},{{ list.event_year }}</span>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+        </div>{% endfor %}
     </div>
 {% endblock %}
 {% block script %}{% endblock %}
