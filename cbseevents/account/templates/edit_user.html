@@ -1,30 +1,40 @@
-{% extends "base.html" %}
-{% load staticfiles %}
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Update Account | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
 {% block content %}
-<br/><br/><br/><br/><br/>
-    {% for m in messages %}{{ m }}{% endfor %}
-    <form method="post" action="" style="background-color: #F2F3F4; padding-left:35%; ">
-        {% csrf_token %}
-        <label>Change username:</label>
-        <br>
-        <input type="text" name="username" placeholder="Username" required maxlength="" value="{{ u.username }}"><br>
-        <br>
-        <label>Change password:</label>
-        <br>
-        <input type="text" name="password" placeholder="password" required maxlength=""><br>
-        <br>
-        <label>Change Email:</label>
-        <br>
-        <input type="text" name="email" placeholder="email" required maxlength="" value="{{ u.email }}"><br>
-        <br>
-        <label>Change First Name:</label>
-        <br>
-        <input type="text" name="first_name" placeholder="first_name" required maxlength="" value="{{ u.first_name }}"><br>
-        <br>
-        <label>Change Last Name:</label>
-        <br>
-        <input type="text" name="last_name" placeholder="last_name" required maxlength="" value="{{ u.last_name }}"><br>
-        <br>
-        <button type="submit" ">SUBMIT</button>
-    </form>
+    <main role="main" class="container col-md-6 bg-white">
+        <div class="px-md-3 px-2 pt-4 pb-5">
+            <div style="text-align: center">
+                <h3>Update Account</h3>
+            </div>
+            <form action="" method="post" class="px-md-2">{% csrf_token %}
+                <div class="mb-3">
+                    <label>Email</label>{{ form.email }}{{ form.email.errors }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>First Name</label>{{ form.first_name }}{{ form.first_name.errors }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Last Name</label>{{ form.last_name }}{{ form.last_name.errors }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>{{ form.password }}{{ form.password.errors }}</div>
+                <div class="mb-3" style="font-size: 14px">
+                    <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character
+                    </li>
+                    <li>Your password can&#39;t be a commonly used password.</li>
+                    <li>Your password can&#39;t be entirely numeric.</li>
+                    <li>Your password can&#39;t be too similar to your other personal information.</li>
+                </div>
+                <div class="mb-3">
+                    <label>Confirm Password</label>{{ form.confirm_password }}{{ form.confirm_password.errors }}
+                </div>
+                <div class="py-2 clearfix">
+                    <button type="submit" class="btn btn-outline-success btn-block mb-2">Submit</button>
+                    <button type="reset" class="btn btn-outline-danger btn-block mb-2">Reset</button>
+                </div>
+            </form>
+        </div>
+    </main>
 {% endblock %}

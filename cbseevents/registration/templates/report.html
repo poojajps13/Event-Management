@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report {{ event }}</title>
+    <style type="text/css">
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            align-items: normal;
+        }
+
+        .table td {
+            padding: 5px 2px;
+            vertical-align: top;
+            border-bottom: 1px solid #000;
+        }
+
+        .table th {
+            padding: 5px 2px;
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+            border-top: 1px solid #000;
+        }
+    </style>
+</head>
+<body style="font-size: 12px;">
+<div style="text-align: center">
+    <!-- <img src="http://localhost:8001/static/images/abes_logo.png" alt="" style="width: 150px;">-->
+    <span style="font-size: 16px;">ABES Engineering College<br></span>
+    19th Km Stone NH-24, Near Crossing Republic, Ghaziabad - 201009 (UP), INDIA
+    <!--<img src="http://localhost:8001/static/images/cbse_logo.png" alt="" style="width: 150px;">-->
+</div>
+<br><br>
+<div style="text-align: justify;">
+    Event Code: {{ event.slug }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Event Name: {{ event.event_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Event Date: {{ event.event_date|date:"M d, Y" }}<br>
+    Instructor Name: {{ event.resource_person }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Event Fee: {{ event.fees }}
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th style="width: 8%;">S. No.</th>
+        <th style="width: 15%;">Receipt No</th>
+        <th style="width: 20%;">Student Name</th>
+        <th style="width: 15%;">Admission No.</th>
+        <th style="width: 10%;">Amount</th>
+        <th style="width: 10%">Balance</th>
+        <th style="width: 12%;">Date</th>
+        <th style="width: 10%;">Remark</th>
+    </tr>
+    </thead>
+    <tbody>{% for student in student_list %}
+        <tr>
+            <td style="text-align: center">{{ forloop.counter }}</td>
+            <td style="text-align: center">{{ student.registration_id }}</td>
+            <td>{{ student.student.user.first_name }} {{ student.student.user.last_name }}</td>
+            <td style="text-align: center">{{ student.student.roll_no }}</td>
+            <td style="text-align: center">{{ student.amount }}</td>
+            <td style="text-align: center">{{ student.balance }}</td>
+            <td style="text-align: center">{{ student.timestamp|date:"M d, Y" }}</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>{% endfor %}
+    </tbody>
+</table>
+<br>
+Printed on {{ now }} (IST)
+</body>
+</html>

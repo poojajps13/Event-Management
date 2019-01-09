@@ -1,0 +1,29 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+Greetings from Centre of Skill Development and Employability (CBSE)
+
+Thank you for registering in the course "{{ event.event_name }}". We wish you have an enjoyable and informative learning experience.
+
+The course will begin on {{ event.event_date }}. Your regular participation is vital for learning.
+
+Details regarding the course:
+
+Name : {{ event.event_name }}
+Duration : {{ event.duration_number }} {{ event.duration_string }}
+Venue: {{ event.venue }}
+Instructor Name : {{ event.resource_person }}
+
+
+Once again, thanks for showing your interest in our courses and certification. Happy learning.
+
+--
+Regards
+CBSE Team
+
+If you have any query, contact us
+Email {{ email }}
+Phone No. 9717471912
+
+This email message was automatically sent by http://{{ domain }} because someone register course from your account.
+{% endautoescape %}

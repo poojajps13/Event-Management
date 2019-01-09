@@ -1,31 +1,38 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-ul {
-	color: grey;
-  list-style: none;
-}
-ul li::before {
-  content: "\2022";
-  color: red;
-  font-weight: bold;
-  display: inline-block; 
-  width: 1em;
-  margin-left: -1em;
-}
-</style>
-<div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
-<h2 style="color: red;">Center of Excellence for Big Data Analytics</h2>
-<img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static7.png' %}"/>
-<p style="float: left;">Center of Excellence- Big Data Analytics was established in September 2015. The objective of this centre is to cater the needs of the industry in the field of big data analytics, cloud and other open source technologies. We provide a thorough understanding of the concept from simulation to implementation. We work on open source technologies and focus on creating a technically sound workforce for the industry.</p>
-<h2 style="color: red;">Objective</h2>
-<p>Our aim is to create competitive environment for cutting edge technologies from diverse communities against the requirement of complex real world challenges. To develop extensive platform that provide complete and generic solution to data handling problems posed by big data.</p>
-<h2 style="color: red;">Technologies Covered</h2>
-<ul>
-<li>Linux Administration</li>
-<li>Big Data Analytics</li>
-<li>Cloud Simulation and implementation</li>
-</ul>
-</div>
+    <style>
+        ul {
+            color: grey;
+            list-style: none;
+        }
+
+        ul li::before {
+            content: "\2022";
+            color: red;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+    <div style="padding: 5%; margin-top: -5%; background-color: #F6F6F6;">
+        <h2 style="color: red;">Center of Excellence for Big Data Analytics</h2>
+        <img style="width: 200px; height: 150px;" alt="Image description" src="{% static 'images/static7.png' %}"/>
+        <p style="float: left;">Center of Excellence- Big Data Analytics was established in September 2015. The
+            objective of this centre is to cater the needs of the industry in the field of big data analytics, cloud and
+            other open source technologies. We provide a thorough understanding of the concept from simulation to
+            implementation. We work on open source technologies and focus on creating a technically sound workforce for
+            the industry.</p>
+        <h2 style="color: red;">Objective</h2>
+        <p>Our aim is to create competitive environment for cutting edge technologies from diverse communities against
+            the requirement of complex real world challenges. To develop extensive platform that provide complete and
+            generic solution to data handling problems posed by big data.</p>
+        <h2 style="color: red;">Technologies Covered</h2>
+        <ul>
+            <li>Linux Administration</li>
+            <li>Big Data Analytics</li>
+            <li>Cloud Simulation and implementation</li>
+        </ul>
+    </div>
 {% endblock content %}

@@ -1,0 +1,4 @@
+pip install django
+pip install --pre xhtml2pdf
+pip install django-recaptcha2
+pip install xlwt
