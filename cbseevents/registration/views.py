@@ -147,7 +147,7 @@ class RegistrationReport(TemplateView):
                 response = HttpResponse(content_type='application/ms-excel')
                 response['Content-Disposition'] = "attachment; filename='Registration Report %s.xls'" % event
                 wb = xlwt.Workbook(encoding='utf-8')
-                ws = wb.add_sheet(event.event_name)
+                ws = wb.add_sheet(event.slug)
 
                 # Sheet header, first row
                 font_style_bold = xlwt.XFStyle()
@@ -210,7 +210,7 @@ class TransactionReport(TemplateView):
                 response = HttpResponse(content_type='application/ms-excel')
                 response['Content-Disposition'] = "attachment; filename='Transaction Report_%s.xls'" % event
                 wb = xlwt.Workbook(encoding='utf-8')
-                ws = wb.add_sheet(event.event_name)
+                ws = wb.add_sheet(event.slug)
 
                 # Sheet header, first row
                 font_style_bold = xlwt.XFStyle()
