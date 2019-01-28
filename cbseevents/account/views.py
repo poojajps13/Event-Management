@@ -72,7 +72,7 @@ class Login(TemplateView):
                         else:
                             messages.error(request, "Email or password did not match")
                     except ObjectDoesNotExist:
-                        messages.error(request, "Email or password did not match...")
+                        messages.error(request, "Email id does not register to us. Check your email id or Click on Signup")
                 # else:
                 #     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
             # Account Activation
