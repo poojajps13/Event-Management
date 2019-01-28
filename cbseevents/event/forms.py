@@ -73,8 +73,9 @@ class EventForm(forms.ModelForm):
 
     def clean_registration_end(self):
         try:
+            registration_start = self.cleaned_data['registration_start']
             registration_end = self.cleaned_data['registration_end']
-            if date.today().strftime('%Y-%m-%d') <= registration_end.strftime('%Y-%m-%d'):
+            if registration_start <= registration_end:
                 return registration_end
             raise forms.ValidationError("Invalid End Date")
         except Exception:
@@ -82,9 +83,9 @@ class EventForm(forms.ModelForm):
 
     def clean_event_date(self):
         try:
-            registration_end = self.cleaned_data['registration_end']
+            registration_start = self.cleaned_data['registration_start']
             event_date = self.cleaned_data['event_date']
-            if registration_end <= event_date:
+            if registration_start <= event_date:
                 return event_date
             raise forms.ValidationError("Invalid Event Date")
         except Exception:
