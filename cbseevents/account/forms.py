@@ -78,9 +78,11 @@ class StudentForm(forms.ModelForm):
     def clean_roll_no(self):
         roll_no = self.cleaned_data['roll_no']
         try:
-            StudentRecord.objects.get(roll_no=roll_no.lower())
+            obj = StudentRecord.objects.get(roll_no=roll_no.upper())
+            if not obj.user.is_active:
+                return roll_no.upper()
         except ObjectDoesNotExist:
-            return roll_no
+            return roll_no.upper()
         raise forms.ValidationError("Roll Number already exits")
 
 
