@@ -12,6 +12,7 @@ urlpatterns = [
     path('account/', include(('account.urls', 'account'), namespace='account')),
     path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
 
+    # path('set', set_user),
     path('VLSI_Design/', vlsi_design, name='vlsi_design'),
     path('Big_Data_Analytics/', big_data, name='big_data'),
     path('SMC_India_PvtLtd./', smc_india, name='smc_india'),
