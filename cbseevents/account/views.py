@@ -189,7 +189,7 @@ class Signup(TemplateView):
 
 # noinspection PyBroadException
 class Activate(TemplateView):
-    template_name = ''
+    template_name = 'activate.html'
 
     def get(self, request, *args, **kwargs):
         try:
@@ -197,7 +197,7 @@ class Activate(TemplateView):
             user = User.objects.get(pk=uid)
             if account_activation_token.check_token(user, kwargs['token']):
                 form = StudentForm()
-                return render(request, self.template_name, {'form', form})
+                return render(request, self.template_name, {'user': user, 'form': form})
             elif user.is_active:
                 auth.login(request, user)
                 return redirect("home")
@@ -224,7 +224,7 @@ class Activate(TemplateView):
                     return redirect("home")
                 else:
                     messages.error(request, 'Invalid Input')
-                    return render(request, self.template_name, {'form', form})
+                    return render(request, self.template_name, {'user': user, 'form': form})
             elif user.is_active:
                 auth.login(request, user)
                 return redirect("home")
