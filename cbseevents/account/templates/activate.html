@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% load staticfiles %}{% block head_title %}Signup | {{ block.super }}{% endblock %}
+{% block css %}{% endblock %}
+{% block content %}
+    <main role="main" class="container col-md-6 bg-white">
+        <div class="px-md-3 px-2 pt-4 pb-5">
+            <div style="text-align: center">
+                <h3>Create Your Account</h3>
+            </div>
+            <form method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name">First Name</label><input id="first_name" type="text" value="{{ user.first_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name">Last Name</label><input id="last_name" type="text" value="{{ user.last_name }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email">Email</label><input id="email" type="email" value="{{ user.email }}"></div>
+                    <div class="col-md-6 mb-3"><label>Admission Number</label>{{ form2.roll_no }}
+                        <span style="color:red;">{{ form2.roll_no.errors }}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label>College Name</label>{{ form2.college_name }}</div>
+                    <div class="col-md-6 mb-3"><label>Phone Number</label>{{ form2.number }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label>Batch Start</label>{{ form2.batch_start }}</div>
+                    <div class="col-md-4 mb-3"><label>Batch End</label>{{ form2.batch_end }}</div>
+                    <div class="col-md-4 mb-3"><label>Branch</label>{{ form2.branch }}</div>
+                </div>
+                <button type="submit" class="btn btn-outline-success btn-block mb-3">Activate</button>
+                <a href="{% url 'home' %}" class="btn btn-outline-info btn-block">Home Page</a>
+            </form>
+        </div>
+    </main>
+{% endblock %}{% block script %}{% endblock %}
