@@ -6,9 +6,9 @@ from django.core.validators import validate_email
 from student.models import StudentRecord
 
 BATCH_START = [('2015', '2015'), ('2016', '2016'), ('2017', '2017'), ('2018', '2018'), ('2019', '2019'),
-               ('2020', '2020')]
+               ('2020', '2020'), ('2021', '2021'), ('2022', '2022')]
 BATCH_END = [('2018', '2018'), ('2019', '2019'), ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'),
-             ('2024', '2024')]
+             ('2024', '2024'), ('2025', '2025'), ('2026', '2026')]
 BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('MCA', 'MCA')]
 
 
@@ -64,9 +64,9 @@ class StudentForm(forms.ModelForm):
     branch = forms.CharField(
         label='BRANCHES', widget=forms.Select(choices=BRANCHES, attrs={'class': 'form-control'}), required=True)
     batch_start = forms.CharField(
-        label='YEAR', widget=forms.Select(choices=BATCH_START, attrs={'class': 'form-control'}), required=True)
+        label='BATCH START', widget=forms.Select(choices=BATCH_START, attrs={'class': 'form-control'}), required=True)
     batch_end = forms.CharField(
-        label='SEMESTER', widget=forms.Select(choices=BATCH_END, attrs={'class': 'form-control'}), required=True)
+        label='BATCH END', widget=forms.Select(choices=BATCH_END, attrs={'class': 'form-control'}), required=True)
     number = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Mobile Number', 'pattern': "[6789][0-9]{9}"}), required=True,
         max_length=10)
@@ -78,12 +78,10 @@ class StudentForm(forms.ModelForm):
     def clean_roll_no(self):
         roll_no = self.cleaned_data['roll_no']
         try:
-            obj = StudentRecord.objects.get(roll_no=roll_no.upper())
-            if not obj.user.is_active:
-                return roll_no.upper()
+            StudentRecord.objects.get(roll_no=roll_no.upper())
         except ObjectDoesNotExist:
             return roll_no.upper()
-        raise forms.ValidationError("Roll Number already exits")
+        raise forms.ValidationError("Roll Number already taken. Contact to us")
 
 
 class LoginForm(forms.Form):
