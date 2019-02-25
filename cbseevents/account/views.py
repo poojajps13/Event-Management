@@ -70,9 +70,10 @@ class Login(TemplateView):
                         elif not u.is_active:
                             messages.warning(request, 'Please confirm the activation link from your Email')
                         else:
-                            messages.error(request, "Email or password did not match")
+                            messages.error(request, "Your authentication information is incorrect. Please try again.")
                     except ObjectDoesNotExist:
-                        messages.error(request, "Email id does not register to us. Check your email id or Click on Signup")
+                        messages.error(request,
+                                       "Account with that sign-in information does not exist. Try again or create a new account.")
                 # else:
                 #     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
             # Account Activation
@@ -135,13 +136,11 @@ class Signup(TemplateView):
 
     def get(self, request, *args, **kwargs):
         form1 = SignupForm()
-        form2 = StudentForm()
-        return render(request, self.template_name, {'form1': form1, 'form2': form2})
+        return render(request, self.template_name, {'form1': form1})
 
     def post(self, request):
         form1 = SignupForm(request.POST)
-        form2 = StudentForm(request.POST)
-        if form1.is_valid() and form2.is_valid():
+        if form1.is_valid():
             try:
                 ''' Begin reCAPTCHA validation '''
                 re_captcha_response = request.POST.get('g-recaptcha-response')
@@ -163,9 +162,6 @@ class Signup(TemplateView):
                     password = form1.cleaned_data['password']
                     user = User.objects.create_user(username=username.lower(), email=email.lower(), password=password,
                                                     first_name=first_name, last_name=last_name, is_active=False)
-                    temp = form2.save(commit=False)
-                    temp.user = user
-                    temp.save()
                     '''Begin Email Sending '''
                     current_site = get_current_site(request)
                     mail_subject = 'Action Required: Activate your CBSE account'
@@ -179,36 +175,62 @@ class Signup(TemplateView):
                     email = EmailMessage(mail_subject, message, to=[user.email])
                     email.send()
                     '''End Email sending'''
-                    messages.success(request, 'Please confirm your email address to complete the registration.')
+                    messages.success(request, 'Please verify your email and participate in Contests')
                     return redirect("account:login")
                 else:
                     messages.error(request, "Invalid reCAPTCHA. Please try again.")
             except Exception:
-                messages.error(request, 'Problem to Sending Email. Please Contact Us.')
+                messages.error(request, 'Problem to Sending Email. Try again or Contact us.')
                 return redirect("account:signup")
         else:
             messages.error(request, "Invalid Input. Please try again")
-        return render(request, self.template_name, {'form1': form1, 'form2': form2})
+        return render(request, self.template_name, {'form1': form1})
 
 
 # noinspection PyBroadException
 class Activate(TemplateView):
+    template_name = 'activate.html'
+
     def get(self, request, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
+            if account_activation_token.check_token(user, kwargs['token']):
+                form = StudentForm()
+                return render(request, self.template_name, {'user': user, 'form': form})
+            elif user.is_active:
+                auth.login(request, user)
+                return redirect("home")
+            else:
+                raise Exception
         except Exception:
-            user = None
-        if user is not None and account_activation_token.check_token(user, kwargs['token']):
-            user.is_active = True
-            user.save()
-            auth.login(request, user)
-            messages.success(request, 'Thank you for Email Confirmation.')
-            return redirect("home")
-        elif user.is_active:
-            auth.login(request, user)
-            return redirect("home")
-        else:
+            messages.error(request, 'Activation link is invalid! Contact to Us')
+            return redirect("account:signup")
+
+    def post(self, request, **kwargs):
+        try:
+            uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
+            user = User.objects.get(pk=uid)
+            form = StudentForm(request.POST)
+            if account_activation_token.check_token(user, kwargs['token']):
+                if form.is_valid():
+                    temp = form.save(commit=False)
+                    temp.user = user
+                    temp.save()
+                    user.is_active = True
+                    user.save()
+                    auth.login(request, user)
+                    messages.success(request, 'Thank you for Email Confirmation.')
+                    return redirect("home")
+                else:
+                    messages.error(request, 'Invalid Input')
+                    return render(request, self.template_name, {'user': user, 'form': form})
+            elif user.is_active:
+                auth.login(request, user)
+                return redirect("home")
+            else:
+                raise Exception
+        except Exception:
             messages.error(request, 'Activation link is invalid! Contact to Us')
             return redirect("account:signup")
 
