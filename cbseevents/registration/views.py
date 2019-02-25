@@ -145,7 +145,7 @@ class RegistrationReport(TemplateView):
             if request.user.is_superuser or request.user == event.user:
                 student_list = RegistrationRecord.objects.filter(event=event)
                 response = HttpResponse(content_type='application/ms-excel')
-                response['Content-Disposition'] = "attachment; filename='Registration Report %s.xls'" % event
+                response['Content-Disposition'] = "attachment; filename=Registration Report %s.xls" % event
                 wb = xlwt.Workbook(encoding='utf-8')
                 ws = wb.add_sheet(event.slug)
 
@@ -208,7 +208,7 @@ class TransactionReport(TemplateView):
             if request.user.is_superuser or request.user == event.user:
                 student_list = RegistrationRecord.objects.filter(event=event)
                 response = HttpResponse(content_type='application/ms-excel')
-                response['Content-Disposition'] = "attachment; filename='Transaction Report_%s.xls'" % event
+                response['Content-Disposition'] = "attachment; filename=Transaction Report_%s.xls" % event
                 wb = xlwt.Workbook(encoding='utf-8')
                 ws = wb.add_sheet(event.slug)
 
@@ -284,7 +284,7 @@ class EnrollmentReport(TemplateView):
                 if not pdf.err:
                     response = HttpResponse(result.getvalue(), content_type='application/pdf')
                     # content = "inline; filename='Enrollment Report %s.pdf'" % event
-                    content = "attachment; filename='Enrollment Report %s.pdf'" % event
+                    content = "attachment; filename=Enrollment Report %s.pdf" % event
                     response['Content-Disposition'] = content
                     return response
 
