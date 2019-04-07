@@ -1,19 +1,25 @@
-div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-    font-weight: 300;
+/* varela-round-regular - latin */
+@font-face {
+    font-family: 'Varela Round';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Varela Round Regular'), local('VarelaRound-Regular'),
+    url('../fonts/varela-round-v11-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */ url('../fonts/varela-round-v11-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-.custom-a:hover{
+div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    font-family: 'Varela Round';
+    font-style: normal;
+    font-weight: 100;
+}
+
+.custom-a:hover {
     text-decoration: none;
 }
 h1, h2, h3, h4, h5, h6 {
     color: #202020;
 }
 
-h1, h2, h3 {
-    font-weight: 300;
-    line-height: 1.5;
-    margin: 0 0 1.5rem 0;
-}
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-weight: normal;
