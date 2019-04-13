@@ -109,7 +109,7 @@ class Login(TemplateView):
                         message = render_to_string('forget-password.txt', {
                             'user': user,
                             'domain': current_site.domain,
-                            'uid': urlsafe_base64_encode(force_bytes(user.email)).decode(),
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                             'token': password_reset_token.make_token(user),
                             'email': settings.EMAIL_HOST_USER,
                         })
@@ -242,7 +242,7 @@ class ForgetPassword(TemplateView):
     def get(self, request, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
-            user = User.objects.get(email=uid)
+            user = User.objects.get(pk=uid)
             if user.is_active and password_reset_token.check_token(user, kwargs['token']):
                 form = ResetPasswordForm()
                 return render(request, self.template_name, {'form': form})
@@ -253,7 +253,7 @@ class ForgetPassword(TemplateView):
     def post(self, request, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
-            user = User.objects.get(email=uid)
+            user = User.objects.get(pk=uid)
             if user.is_active and password_reset_token.check_token(user, kwargs['token']):
                 form = ResetPasswordForm(request.POST)
                 if form.is_valid():
