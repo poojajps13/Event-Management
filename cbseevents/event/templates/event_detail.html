@@ -31,7 +31,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <strong>About {{ obj.event_name }}:</strong>
-                    <pre style="white-space: pre-wrap">{{ obj.description }}</pre>
+                    <pre style="white-space: pre-wrap">{{ obj.content|safe }}</pre>
                     <strong>About the Resource Person ({{ obj.resource_person }}):</strong><br>
                     <pre style="white-space: pre-wrap">{{ obj.resource_person_data }}</pre>
                     <strong>Who can apply:</strong>

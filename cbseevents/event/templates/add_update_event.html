@@ -34,6 +34,8 @@
                 <div class="pb-4 col-md-12"><label>Venue:</label>{{ form.venue }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person:</label>{{ form.resource_person }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
+                {{ form.media }}
+                <div class="pb-4 col-md-12"><label>Content:</label>{{ form.content }}</div>
             </div>
             <div class="px-md-5 pb-5 btn-toolbar">
                 <button type="submit" class="px-5 m-2 btn btn-outline-primary">Submit</button>
@@ -41,5 +43,4 @@
             </div>
         </form>
     </div>
-{% endblock %}
-{% block script %}{% endblock %}
+{% endblock %}{% block script %}{% endblock %}

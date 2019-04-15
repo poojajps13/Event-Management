@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'event',
     'registration',
     'student',
+    'froala_editor',
 ]
 
 MIDDLEWARE = [

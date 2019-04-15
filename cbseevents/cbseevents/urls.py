@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from .views import *
 
@@ -11,6 +11,8 @@ urlpatterns = [
     path('event/', include(('event.urls', 'event'), namespace='event')),
     path('account/', include(('account.urls', 'account'), namespace='account')),
     path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
+
+    re_path('froala_editor/', include('froala_editor.urls')),
 
     # path('set', set_user),
     path('VLSI_Design/', vlsi_design, name='vlsi_design'),

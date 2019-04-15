@@ -3,7 +3,7 @@ from django.db import models
 
 from .utils import get_unique_slug
 
-
+from froala_editor.fields import FroalaField
 # Create your models here.
 class EventRecord(models.Model):
     slug = models.SlugField(unique=True)
@@ -24,6 +24,7 @@ class EventRecord(models.Model):
     resource_person_data = models.TextField(max_length=2010)
     registered_student = models.IntegerField(default=0)
     registration_open = models.BooleanField(default=True)
+    content = FroalaField(theme='dark')
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 

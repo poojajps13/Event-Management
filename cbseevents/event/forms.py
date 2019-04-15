@@ -2,7 +2,7 @@ from datetime import date
 
 from django import forms
 from django.forms.widgets import SelectDateWidget
-
+from froala_editor.widgets import FroalaEditor
 from .models import EventRecord
 
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
@@ -55,12 +55,13 @@ class EventForm(forms.ModelForm):
         choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
     outside_student = forms.IntegerField(widget=forms.RadioSelect(
         choices=CHOICE, attrs={'class': 'form-check-inline'}), required=True)
+    content = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = EventRecord
         fields = ['event_name', 'description', 'duration_number', 'resource_person', 'resource_person_data', 'venue',
                   'fees', 'registration_start', 'registration_end', 'event_date', 'type', 'c_o_e', 'duration_string',
-                  'eligible_branches', 'outside_student']
+                  'eligible_branches', 'outside_student', 'content']
 
     def clean_registration_start(self):
         try:
