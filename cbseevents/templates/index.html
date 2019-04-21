@@ -24,13 +24,17 @@
         </div>
     </div>
     <div class="row" style="margin: 0; background-color: #1492E6">
-        <div class="col-lg-8 order-lg-1 align-self-lg-end px-lg-5 pb-5">
-            <div class="hex left">Lvjgjgbjv</div><div class="hex middle">hjgjgjhgjghj</div><div class="hex right">ffhfhfhfh</div>
-            <br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="col-lg-8 order-lg-1 px-lg-5 pb-5 row">Adgfdgdfg
+            <div style="background: url(../static/images/Asset46.png) no-repeat;width: 100%;height: 100%" class="text-center align-self-center">Data</div>
+            <div style="background: url(../static/images/Asset46.png) no-repeat;" class="text-center align-self-center">Data</div>
+            <div style="background: url(../static/images/Asset46.png) no-repeat;" class="text-center align-self-center">Data</div>
+            <div style="background: url(../static/images/Asset46.png) no-repeat;" class="text-center align-self-center">Data</div>
+            <div style="background: url(../static/images/Asset46.png) no-repeat;" class="text-center align-self-center">Data</div>
+            <div style="background: url(../static/images/Asset46.png) no-repeat;" class="text-center align-self-center">Data</div>
         </div>
         <div class="col-lg-4 order-lg-0 pb-5 align-self-lg-center text-center">
             <h2 style="color:#ffffff;font-size: 2.4em">Current Trainings</h2>
-            <a class="btn btn-lg px-lg-5 btn-custom" href="#">Explore More</a></div>
+            <a class="btn btn-lg px-lg-5 btn-custom" href="#" style="color:#ffffff;">Explore More</a></div>
     </div>
 
 
@@ -41,30 +45,7 @@
     <br>
     <br>
     <br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br>
 
 
-
-
-    {#    <div class="my-5 p-3 bg-white rounded shadow-sm">#}
-    {#        <div class="border-bottom border-gray d-flex justify-content-between">#}
-    {#            <a class="text-dark" href=""><h2>Events</h2></a>#}
-    {#        </div>{% for event in event_list %}#}
-    {#        <div class="media text-muted px-4 pt-3">#}
-    {#            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">#}
-    {#                <div class="d-flex align-items-center justify-content-between">#}
-    {#                    <a href="{% url 'event:event_detail' event.slug %}">#}
-    {#                        <h4 class="text-gray-dark" style="margin: 0;">{{ event.event_name }}</h4></a>#}
-    {#                    <span>Event Date: {{ event.event_date|date:"F d, Y" }}</span>#}
-    {#                    <span>Duration: {{ event.duration_number }} {{ event.duration_string }}</span>#}
-    {#                    <span style="color:red">Registration End: {{ event.registration_end|date:"F d, Y" }}</span>#}
-    {#                    {% if not user.is_staff %}{% if now <= event.registration_end and event.registration_open %}#}
-    {#                        <a onclick="return confirm('Are you sure to register in {{ event.event_name }}')" href="{% url 'registration:register_event' event.slug %}" class="btn btn-sm btn-outline-success">Registration Open</a>#}
-    {#                    {% else %}#}
-    {#                        <button class="btn btn-sm btn-outline-danger" disabled>Registration Closed</button>#}
-    {#                    {% endif %}{% endif %}#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>{% endfor %}#}
-    {#    </div>#}
 {% endblock %}{% block script %}{% endblock %}
