@@ -82,3 +82,4 @@ h4 {
 .card-custom:hover {color: #1492E6 !important; text-decoration: none; background-color: #FFFFFF;}
 .card-custom a {color: #FFFFFF; margin: auto; text-decoration: none;}
 .card-custom a:hover {color: #1492E6;}
+.errorlist {color: #dc3545 !important;list-style-type: none;margin: 0;padding: 0}

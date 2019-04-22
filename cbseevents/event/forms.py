@@ -1,8 +1,9 @@
 from datetime import date
 
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from django.forms.widgets import SelectDateWidget
-from froala_editor.widgets import FroalaEditor
+
 from .models import EventRecord
 
 EVENTS = [('workshop', 'Workshop'), ('seminar', 'Seminar'), ('competition', 'Competition'), ('training', 'Training'),
@@ -25,43 +26,67 @@ DURATION_STRING = [('Hour', 'Hour'), ('Day', 'Day'), ('Week', 'Week'), ('Month',
 
 
 class EventForm(forms.ModelForm):
-    event_name = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Event Name'}), required=True, max_length=100)
-    description = forms.CharField(widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': '4'}), required=True, max_length=2000)
-    duration_number = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Durations'}), required=True, max_length=5)
-    resource_person = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Resource Person'}), required=True, max_length=100)
-    resource_person_data = forms.CharField(widget=forms.Textarea(
-        attrs={'class': 'form-control', 'rows': '4'}), required=False, max_length=2000)
-    venue = forms.CharField(widget=forms.Textarea(
-        attrs={'class': 'form-control', 'placeholder': 'Venue', 'rows': '4'}), required=True, max_length=2000)
-    fees = forms.FloatField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Fees'}), required=True)
-    registration_start = forms.DateTimeField(widget=SelectDateWidget(
-        attrs={'class': 'form-control my-2'}), required=True)
-    registration_end = forms.DateTimeField(widget=SelectDateWidget(
-        attrs={'class': 'form-control my-2'}), required=True)
-    event_date = forms.DateTimeField(widget=SelectDateWidget(
-        attrs={'class': 'form-control my-2'}), required=True)
     type = forms.CharField(widget=forms.Select(
         choices=EVENTS, attrs={'class': 'form-control'}), required=True)
     c_o_e = forms.CharField(widget=forms.Select(
         choices=CENTER_OF_EXCELLENCE, attrs={'class': 'form-control'}), required=True)
+
+    event_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Event Name'}), required=True, max_length=100)
+    event_pic = forms.FileField(widget=forms.ClearableFileInput(
+        attrs={'class': 'custom-file-input', 'style': "opacity:1", 'accept': '.pdf'}), required=True)
+    fees = forms.FloatField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Fees'}), required=True)
+    registration_start = forms.DateField(widget=forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
+    registration_end = forms.DateField(widget=forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
+    event_date = forms.DateField(widget=forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
+    duration_number = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Durations'}), required=True, max_length=5)
     duration_string = forms.CharField(widget=forms.Select(
         choices=DURATION_STRING, attrs={'class': 'form-control'}), required=True)
     eligible_branches = forms.CharField(widget=forms.CheckboxSelectMultiple(
         choices=BRANCHES, attrs={'class': 'form-check-inline'}), required=True)
+
+    pre_requisites_1 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Pre Requisites'}), required=True, max_length=50)
+    pre_requisites_2 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Pre Requisites'}), required=True, max_length=50)
+    pre_requisites_3 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Pre Requisites'}), required=True, max_length=50)
+    learning_outcome_1 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    learning_outcome_2 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    learning_outcome_3 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    learning_outcome_4 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    learning_outcome_5 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    learning_outcome_6 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Learning Outcome'}), required=True, max_length=50)
+    description = forms.CharField(widget=CKEditorUploadingWidget())
+
     outside_student = forms.IntegerField(widget=forms.RadioSelect(
         choices=CHOICE, attrs={'class': 'form-check-inline'}), required=True)
-    content = forms.CharField(widget=FroalaEditor)
+    venue = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Venue'}), required=True, max_length=50)
+    resource_person = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Resource Person'}), required=True, max_length=100)
+    resource_person_data = forms.CharField(widget=CKEditorUploadingWidget())
+    resource_person_pic = forms.FileField(widget=forms.ClearableFileInput(
+        attrs={'class': 'custom-file-input', 'style': "opacity:1", 'accept': '.pdf'}), required=True)
 
     class Meta:
         model = EventRecord
         fields = ['event_name', 'description', 'duration_number', 'resource_person', 'resource_person_data', 'venue',
                   'fees', 'registration_start', 'registration_end', 'event_date', 'type', 'c_o_e', 'duration_string',
-                  'eligible_branches', 'outside_student', 'content']
+                  'eligible_branches', 'outside_student', 'pre_requisites_1', 'pre_requisites_2', 'pre_requisites_3',
+                  'learning_outcome_1', 'learning_outcome_2', 'learning_outcome_3', 'learning_outcome_4',
+                  'learning_outcome_5', 'learning_outcome_6', 'resource_person_pic', 'event_pic']
 
     def clean_registration_start(self):
         try:

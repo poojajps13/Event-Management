@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'event',
     'registration',
     'student',
-    'froala_editor',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,6 @@ LOGIN_URL = "/account/login"
 # SESSION_COOKIE_AGE = 600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = '*********************'
@@ -141,3 +141,38 @@ EMAIL_HOST_PASSWORD = '********************'
 EMAIL_PORT = 587
 
 RECAPTCHA_PRIVATE_KEY = '********************************'
+
+# CKEditor detail
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'
+# CKEDITOR_ALLOW_NONIMAGE_FILES = False
+IMAGE_QUALITY = 40
+THUMBNAIL_SIZE = (300, 300)
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'UltraFull',
+        'height': 300,
+        'width': '100%',
+        'toolbar_UltraFull': [
+            ['NewPage', 'Print', '-', 'Undo', 'Redo'],
+            ['Font', 'FontSize', 'Format'],
+            ['TextColor', 'BGColor'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+            ['Maximize', 'Source'],
+            '/',
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft',
+             'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Image', 'Table', 'HorizontalRule', 'PageBreak', 'Smiley', 'SpecialChar'],
+        ],
+        'extraPlugins': ','.join(['autogrow', 'colordialog', 'tableresize', 'uploadimage']),
+        'language': 'en',
+        'forcePasteAsPlainText': True,
+    },
+}
+
+# Admin Site Header and Title
+ADMIN_SITE_HEADER = "CBSE"
+ADMIN_SITE_TITLE = "CBSE site admin"

@@ -6,11 +6,12 @@
         <form enctype="multipart/form-data" action="" method="post" class="px-md-2">{% csrf_token %}
             <h3>Event Information*</h3>
             <div class="form-row px-md-5">
+                {{ form.media }}
                 <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.type }}</div>
                 <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}</div>
-                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}
-                    <span style="color:red;">{{ form.fees.errors }}</span></div>
-                <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}</div>
+                <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}{{ form.fees.errors }}</div>
+                <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}{{ form.event_name.errors }}
+                </div>
                 <div class="col-md-4"><label>Duration</label>
                     <div class="row">
                         <div class="pb-4 col-md-7">{{ form.duration_number }}
@@ -18,24 +19,39 @@
                         <div class="pb-4 col-md-5">{{ form.duration_string }}</div>
                     </div>
                 </div>
-                <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
+                <div class="pb-4 col-md-4">
+                    <label>Registration start</label>{{ form.registration_start }}{{ form.registration_start.errors }}
+                </div>
+                <div class="pb-4 col-md-4">
+                    <label>Registration end</label>{{ form.registration_end }}{{ form.registration_end.errors }}
+                </div>
+                <div class="pb-4 col-md-4">
+                    <label>Event Start</label>{{ form.event_date }}{{ form.event_date.errors }}
+                </div>
                 <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
                 {% endfor %}</div>
-                <div class="pb-4 col-md-12">Outside students allowed{% for radio in form.outside_student %}
-                    <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
-                {% endfor %}</div>
-                <div class="pb-4 col-md-4"><label>Registration start</label>{{ form.registration_start }}
-                    <span style="color:red;">{{ form.registration_start.errors }}</span></div>
-                <div class="pb-4 col-md-4"><label>Registration end</label>{{ form.registration_end }}
-                    <span style="color:red;">{{ form.registration_end.errors }}</span></div>
-                <div class="pb-4 col-md-4"><label>Event Start</label>{{ form.event_date }}
-                    <span style="color:red;">{{ form.event_date.errors }}</span></div>
-                <div class="pb-4 col-md-12"><label>Venue:</label>{{ form.venue }}</div>
-                <div class="pb-4 col-md-12"><label>Resource person:</label>{{ form.resource_person }}</div>
+                <div class="pb-4 col-md-12"><label>Outside students allowed</label>
+                    {% for radio in form.outside_student %}
+                        <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
+                    {% endfor %}</div>
+
+                <div class="pb-4 col-md-8"><label>Venue:</label>{{ form.venue }}</div>
+                <div class="pb-4 col-md-4"><label>Event logo: (100X100 png file)</label>{{ form.event_pic }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 1:</label>{{ form.learning_outcome_1 }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 2:</label>{{ form.learning_outcome_2 }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 3:</label>{{ form.learning_outcome_3 }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 4:</label>{{ form.learning_outcome_4 }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 5:</label>{{ form.learning_outcome_5 }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 6:</label>{{ form.learning_outcome_6 }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 1:</label>{{ form.pre_requisites_1 }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 2:</label>{{ form.pre_requisites_2 }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 3:</label>{{ form.pre_requisites_3 }}</div>
+                <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
+
+                <div class="pb-4 col-md-7"><label>Resource person:</label>{{ form.resource_person }}</div>
+                <div class="pb-4 col-md-5"><label>Resource person Image: (500X500 image file)</label>{{ form.resource_person_pic }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
-                {{ form.media }}
-                <div class="pb-4 col-md-12"><label>Content:</label>{{ form.content }}</div>
             </div>
             <div class="px-md-5 pb-5 btn-toolbar">
                 <button type="submit" class="px-5 m-2 btn btn-outline-primary">Submit</button>

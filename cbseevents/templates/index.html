@@ -26,13 +26,14 @@
         <div class="col-lg-8 order-lg-1 pb-md-5 pb-3 align-self-lg-center text-center">
             <div class="card-deck my-4">{% for data in event_list %}
                 <a class="card mb-4 card-custom" href="{% url 'event:event_detail' data.slug %}">
-                    <div class="card-body d-flex align-items-center" style="margin: auto">{{ data.event_name }}<br>Branch: {{ data.eligible_branches }}</div>
+                    <div class="card-body d-flex align-items-center" style="margin: auto">{{ data.event_name }}<br>Branch: {{ data.eligible_branches }}
+                    </div>
                 </a>{% endfor %}
             </div>
         </div>
         <div class="col-lg-4 order-lg-0 pb-5 align-self-lg-center text-center">
             <h2 style="color:#ffffff;font-size: 2.4em">Our Trainings</h2>
-            <a class="btn btn-custom" href="#" style="border: 3px solid #ffffff;  padding: .4rem 4rem;">Explore More</a>
+            <a class="btn btn-custom" href="#" style="border: 3px solid #ffffff; padding: .4rem 4rem;">Explore More</a>
         </div>
     </div>
     <div style="background-color: rgb(0,183, 209)">

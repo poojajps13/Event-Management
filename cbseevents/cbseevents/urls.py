@@ -5,6 +5,9 @@ from django.urls import path, include, re_path
 
 from .views import *
 
+admin.site.site_header = settings.ADMIN_SITE_HEADER
+admin.site.site_title = settings.ADMIN_SITE_TITLE
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
@@ -12,7 +15,7 @@ urlpatterns = [
     path('account/', include(('account.urls', 'account'), namespace='account')),
     path('registration/', include(('registration.urls', 'registration'), namespace='registration')),
 
-    re_path('froala_editor/', include('froala_editor.urls')),
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
     # path('set', set_user),
 ]

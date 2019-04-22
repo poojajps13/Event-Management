@@ -6,9 +6,9 @@
         <div class="card-deck my-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h3 style="margin: 0;"><strong>{{ obj.event_name }}</strong></h3>
+                    <h3 style="margin: 0;"><h3>{{ obj.event_name }}</h3></h3>
                     <span class="text-capitalize">(By {{ obj.resource_person }})</span><br>
-                    Event Code: <strong>{{ obj.slug }}</strong><br><br>
+                    Event Code: <h3>{{ obj.slug }}</h3><br><br>
                     <p>Location(s): <span class="text-capitalize">{{ obj.venue }}</span></p>
                     <div class="pt-2 btn-toolbar justify-content-between">
                         <div class="p-2">Event Date<br>
@@ -30,16 +30,16 @@
         <div class="card-deck my-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <strong>About {{ obj.event_name }}:</strong>
-                    <pre style="white-space: pre-wrap">{{ obj.content|safe }}</pre>
-                    <strong>About the Resource Person ({{ obj.resource_person }}):</strong><br>
-                    <pre style="white-space: pre-wrap">{{ obj.resource_person_data }}</pre>
-                    <strong>Who can apply:</strong>
+                    <h3>About {{ obj.event_name }}:</h3>
+                    {{ obj.description|safe }}
+                    <h3>About the Resource Person ({{ obj.resource_person }}):</h3><br>
+                    {{ obj.resource_person_data|safe }}
+                    <h3>Who can apply:</h3>
                     <p>
                         Branch: {{ obj.eligible_branches }}<br>
                         Outside of ABES Engineering College: {% if obj.outside_student == 1 %}Yes{% else %}No{% endif %}
                     </p>
-                    <strong>Perks:</strong>
+                    <h3>Perks:</h3>
                     <p>Certificate</p>
                     <div class="text-center">{% if owner %}
                         <a href="{% url 'event:update_event' obj.slug %}"
