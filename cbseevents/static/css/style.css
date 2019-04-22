@@ -73,3 +73,12 @@ h4 {
         max-width: 100%;
     }
 }
+
+.btn-custom {color: #FFFFFF;font-weight: 100;border-radius: 10rem;background-color: #1492E6;}
+.btn-custom:hover {background-color: #FFFFFF;color: #1492E6}
+.btn-custom-white {color: #1492E6;;font-weight: 100;border-radius: 10rem;background-color: #FFFFFF;}
+.btn-custom-white:hover {background-color: #1492E6;color: #FFFFFF}
+.card-custom {border-radius: 10rem; text-decoration: none; color: #FFFFFF !important; background-color: #1492E6;border: 3px solid #ffffff;}
+.card-custom:hover {color: #1492E6 !important; text-decoration: none; background-color: #FFFFFF;}
+.card-custom a {color: #FFFFFF; margin: auto; text-decoration: none;}
+.card-custom a:hover {color: #1492E6;}

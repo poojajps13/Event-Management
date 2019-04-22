@@ -5,29 +5,29 @@
         <div>
             Center of Excellence:
             <a href="{% url 'account:consolidated_view_all' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="All Event">All</a>
+               style="min-width: 50px;" title="All Event">All</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='SDA' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Structural Design And Analysis">SDA</a>
+               style="min-width: 50px;" title="Structural Design And Analysis">SDA</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='NW' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Cisco Networking Academy">NW</a>
+               style="min-width: 50px;" title="Cisco Networking Academy">NW</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='TIES' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Texas Instruments Embedded System Lab">TIES</a>
+               style="min-width: 50px;" title="Texas Instruments Embedded System Lab">TIES</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='SMC' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="SMC India Pvt Ltd.">SMC</a>
+               style="min-width: 50px;" title="SMC India Pvt Ltd.">SMC</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='IARTC' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Industrial Automation Research And Training Centre">IARTC</a>
+               style="min-width: 50px;" title="Industrial Automation Research And Training Centre">IARTC</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='VLSI' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="VLSI Design">VLSI</a>
+               style="min-width: 50px;" title="VLSI Design">VLSI</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='BIGD' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Big Data Analytics">BIGD</a>
+               style="min-width: 50px;" title="Big Data Analytics">BIGD</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='MobApp' %}" class="btn btn-sm btn-outline-primary m-2"
-               title="Mobile Application Development">MobApp</a>
+               style="min-width: 50px;" title="Mobile Application Development">MobApp</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='SWD' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Center For Enterprise Software Development">SWD</a>
+               style="min-width: 50px;" title="Center For Enterprise Software Development">SWD</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='TST' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="Testing">TST</a>
+               style="min-width: 50px;" title="Testing">TST</a>
             <a href="{% url 'account:consolidated_c_o_e' c_o_e='NI' %}" class="btn btn-sm btn-outline-primary m-2"
-               style="width: 50px;" title="ABES-NI Innovation Centre">NI</a>
+               style="min-width: 50px;" title="ABES-NI Innovation Centre">NI</a>
         </div>{% endif %}
         <div class="card-deck my-4">{% if user.is_staff or user.is_superuser %}{% for event in event_list %}
             <div class="card mb-4 shadow-sm">
