@@ -4,27 +4,26 @@
     <div class="row mt-lg-5" style="margin: 0">
         <div class="col-lg-6 order-lg-1 pb-5">
             <img src="{% static 'images/Asset 36.png' %}" alt="logo" style="width: 100%"></div>
-        <div class="col-lg-6 order-lg-0 align-self-lg-center px-lg-5 pb-5">
-            <h1 class="px-lg-5 px-4" style="color:#414141;">Centre for Building Skills & Employability</h1>
+        <div class="col-lg-6 order-lg-0 align-self-lg-center px-lg-5 pb-5 text-center">
+            <h1 class="px-4" style="color:#414141;">Summer Internship 2019</h1>
             <hr style="width: 70px; border: 1px solid rgba(0,0,0,0.23);">
-            <p class="px-lg-2 px-3" style="font-size: large">Skill Building Training programs for Engineering students - 2019</p>
-            <li class="px-lg-3 px-3" style="font-size: small;list-style-type: circle;">Venue: CBSE Department, Ground Floor, KC Building,ABES Engineering College</li>
-            <li class="px-lg-3 px-3" style="font-size: small;list-style-type: circle;">Limited Number of seats in each course: 15</li>
-            <a class="btn btn-custom mt-4 px-lg-5 py-3" href="#" style="border: 0;  font-size: 24px;box-shadow: 5px 5px 10px rgba(0,0,0,.50)!important;">Machine Learning Hackathon 2019</a>
+            {#<p class="px-3" style="font-size: 24px; color:maroon;">Registration Open</p>#}
+            <li class="px-3" style="font-size: small;list-style-type: circle;">Venue: CBSE Department, Ground Floor, KC Building,ABES Engineering College</li>
+            <li class="px-3" style="font-size: small;list-style-type: circle;">Limited Number of seats in each course: 15</li>
+            <a class="btn btn-custom mt-4 px-lg-5 py-3" href="#events" style="border: 0;  font-size: 24px;box-shadow: 5px 5px 10px rgba(0,0,0,.50)!important;">Registration Open</a>
         </div>
     </div>
-    <div class="row mt-lg-5" style="margin: 0; background-color: #1492E6">
+    <div class="row mt-lg-5" id="events" style="margin: 0; background-color: #1492E6">
         <div class="col-lg-6 order-lg-0" style="padding:0">
             <img src="{% static 'images/Asset 38.png' %}" alt="logo" style="width: 80%"></div>
         <div class="col-lg-6 order-lg-1 align-self-lg-center px-md-5 px-3 pt-5 text-center">
-            <h2 class="px-3" style="color:#ffffff;font-size: 2.4em">Enhance Your Knowledge<br>Shape Your Future
-            </h2>
+            <h2 class="px-3" style="color:#ffffff;font-size: 2.4em">Enhance Your Knowledge<br>Shape Your Future </h2>
             <hr class="mb-3" style="width: 250px; border: 0.1rem solid #ffffff">
-            <h2 class="px-3" style="color:rgb(178,0,34);font-size: 2em">Summer Internship 2019</h2>
+            <h2 class="px-3" style="color:#FFFFFF;font-size: 2em">Summer Internship 2019</h2>
         </div>
     </div>
     <div class="row" style="margin: 0; background-color: #1492E6">
-        <div class="col-lg-12 pb-md-5 pb-3 align-self-lg-center text-center">
+        <div class="col-lg-12 pb-3 px-3 text-center">
             <div class="card-deck my-4">{% for data in event_list %}
                 <a class="card mb-4 card-custom {% if forloop.counter|divisibleby:2 %}odd{% else %}even{% endif %}" href="{% url 'event:event_detail' data.slug %}">
                     <div class="card-body d-flex align-items-center" style="margin: auto">{{ data.event_name }}<br>Branch: {{ data.eligible_branches }}
@@ -32,13 +31,16 @@
                 </a>{% endfor %}
             </div>
         </div>
+        <div class="col-lg-12 pb-5 text-center">
+            <a class="btn btn-custom" href="#" style="border: 3px solid #ffffff; padding: .4rem 4rem;">Explore More</a>
+        </div>
     </div>
-{#    <div style="background-color: rgb(0,183, 209)">#}
-{#        <div class="container pt-5 pb-4">#}
-{#            <h1 style="color: #FFFFFF; font-weight: 100;" class="text-center pb-4">News</h1>#}
-{#            <p style="border-left: 0.1rem solid #ffffff; font-size: 20px" class="px-5 mb-5 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa excepturi fugiat ipsam iusto magnam natus provident, temporibus vitae? Consectetur consequuntur delectus dolor, ex hic labore optio perferendis quae quidem quisquam!</p>#}
-{#            <p style="border-right: 0.1rem solid #ffffff; font-size: 20px" class="px-5 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa excepturi fugiat ipsam iusto magnam natus provident, temporibus vitae? Consectetur consequuntur delectus dolor, ex hic labore optio perferendis quae quidem quisquam!</p>#}
-{#            <div style="color: #FFFFFF; font-size: 90px;" class="text-center">...</div>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div style="background-color: rgb(0,183, 209)">#}
+    {#        <div class="container pt-5 pb-4">#}
+    {#            <h1 style="color: #FFFFFF; font-weight: 100;" class="text-center pb-4">News</h1>#}
+    {#            <p style="border-left: 0.1rem solid #ffffff; font-size: 20px" class="px-5 mb-5 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa excepturi fugiat ipsam iusto magnam natus provident, temporibus vitae? Consectetur consequuntur delectus dolor, ex hic labore optio perferendis quae quidem quisquam!</p>#}
+    {#            <p style="border-right: 0.1rem solid #ffffff; font-size: 20px" class="px-5 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa excepturi fugiat ipsam iusto magnam natus provident, temporibus vitae? Consectetur consequuntur delectus dolor, ex hic labore optio perferendis quae quidem quisquam!</p>#}
+    {#            <div style="color: #FFFFFF; font-size: 90px;" class="text-center">...</div>#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}{% block script %}{% endblock %}
