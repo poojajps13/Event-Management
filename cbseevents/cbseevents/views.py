@@ -1,5 +1,3 @@
-from datetime import date
-
 from django.shortcuts import render, redirect
 
 from event.models import *
@@ -7,7 +5,7 @@ from student.models import *
 
 
 def home(request):
-    event_list = EventRecord.objects.all().order_by('-pk')[:9]
+    event_list = EventRecord.objects.all().order_by('-event_date')[:16]
     return render(request, 'index.html', {'event_list': event_list})
 
 

@@ -1,5 +1,4 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Add Event | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}
 {% block content %}
     <div class="p-3 pt-4 bg-white rounded shadow-sm">
         <h2>Add/Update Event</h2>
@@ -31,11 +30,13 @@
                 <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
                 {% endfor %}</div>
+                <div class="pb-4 col-md-12">Eligible Year{% for radio in form.eligible_year %}
+                    <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
+                {% endfor %}</div>
                 <div class="pb-4 col-md-12"><label>Outside students allowed</label>
                     {% for radio in form.outside_student %}
                         <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
                     {% endfor %}</div>
-
                 <div class="pb-4 col-md-8"><label>Venue:</label>{{ form.venue }}</div>
                 <div class="pb-4 col-md-4"><label>Event logo: (100X100 png file)</label>{{ form.event_pic }}</div>
                 <div class="pb-4 col-md-4"><label>Learning Outcome 1:</label>{{ form.learning_outcome_1 }}</div>
@@ -48,9 +49,9 @@
                 <div class="pb-4 col-md-4"><label>Pre-Requisites 2:</label>{{ form.pre_requisites_2 }}</div>
                 <div class="pb-4 col-md-4"><label>Pre-Requisites 3:</label>{{ form.pre_requisites_3 }}</div>
                 <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
-
                 <div class="pb-4 col-md-7"><label>Resource person:</label>{{ form.resource_person }}</div>
-                <div class="pb-4 col-md-5"><label>Resource person Image: (500X500 image file)</label>{{ form.resource_person_pic }}</div>
+                <div class="pb-4 col-md-5">
+                    <label>Resource person Image: (500X500 image file)</label>{{ form.resource_person_pic }}</div>
                 <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
             </div>
             <div class="px-md-5 pb-5 btn-toolbar">
@@ -58,5 +59,4 @@
                 <button type="reset" class="px-4 m-2 btn btn-outline-danger">Reset</button>
             </div>
         </form>
-    </div>
-{% endblock %}{% block script %}{% endblock %}
+    </div>{% endblock %}

@@ -12,24 +12,24 @@
     {% block css %}{% endblock css %}
 </head>
 <body>
-<div class="d-flex flex-column flex-md-row align-items-center px-md-4 fixed-top bg-white">
+<div class="d-flex flex-column flex-md-row align-items-center px-md-4 fixed-top" style="background-color: rgb(178,0,34);">
     <a class="mr-md-auto" href="{% url 'home' %}">
         <img src="{% static 'images/cbselogo.png' %}" alt="CBSE" style="width: 125px;"></a>
     <nav class="my-2 my-md-0 mr-md-3 align-items-md-center">
-        <a class="py-1 mr-md-5 ml-2 custom-a" style="border-bottom: 1px solid #007bff!important;" href="{% url 'home' %}">Home</a>
-        <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'home' %}">Event</a>
-        <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'home' %}">News</a>
+        <a class="py-1 mr-md-5 ml-2 custom-a text-white" style="border-bottom: 1px solid #FFFFFF!important;" href="{% url 'home' %}">Home</a>
+        <a class="py-1 mr-md-5 ml-2 custom-a text-white" href="{% url 'home' %}">Event</a>
+        <a class="py-1 mr-md-5 ml-2 custom-a text-white" href="{% url 'home' %}">News</a>
         {% if user.is_authenticated %}
             {% if user.is_superuser %}
-                <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'account:superuser' %}">Manage User</a>
+                <a class="py-1 mr-md-5 ml-2 custom-a text-white" href="{% url 'account:superuser' %}">Manage User</a>
                 <a class="py-1 mr-md-5 ml-2 custom-a" href="">Generate Report</a>
             {% elif user.is_staff %}
                 <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'event:add_event' %}">Add Event</a>{% endif %}
             <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'account:consolidated_view_all' %}">Consolidated View</a>
-            <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'account:logout' %}">Logout<img src="{% static 'images/nav.png' %}" alt=""></a>
+            <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'account:logout' %}">Logout</a>
         {% else %}
-            <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'account:login' %}">Login</a>
-            <a class="py-1 ml-2 custom-a" href="{% url 'account:signup' %}">Signup<img src="{% static 'images/nav.png' %}" alt=""></a>
+            <a class="py-1 mr-md-5 ml-2 custom-a text-white" href="{% url 'account:login' %}">Login</a>
+            <a class="py-1 ml-2 custom-a text-white" href="{% url 'account:signup' %}">Signup</a>
         {% endif %}
     </nav>
 </div>
