@@ -52,7 +52,7 @@ class AddEvent(TemplateView):
     def post(self, request):
         try:
             if request.user.is_staff:
-                form = EventForm(request.POST)
+                form = EventForm(request.POST, request.FILES)
                 if form.is_valid():
                     temp = form.save(commit=False)
                     temp.user = request.user
@@ -93,7 +93,7 @@ class UpdateEvent(TemplateView):
             obj = EventRecord.objects.get(slug=kwargs['slug'])
             f = obj.fees
             if obj.user == request.user or request.user.is_superuser:
-                form = EventForm(request.POST, instance=obj)
+                form = EventForm(request.POST, request.FILES, instance=obj)
                 if form.is_valid():
                     fee = form.cleaned_data['fees']
                     diff = fee - f

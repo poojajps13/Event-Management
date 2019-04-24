@@ -36,8 +36,8 @@
         </nav>
     </div>
 </div>
-<div class="pt-4 mt-md-5" style="margin-top: 230px">
-    <main role="main" class="container pb-4">{% for m in messages %}
+<div class="pt-2 mt-md-5">
+    <main role="main" class="container pt-md-5 mt-md-3 pb-4">{% for m in messages %}
         <div class="alert alert-dismissible fade show container fit-text {% if m.tags == 'success' %}alert-success{% elif m.tags == 'warning' %}alert-warning{% elif m.tags == 'info' %}alert-info{% else %}alert-danger{% endif %}" role="alert">{{ m }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>

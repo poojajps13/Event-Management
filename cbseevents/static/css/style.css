@@ -84,4 +84,9 @@ h4 {
 .card-custom a:hover {color: #1492E6;}
 .errorlist {color: #dc3545 !important;list-style-type: none;margin: 0;padding: 0}
 .odd {background-color: #1492E6;}
-.even {background-color: rgb(0,183, 209);}
+.even {background-color: rgb(0, 183, 209);}
+@media (max-width: 768px) {
+    .fixed-top {
+        position: unset;
+    }
+}

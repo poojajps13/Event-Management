@@ -6,8 +6,8 @@
             <h3>Event Information*</h3>
             <div class="form-row px-md-5">
                 {{ form.media }}
-                <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.type }}</div>
-                <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}</div>
+                <div class="pb-4 col-md-4"><label>Select Event:</label>{{ form.type }}{{ form.type.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Centre of Excellence:</label>{{ form.c_o_e }}{{ form.c_o_e.errors }}</div>
                 <div class="pb-4 col-md-4"><label>Fees:</label>{{ form.fees }}{{ form.fees.errors }}</div>
                 <div class="pb-4 col-md-8"><label>Event name</label>{{ form.event_name }}{{ form.event_name.errors }}
                 </div>
@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="pb-4 col-md-7">{{ form.duration_number }}
                             <span style="color:red;">{{ form.duration_number.errors }}</span></div>
-                        <div class="pb-4 col-md-5">{{ form.duration_string }}</div>
+                        <div class="pb-4 col-md-5">{{ form.duration_string }}{{ form.duration_string.errors }}</div>
                     </div>
                 </div>
                 <div class="pb-4 col-md-4">
@@ -29,30 +29,31 @@
                 </div>
                 <div class="pb-4 col-md-12">Eligible branches{% for radio in form.eligible_branches %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
-                {% endfor %}</div>
+                {% endfor %}{{ form.eligible_branches.errors }}</div>
                 <div class="pb-4 col-md-12">Eligible Year{% for radio in form.eligible_year %}
                     <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
-                {% endfor %}</div>
+                {% endfor %}{{ form.eligible_year.errors }}</div>
                 <div class="pb-4 col-md-12"><label>Outside students allowed</label>
                     {% for radio in form.outside_student %}
                         <div class="pl-sm-4 pl-2 form-check form-check-inline">{{ radio }}</div>
-                    {% endfor %}</div>
-                <div class="pb-4 col-md-8"><label>Venue:</label>{{ form.venue }}</div>
-                <div class="pb-4 col-md-4"><label>Event logo: (100X100 png file)</label>{{ form.event_pic }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 1:</label>{{ form.learning_outcome_1 }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 2:</label>{{ form.learning_outcome_2 }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 3:</label>{{ form.learning_outcome_3 }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 4:</label>{{ form.learning_outcome_4 }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 5:</label>{{ form.learning_outcome_5 }}</div>
-                <div class="pb-4 col-md-4"><label>Learning Outcome 6:</label>{{ form.learning_outcome_6 }}</div>
-                <div class="pb-4 col-md-4"><label>Pre-Requisites 1:</label>{{ form.pre_requisites_1 }}</div>
-                <div class="pb-4 col-md-4"><label>Pre-Requisites 2:</label>{{ form.pre_requisites_2 }}</div>
-                <div class="pb-4 col-md-4"><label>Pre-Requisites 3:</label>{{ form.pre_requisites_3 }}</div>
-                <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}</div>
-                <div class="pb-4 col-md-7"><label>Resource person:</label>{{ form.resource_person }}</div>
+                    {% endfor %}{{ form.outside_student.errors }}</div>
+                <div class="pb-4 col-md-8"><label>Venue:</label>{{ form.venue }}{{ form.venue.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Event logo: (100X100 png file)</label>{{ form.event_pic }}{{ form.event_pic.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 1:</label>{{ form.learning_outcome_1 }}{{ form.learning_outcome_1.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 2:</label>{{ form.learning_outcome_2 }}{{ form.learning_outcome_2.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 3:</label>{{ form.learning_outcome_3 }}{{ form.learning_outcome_3.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 4:</label>{{ form.learning_outcome_4 }}{{ form.learning_outcome_4.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 5:</label>{{ form.learning_outcome_5 }}{{ form.learning_outcome_5.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Learning Outcome 6:</label>{{ form.learning_outcome_6 }}{{ form.learning_outcome_6.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 1:</label>{{ form.pre_requisites_1 }}{{ form.pre_requisites_1.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 2:</label>{{ form.pre_requisites_2 }}{{ form.pre_requisites_2.errors }}</div>
+                <div class="pb-4 col-md-4"><label>Pre-Requisites 3:</label>{{ form.pre_requisites_3 }}{{ form.pre_requisites_3.errors }}</div>
+                <div class="pb-4 col-md-12"><label>Description</label>{{ form.description }}{{ form.description.errors }}</div>
+                <div class="pb-4 col-md-7"><label>Resource person:</label>{{ form.resource_person }}{{ form.resource_person.errors }}</div>
                 <div class="pb-4 col-md-5">
-                    <label>Resource person Image: (500X500 image file)</label>{{ form.resource_person_pic }}</div>
-                <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}</div>
+                    <label>Resource person Image: (500X500 image file)</label>{{ form.resource_person_pic }}{{ form.resource_person_pic.errors }}</div>
+                <div class="pb-4 col-md-12"><label>Resource person data:</label>{{ form.resource_person_data }}{{ form.resource_person_data.errors }}</div>
+{#            {{ form.as_p }}#}
             </div>
             <div class="px-md-5 pb-5 btn-toolbar">
                 <button type="submit" class="px-5 m-2 btn btn-outline-primary">Submit</button>
