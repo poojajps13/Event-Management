@@ -90,32 +90,31 @@ class EventForm(forms.ModelForm):
                   'learning_outcome_1', 'learning_outcome_2', 'learning_outcome_3', 'learning_outcome_4',
                   'learning_outcome_5', 'learning_outcome_6', 'resource_person_pic', 'event_pic', 'eligible_year']
 
-    # def clean_registration_start(self):
-    #     try:
-    #         registration_start = self.cleaned_data['registration_start']
-    #         if True or registration_start.strftime('%Y-%m-%d') >= date.today().strftime('%Y-%m-%d'):
-    #             return registration_start
-    #         raise forms.ValidationError("Invalid Start Date")
-    #     except Exception:
-    #         raise forms.ValidationError("Invalid Start Date")
-    #
-    # def clean_registration_end(self):
-    #     try:
-    #         registration_start = self.cleaned_data['registration_start']
-    #         registration_end = self.cleaned_data['registration_end']
-    #         if registration_start <= registration_end:
-    #             return registration_end
-    #         raise forms.ValidationError("Invalid End Date")
-    #     except Exception:
-    #         raise forms.ValidationError("Invalid End Date")
-    #
-    # def clean_event_date(self):
-    #     try:
-    #         registration_start = self.cleaned_data['registration_start']
-    #         event_date = self.cleaned_data['event_date']
-    #         if registration_start <= event_date:
-    #             return event_date
-    #         raise forms.ValidationError("Invalid Event Date")
-    #     except Exception:
-    #         raise forms.ValidationError("Invalid Event Date")
-    #
+    def clean_registration_start(self):
+        try:
+            registration_start = self.cleaned_data['registration_start']
+            if True or registration_start.strftime('%Y-%m-%d') >= date.today().strftime('%Y-%m-%d'):
+                return registration_start
+            raise forms.ValidationError("Invalid Start Date")
+        except Exception:
+            raise forms.ValidationError("Invalid Start Date")
+
+    def clean_registration_end(self):
+        try:
+            registration_start = self.cleaned_data['registration_start']
+            registration_end = self.cleaned_data['registration_end']
+            if registration_start <= registration_end:
+                return registration_end
+            raise forms.ValidationError("Invalid End Date")
+        except Exception:
+            raise forms.ValidationError("Invalid End Date")
+
+    def clean_event_date(self):
+        try:
+            registration_start = self.cleaned_data['registration_start']
+            event_date = self.cleaned_data['event_date']
+            if registration_start <= event_date:
+                return event_date
+            raise forms.ValidationError("Invalid Event Date")
+        except Exception:
+            raise forms.ValidationError("Invalid Event Date")
