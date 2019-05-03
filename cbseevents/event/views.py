@@ -15,7 +15,7 @@ class EventListView(TemplateView):
     template_name = 'event-list.html'
 
     def get(self, request, *args, **kwargs):
-        event_list = EventRecord.objects.all().order_by('event_date')
+        event_list = EventRecord.objects.all().order_by('-event_date')
         return render(request, self.template_name, {'event_list': event_list})
 
 
