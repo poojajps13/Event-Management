@@ -25,12 +25,12 @@ class EventRecord(models.Model):
     pre_requisites_1 = models.CharField(max_length=50, default='')
     pre_requisites_2 = models.CharField(max_length=50, default='')
     pre_requisites_3 = models.CharField(max_length=50, default='')
-    learning_outcome_1= models.CharField(max_length=100, default='')
-    learning_outcome_2= models.CharField(max_length=100, default='')
-    learning_outcome_3= models.CharField(max_length=100, default='')
-    learning_outcome_4= models.CharField(max_length=100, default='')
-    learning_outcome_5= models.CharField(max_length=100, default='')
-    learning_outcome_6= models.CharField(max_length=100, default='')
+    learning_outcome_1 = models.CharField(max_length=100, default='')
+    learning_outcome_2 = models.CharField(max_length=100, default='')
+    learning_outcome_3 = models.CharField(max_length=100, default='')
+    learning_outcome_4 = models.CharField(max_length=100, default='')
+    learning_outcome_5 = models.CharField(max_length=100, default='')
+    learning_outcome_6 = models.CharField(max_length=100, default='')
     description = RichTextUploadingField()
 
     outside_student = models.IntegerField(default=0)
@@ -51,3 +51,11 @@ class EventRecord(models.Model):
 
     def __str__(self):
         return self.slug
+
+
+class DataList(models.Model):
+    place = models.CharField(max_length=50)
+    number = models.IntegerField()
+
+    def __str__(self):
+        return self.place

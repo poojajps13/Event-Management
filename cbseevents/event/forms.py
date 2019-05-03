@@ -22,7 +22,8 @@ CENTER_OF_EXCELLENCE = [('SDA', 'Structural Design And Analysis'),
                         ('SWD', 'Center For Enterprise Software Development'),
                         ('TST', 'Testing'),
                         ('NI', 'ABES-NI Innovation Centre')]
-DURATION_STRING = [('Hour', 'Hour'), ('Day', 'Day'), ('Week', 'Week'), ('Month', 'Month')]
+DURATION_STRING = [('Hour', 'Hour'), ('Hours', 'Hours'), ('Day', 'Day'), ('Days', 'Days'), ('Week', 'Week'),
+                   ('Weeks', 'Weeks'), ('Month', 'Month'), ('Months', 'Months')]
 
 
 class EventForm(forms.ModelForm):

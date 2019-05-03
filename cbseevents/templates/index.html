@@ -1,24 +1,25 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Home | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}
 <main>{% block content %}</main>
     <div class="row" style="margin: 0">
         <div class="col-lg-6 order-lg-1 pb-5">
-            <img src="{% static 'images/Asset 36.png' %}" alt="logo" style="width: 100%"></div>
+            <img src="{% static 'images/Asset 50.svg' %}" alt="logo" style="width: 100%"></div>
         <div class="col-lg-6 order-lg-0 align-self-lg-center px-lg-5 pb-5 text-center">
             <h1 class="px-4" style="color:#414141;font-size: 3rem;">Summer Internship 2019</h1>
             <hr style="width: 70px; border: 1px solid rgba(0,0,0,0.23);">
-            {#<p class="px-3" style="font-size: 24px; color:maroon;">Registration Open</p>#}
-            <li class="px-3" style="font-size: small;list-style-type: circle;">Venue: CBSE Department, Ground Floor, KC Building,ABES Engineering College</li>
-            <li class="px-3" style="font-size: small;list-style-type: circle;">Limited Number of seats in each course: 15</li>
+            <p class="px-3" style="font-size: 24px; color:maroon;">A gateway to technical Advancement</p>
+            <div class="px-3 pl-lg-5" style="text-align: left;">
+                <li style="font-size: small;list-style-type: circle;">Venue: CBSE Department, Ground Floor, KC Building,ABES Engineering College</li>
+                <li style="font-size: small;list-style-type: circle;">Limited Number of seats in each course: 15</li>
+            </div>
             <a class="btn btn-custom mt-4 px-lg-5 py-3" href="#events" style="border: 0;  font-size: 24px;box-shadow: 5px 5px 10px rgba(0,0,0,.50)!important;">Registration Open</a>
         </div>
     </div>
-    <div class="row mt-lg-5" id="events" style="margin: 0; background-color: #1492E6">
+    <div class="row mt-lg-3" id="events" style="margin: 0; background-color: #1492E6">
         <div class="col-lg-6 order-lg-0" style="padding:0">
-            <img src="{% static 'images/Asset 38.png' %}" alt="logo" style="width: 80%"></div>
+            <img src="{% static 'images/Asset 51.svg' %}" alt="logo" style="width: 60%"></div>
         <div class="col-lg-6 order-lg-1 align-self-lg-center px-md-5 px-3 pt-5 text-center">
             <h2 class="px-3" style="color:#ffffff;font-size: 2.4em">Enhance Your Knowledge<br>Shape Your Future </h2>
-            <hr class="mb-3" style="width: 250px; border: 0.1rem solid #ffffff">
+            <hr class="mb-3" style="width: 250px; border-top: 2px solid #ffffff">
             <h2 class="px-3" style="color:#FFFFFF;font-size: 2em">Summer Internship 2019</h2>
         </div>
     </div>
@@ -32,10 +33,10 @@
             </div>
         </div>
         <div class="col-lg-12 pb-5 text-center">
-            <a class="btn btn-custom" href="#" style="border: 3px solid #ffffff; padding: .4rem 4rem;">Explore More</a>
+            <a class="btn btn-custom" href="{% url 'event:event_list' %}" style="border: 3px solid #ffffff; padding: .4rem 4rem;">Explore More</a>
         </div>
     </div>
-    {#    <div style="background-color: rgb(0,183, 209)">#}
+        <div style="background-color: rgb(0,183,209)">
     {#        <div class="container pt-5 pb-4">#}
     {#            <h1 style="color: #FFFFFF; font-weight: 100;" class="text-center pb-4">News</h1>#}
     {#            <p style="border-left: 0.1rem solid #ffffff; font-size: 20px" class="px-5 mb-5 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa excepturi fugiat ipsam iusto magnam natus provident, temporibus vitae? Consectetur consequuntur delectus dolor, ex hic labore optio perferendis quae quidem quisquam!</p>#}

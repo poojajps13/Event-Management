@@ -1,60 +1,79 @@
 {% extends 'base.html' %}{% load staticfiles %}{% block head_title %}Event Detail | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}
-{% block content %}
-    <div class="container bg-white p-sm-3">
-        <h3 class="text-capitalize">{{ obj.type }}</h3>
-        <div class="card-deck my-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h3 style="margin: 0;"><h3>{{ obj.event_name }}</h3></h3>
-                    <span class="text-capitalize">(By {{ obj.resource_person }})</span><br>
-                    Event Code: <h3>{{ obj.slug }}</h3><br><br>
-                    <p>Location(s): <span class="text-capitalize">{{ obj.venue }}</span></p>
-                    <div class="pt-2 btn-toolbar justify-content-between">
-                        <div class="p-2">Event Date<br>
-                            <span style="color: red">{{ obj.event_date|date:'F d, Y' }}</span></div>
-                        <div class="p-2">Duration<br>{{ obj.duration_number }} {{ obj.duration_string }}</div>
-                        <div class="p-2">Fee<br>{{ obj.fees }}</div>
-                        <div class="p-2">Posted On<br>{{ obj.timestamp|date:'F d, Y' }}</div>
-                        <div class="p-2">Registration Start<br>
-                            <span class="text-capitalize">{{ obj.registration_start }}</span></div>
-                        <div class="p-2">Registration End<br>
-                            <span style="color: red" class="text-capitalize">{{ obj.registration_end }}</span></div>
-                    </div>
+<main>{% block content %}</main>
+    <div class="bg-blue pt-4" style="margin-top: -32px">
+        <div class="container pt-md-4 text-md-left text-center">
+            <div class="d-flex flex-md-row flex-column">
+                <img src="/media/{{ obj.event_pic }}" alt="logo" class="mb-3" style="height: 100px; margin: auto; margin-top: 0">
+                <div class="flex-md-grow-1 text-white px-3 mb-3">
+                    <h1 class="mb-3">{{ obj.event_name }}</h1>{% if owner %}
+                    <a class="btn btn-custom mb-4" style="border: 2px solid #ffffff; padding: .4rem 4rem;" href="{% url 'event:update_event' obj.slug %}">Update</a>{% elif registered %}
+                    <button class="btn btn-custom mb-4" style="border: 2px solid #ffffff; padding: .4rem 4rem;" disabled>Already Registered</button>
+                    {% else %}{% if now <= obj.registration_end and obj.registration_open %}
+                        <a class="btn btn-custom mb-4" style="border: 2px solid #ffffff; padding: .4rem 4rem;" onclick="return confirm('Are you sure to register in {{ obj.event_name }}')" href="{% url 'registration:register_event' obj %}">Register Now</a>{% else %}
+                        <button class="btn btn-custom mb-4" style="border: 2px solid #ffffff; padding: .4rem 4rem;" disabled>Registration Closed</button>{% endif %}{% endif %}
+                    <p>Registration last Date: {{ obj.registration_end }}</p>
                 </div>
-                <div class="card-header">{% if owner %}
-                    <a href="{% url 'event:update_event' obj.slug %}" class="btn btn-outline-primary btn-sm">Update</a>
-                {% endif %}</div>
+                <div class="text-white mb-3" style="margin: auto">
+                    <p>Fee: <span style="font-size: 40px">₹ {{ obj.fees }}</span></p>
+                    <p>Event Date: {{ obj.event_date }}</p>
+                </div>
+            </div>
+            <div id="demo" class="collapse">
+                <div class="px-3 px-md-5 text-white">
+{#                    <p class="mb-4">Learn most demanding language with python and data visualization</p>#}
+                    <ul>
+                        <li class="mb-2">Registration Start: {{ obj.registration_start }}</li>
+                        <li class="mb-2">Eligible Branch: {{ obj.eligible_branches }}</li>
+                        <li class="mb-2">Eligible Year: {{ obj.eligible_year }}</li>
+                        <li class="mb-2">Outside of ABES Engineering College student
+                            {% if obj.outside_student == 1 %}Allowed{% else %}Not Allowed{% endif %}</li>
+                        <li class="mb-2">Venue: {{ obj.venue }}</li>
+                    </ul>
+                    <p>Duration: {{ obj.duration_number }} {{ obj.duration_string }}</p>
+                </div>
             </div>
         </div>
-        <div class="card-deck my-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h3>About {{ obj.event_name }}:</h3>
-                    {{ obj.description|safe }}
-                    <h3>About the Resource Person ({{ obj.resource_person }}):</h3><br>
-                    {{ obj.resource_person_data|safe }}
-                    <h3>Who can apply:</h3>
-                    <p>
-                        Branch: {{ obj.eligible_branches }}<br>
-                        Outside of ABES Engineering College: {% if obj.outside_student == 1 %}Yes{% else %}No{% endif %}
-                    </p>
-                    <h3>Perks:</h3>
-                    <p>Certificate</p>
-                    <div class="text-center">{% if owner %}
-                        <a href="{% url 'event:update_event' obj.slug %}"
-                           class="btn btn-outline-primary px-5">Update</a>{% elif registered %}
-                        <button class="btn btn-outline-success px-5" disabled>Already Registered</button>
-                        {% else %}{% if now <= obj.registration_end and obj.registration_open %}
-                            <a onclick="return confirm('Are you sure to register in {{ obj.event_name }}')"
-                               href="{% url 'registration:register_event' obj %}" class="btn btn-outline-success px-5">
-                                Registration Open</a>{% else %}
-                            <button class="btn btn-outline-danger px-5" disabled>Registration Closed</button>
-                        {% endif %}{% endif %}</div>
-                </div>
+        <div style="text-align: center;">
+            <button class="btn text-white" data-toggle="collapse" data-target="#demo" style="border-radius: 50%!important;height: 90px;font-size: small; margin-bottom: -45px; background-color: rgba(0, 183, 209, 1); background-image: linear-gradient(rgba(0, 183, 209, 1), rgba(20, 146, 230, 1));">Show More<br><span style="font-size: x-large; line-height: 0;margin-bottom: -3px">&#8744;</span>
+            </button>
+        </div>
+    </div>
+    <div class="container mt-5 p-4">
+        <div class="d-flex justify-content-md-between flex-md-row flex-column">
+            <div class="text-center align-self-center pb-3"><h2>Pre-Requisites</h2>
+                <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
+                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-radius: 50rem; width: 350px;padding: 20px 0">
+                    <p>{{ obj.pre_requisites_1 }}</p>
+                    <p>{{ obj.pre_requisites_2 }}</p>
+                    <p>{{ obj.pre_requisites_3 }}</p></div>
+            </div>
+            <div class="text-center align-self-center pb-3"><h2>Learning OutCome</h2>
+                <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
+                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-bottom: 2px solid grey; border-radius: 2rem; width: 300px; padding: 20px 0">
+                    <p>{{ obj.learning_outcome_1 }}</p>
+                    <p>{{ obj.learning_outcome_2 }}</p>
+                    <p>{{ obj.learning_outcome_3 }}</p>
+                    <p>{{ obj.learning_outcome_4 }}</p>
+                    <p>{{ obj.learning_outcome_5 }}</p>
+                    <p>{{ obj.learning_outcome_6 }}</p></div>
             </div>
         </div>
     </div>
-
-{% endblock content %}
+    <div class="container text-center pb-5">
+        <hr style="width: 70%; border-top: 4px solid #1492E6; border-radius: 50rem">
+        <h2 class="mt-5">Course Content</h2>
+        <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
+        <div class="p-4 p-md-5 mt-5" style="border: 2px solid grey; border-radius: 2rem; text-align: initial">
+            {{ obj.description|safe }}
+        </div>
+    </div>
+    <div class="container text-center pb-3">
+        <hr style="width: 70%; border-top: 4px solid #1492E6; border-radius: 50rem">
+        <h2 class="mt-5">About The Instructor</h2>
+        <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
+        <div class="p-4" style="text-align: initial">
+            <h2>{{ obj.resource_person }}</h2>
+            {{ obj.resource_person_data|safe }}
+        </div>
+    </div>{% endblock content %}
 

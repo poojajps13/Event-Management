@@ -11,6 +11,14 @@ from .models import EventRecord
 
 
 # Create your views here.
+class EventListView(TemplateView):
+    template_name = 'event-list.html'
+
+    def get(self, request, *args, **kwargs):
+        event_list = EventRecord.objects.all().order_by('event_date')
+        return render(request, self.template_name, {'event_list': event_list})
+
+
 # noinspection PyBroadException
 class EventDetail(TemplateView):
     template_name = 'event_detail.html'

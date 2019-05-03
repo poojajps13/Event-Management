@@ -19,7 +19,7 @@
         <div class="text-center"><h2 class="text-white py-2" style="font-size: 20px; background-color: maroon">Centre for Building Skills & Employability</h2></div>
         <nav class="my-3 my-md-3 mr-md-5 align-items-md-center text-center text-md-right">
             <a class="py-1 mr-md-5 ml-2 custom-a" style="border-bottom: 1px solid #007bff!important;" href="{% url 'home' %}">Home</a>
-            <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'home' %}">Event</a>
+            <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'event:event_list' %}">Event</a>
             <a class="py-1 mr-md-5 ml-2 custom-a" href="{% url 'home' %}">News</a>
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
