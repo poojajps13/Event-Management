@@ -13,14 +13,14 @@
                         <button class="btn btn-custom mb-4" style="border: 2px solid #ffffff; padding: .4rem 4rem;" disabled>Registration Closed</button>{% endif %}{% endif %}
                     <p>Registration last Date: {{ obj.registration_end }}</p>
                 </div>
-                <div class="text-white mb-3" style="margin: auto">
+                <div class="text-white mb-3 col-lg-3" style="margin: auto">
                     <p>Fee: <span style="font-size: 40px">₹ {{ obj.fees }}</span></p>
                     <p>Event Date: {{ obj.event_date }}</p>
                 </div>
             </div>
             <div id="demo" class="collapse">
                 <div class="px-3 px-md-5 text-white">
-{#                    <p class="mb-4">Learn most demanding language with python and data visualization</p>#}
+                    {# <p class="mb-4">Learn most demanding language with python and data visualization</p>#}
                     <ul>
                         <li class="mb-2">Registration Start: {{ obj.registration_start }}</li>
                         <li class="mb-2">Eligible Branch: {{ obj.eligible_branches }}</li>
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div style="text-align: center;">
-            <button class="btn text-white" data-toggle="collapse" data-target="#demo" style="border-radius: 50%!important;height: 90px;font-size: small; margin-bottom: -45px; background-color: rgba(0, 183, 209, 1); background-image: linear-gradient(rgba(0, 183, 209, 1), rgba(20, 146, 230, 1));">Show More<br><span style="font-size: x-large; line-height: 0;margin-bottom: -3px">&#8744;</span>
+            <button class="btn text-white" data-toggle="collapse" data-target="#demo" style="border-radius: 50%!important;height: 95px;font-size: small; margin-bottom: -45px; background-color: rgba(0, 183, 209, 1); background-image: linear-gradient(rgba(0, 183, 209, 1), rgba(20, 146, 230, 1));">Show More<br><span style="font-size: x-large; line-height: 0;margin-bottom: -3px">&#8744;</span>
             </button>
         </div>
     </div>
@@ -42,14 +42,14 @@
         <div class="d-flex justify-content-md-between flex-md-row flex-column">
             <div class="text-center align-self-center pb-3"><h2>Pre-Requisites</h2>
                 <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
-                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-radius: 50rem; width: 350px;padding: 20px 0">
+                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-radius: 50rem; width: 432px;padding: 20px 0">
                     <p>{{ obj.pre_requisites_1 }}</p>
                     <p>{{ obj.pre_requisites_2 }}</p>
                     <p>{{ obj.pre_requisites_3 }}</p></div>
             </div>
             <div class="text-center align-self-center pb-3"><h2>Learning OutCome</h2>
                 <hr style="width: 110px; border: 1px solid rgba(0,0,0,0.62);">
-                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-bottom: 2px solid grey; border-radius: 2rem; width: 300px; padding: 20px 0">
+                <div style="border-left: 2px solid grey;border-right: 2px solid grey;border-bottom: 2px solid grey; border-radius: 2rem; width: 350px; padding: 20px">
                     <p>{{ obj.learning_outcome_1 }}</p>
                     <p>{{ obj.learning_outcome_2 }}</p>
                     <p>{{ obj.learning_outcome_3 }}</p>
