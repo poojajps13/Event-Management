@@ -1,1 +1,0 @@
-pip install django --pre xhtml2pdf django-recaptcha2 xlwt django-froala-editor
