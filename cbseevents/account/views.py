@@ -76,6 +76,7 @@ class Login(TemplateView):
                                        "Account with that sign-in information does not exist. Try again or create a new account.")
                 # else:
                 #     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+
             # Account Activation
             elif form1.is_valid():
                 email = form1.cleaned_data['email1']
@@ -98,6 +99,7 @@ class Login(TemplateView):
                         messages.warning(request, 'Your Account is already Activated')
                 except ObjectDoesNotExist:
                     messages.error(request, 'Invalid Email. Try Again')
+
             # Forget Password
             elif form2.is_valid():
                 email = form2.cleaned_data['email2']
@@ -154,6 +156,7 @@ class Signup(TemplateView):
                 response = urllib.request.urlopen(req)
                 result = json.loads(response.read().decode())
                 ''' End reCAPTCHA validation '''
+
                 if result['success']:
                     username = form1.cleaned_data['email']
                     first_name = form1.cleaned_data['first_name']
@@ -162,6 +165,7 @@ class Signup(TemplateView):
                     password = form1.cleaned_data['password']
                     user = User.objects.create_user(username=username.lower(), email=email.lower(), password=password,
                                                     first_name=first_name, last_name=last_name, is_active=False)
+
                     '''Begin Email Sending '''
                     current_site = get_current_site(request)
                     mail_subject = 'Action Required: Activate your CBSE account'
@@ -175,6 +179,7 @@ class Signup(TemplateView):
                     email = EmailMessage(mail_subject, message, to=[user.email])
                     email.send()
                     '''End Email sending'''
+
                     messages.success(request, 'Please verify your email and participate in Contests')
                     return redirect("account:login")
                 else:
