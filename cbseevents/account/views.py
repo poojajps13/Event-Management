@@ -36,49 +36,48 @@ class Login(TemplateView):
         form = LoginForm()
         form1 = EmailForm1()
         form2 = EmailForm2()
-        return render(request, self.template_name, {'form': form, 'form1': form1, 'form2': form2})
+        return render(request, self.template_name,
+                      {'form': form, 'form1': form1, 'form2': form2, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
     def post(self, request):
         try:
             form = LoginForm(request.POST)
             form1 = EmailForm1(request.POST)
             form2 = EmailForm2(request.POST)
-            if form.is_valid():
-                # ''' Begin reCAPTCHA validation '''
-                # re_captcha_response = request.POST.get('g-recaptcha-response')
-                # url = 'https://www.google.com/recaptcha/api/siteverify'
-                # values = {
-                #     'secret': settings.RECAPTCHA_PRIVATE_KEY,
-                #     'response': re_captcha_response
-                # }
-                # data = urllib.parse.urlencode(values).encode()
-                # req = urllib.request.Request(url, data=data)
-                # response = urllib.request.urlopen(req)
-                # result = json.loads(response.read().decode())
-                # ''' End reCAPTCHA validation '''
-                if True:  # result['success']:
-                    email = form.cleaned_data['email']
-                    password = form.cleaned_data['password']
-                    try:
-                        u = User.objects.get(username=email.lower())
-                        user = auth.authenticate(username=email.lower(), password=password)
-                        if user is not None:
-                            auth.login(request, user)
-                            if 'next' in request.POST:
-                                return redirect(request.POST.get('next'))
-                            return redirect("account:consolidated_view_all")
-                        elif not u.is_active:
-                            messages.warning(request, 'Please confirm the activation link from your Email')
-                        else:
-                            messages.error(request, "Your authentication information is incorrect. Please try again.")
-                    except ObjectDoesNotExist:
-                        messages.error(request,
-                                       "Account with that sign-in information does not exist. Try again or create a new account.")
-                # else:
-                #     messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+            ''' Begin reCAPTCHA validation '''
+            values = {
+                'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                'response': request.POST.get('recaptcha')
+            }
+            data = urllib.parse.urlencode(values).encode()
+            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFY_URL, data=data)
+            response = urllib.request.urlopen(req)
+            result = json.loads(response.read().decode())
+            # print(result)
+            ''' End reCAPTCHA validation '''
+
+            # Login Form
+            if result['success'] and result['action'] == 'login' and form.is_valid():
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                try:
+                    u = User.objects.get(username=email.lower())
+                    user = auth.authenticate(username=email.lower(), password=password)
+                    if user is not None:
+                        auth.login(request, user)
+                        if 'next' in request.POST:
+                            return redirect(request.POST.get('next'))
+                        return redirect("account:consolidated_view_all")
+                    elif not u.is_active:
+                        messages.warning(request, 'Please confirm the activation link from your Email')
+                    else:
+                        messages.error(request, "Your authentication information is incorrect. Please try again.")
+                except ObjectDoesNotExist:
+                    messages.error(request,
+                                   "Account with that sign-in information does not exist. Try again or create a new account.")
 
             # Account Activation
-            elif form1.is_valid():
+            elif result['success'] and result['action'] == 'activation' and form1.is_valid():
                 email = form1.cleaned_data['email1']
                 try:
                     user = User.objects.get(username=email.lower())
@@ -88,7 +87,7 @@ class Login(TemplateView):
                         message = render_to_string('acc_active_email.txt', {
                             'user': user,
                             'domain': current_site.domain,
-                            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'token': account_activation_token.make_token(user),
                             'email': settings.EMAIL_HOST_USER,
                         })
@@ -101,7 +100,7 @@ class Login(TemplateView):
                     messages.error(request, 'Invalid Email. Try Again')
 
             # Forget Password
-            elif form2.is_valid():
+            elif result['success'] and result['action'] == 'forgetPassword' and form2.is_valid():
                 email = form2.cleaned_data['email2']
                 try:
                     user = User.objects.get(username=email.lower())
@@ -111,7 +110,7 @@ class Login(TemplateView):
                         message = render_to_string('forget-password.txt', {
                             'user': user,
                             'domain': current_site.domain,
-                            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'token': password_reset_token.make_token(user),
                             'email': settings.EMAIL_HOST_USER,
                         })
@@ -124,12 +123,13 @@ class Login(TemplateView):
                     messages.error(request, 'Invalid Email. Try Again')
             else:
                 messages.warning(request, "Invalid Input. Please try again")
-        except Exception:
-            messages.error(request, 'Please Try again after some time')
+        except Exception as e:
+            messages.error(request, e)
         form = LoginForm()
         form1 = EmailForm1()
         form2 = EmailForm2()
-        return render(request, self.template_name, {'form': form, 'form1': form1, 'form2': form2})
+        return render(request, self.template_name,
+                      {'form': form, 'form1': form1, 'form2': form2, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
 
 # noinspection PyBroadException
@@ -137,59 +137,61 @@ class Signup(TemplateView):
     template_name = 'signup.html'
 
     def get(self, request, *args, **kwargs):
-        form1 = SignupForm()
-        return render(request, self.template_name, {'form1': form1})
+        form = SignupForm()
+        return render(request, self.template_name, {'form1': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
     def post(self, request):
-        form1 = SignupForm(request.POST)
-        if form1.is_valid():
-            try:
-                ''' Begin reCAPTCHA validation '''
-                re_captcha_response = request.POST.get('g-recaptcha-response')
-                url = 'https://www.google.com/recaptcha/api/siteverify'
-                values = {
-                    'secret': settings.RECAPTCHA_PRIVATE_KEY,
-                    'response': re_captcha_response
-                }
-                data = urllib.parse.urlencode(values).encode()
-                req = urllib.request.Request(url, data=data)
-                response = urllib.request.urlopen(req)
-                result = json.loads(response.read().decode())
-                ''' End reCAPTCHA validation '''
+        try:
+            ''' Begin reCAPTCHA validation '''
+            values = {
+                'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                'response': request.POST.get('recaptcha')
+            }
+            data = urllib.parse.urlencode(values).encode()
+            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFY_URL, data=data)
+            response = urllib.request.urlopen(req)
+            result = json.loads(response.read().decode())
+            # print(result)
+            ''' End reCAPTCHA validation '''
 
-                if result['success']:
-                    username = form1.cleaned_data['email']
-                    first_name = form1.cleaned_data['first_name']
-                    last_name = form1.cleaned_data['last_name']
-                    email = form1.cleaned_data['email']
-                    password = form1.cleaned_data['password']
-                    user = User.objects.create_user(username=username.lower(), email=email.lower(), password=password,
-                                                    first_name=first_name, last_name=last_name, is_active=False)
+            form = SignupForm(request.POST)
+            if result['success'] and result['action'] == 'signup' and form.is_valid():
+                first_name = form.cleaned_data['first_name']
+                last_name = form.cleaned_data['last_name']
+                email = form.cleaned_data['email'].lower()
+                password = form.cleaned_data['password']
+                try:
+                    user = User.objects.get(username=email)
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.set_password(password)
+                    user.save()
+                except ObjectDoesNotExist:
+                    user = User.objects.create(username=email, email=email, password=password, first_name=first_name,
+                                               last_name=last_name, is_active=False)
 
-                    '''Begin Email Sending '''
-                    current_site = get_current_site(request)
-                    mail_subject = 'Action Required: Activate your CBSE account'
-                    message = render_to_string('acc_active_email.txt', {
-                        'user': user,
-                        'domain': current_site.domain,
-                        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-                        'token': account_activation_token.make_token(user),
-                        'email': settings.EMAIL_HOST_USER,
-                    })
-                    email = EmailMessage(mail_subject, message, to=[user.email])
-                    email.send()
-                    '''End Email sending'''
+                '''Begin Email Sending '''
+                current_site = get_current_site(request)
+                mail_subject = 'Action Required: Activate your CBSE account'
+                message = render_to_string('acc_active_email.txt', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                    'email': settings.EMAIL_HOST_USER,
+                })
+                email = EmailMessage(mail_subject, message, to=[user.email])
+                email.send()
+                '''End Email sending'''
 
-                    messages.success(request, 'Please verify your email and participate in Contests')
-                    return redirect("account:login")
-                else:
-                    messages.error(request, "Invalid reCAPTCHA. Please try again.")
-            except Exception:
-                messages.error(request, 'Problem to Sending Email. Try again or Contact us.')
-                return redirect("account:signup")
-        else:
-            messages.error(request, "Invalid Input. Please try again")
-        return render(request, self.template_name, {'form1': form1})
+                messages.success(request, 'Check your mail to complete registration')
+                return redirect("account:login")
+            else:
+                messages.error(request, "Invalid reCAPTCHA. Please try again.")
+            return render(request, self.template_name, {'form1': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
+        except ObjectDoesNotExist:
+            messages.error(request, 'Contact Us or Try again letter')
+            return redirect("account:signup")
 
 
 # noinspection PyBroadException

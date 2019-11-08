@@ -1,12 +1,11 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Signup | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}
 {% block content %}
     <main role="main" class="container col-md-6 bg-white">
         <div class="px-md-3 px-2 pt-4 pb-5">
             <div style="text-align: center">
                 <h3>Create Your Account</h3>
             </div>
-            <form method="post">{% csrf_token %}
+            <form id="signupForm" method="post">{% csrf_token %}
                 <div class="row">
                     <div class="col-md-6 mb-3"><label>First Name</label>{{ form1.first_name }}
                         <span style="color:red;">{{ form1.first_name.errors }}</span></div>
@@ -27,12 +26,23 @@
                 <div class="mb-3">
                     <label>Re-Enter Password</label>{{ form1.confirm_password }}
                     <span style="color:red;">{{ form1.confirm_password.errors }}</span></div>
-                <script src='https://www.google.com/recaptcha/api.js'></script>
-                <div class="mb-3 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeumYQUAAAAAC47pBs3aJRatMHOcooqTsrQMgyZ"></div>
+                <input type="hidden" name="recaptcha" id="recaptcha">
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Signup</button>
                 <a href="{% url 'account:login' %}" class="btn btn-outline-info btn-block">Login</a>
             </form>
         </div>
     </main>
-{% endblock %}
-{% block script %}{% endblock %}
+{% endblock %}{% block script %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+    <script>
+        grecaptcha.ready(function () {
+            $('#signupForm').submit(function (e) {
+                const form = this;
+                e.preventDefault();
+                grecaptcha.execute('{{ site_key }}', {action: 'signup'}).then(function (token) {
+                    $('#recaptcha').val(token);
+                    form.submit();
+                });
+            })
+        });
+    </script>{% endblock %}

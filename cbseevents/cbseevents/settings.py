@@ -129,10 +129,16 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
+# Login Path
+
 LOGIN_URL = "/account/login"
+
+# Session Time out and Session Expire
 
 # SESSION_COOKIE_AGE = 600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Email Detail
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -140,9 +146,14 @@ EMAIL_HOST_USER = '*********************'
 EMAIL_HOST_PASSWORD = '********************'
 EMAIL_PORT = 587
 
-RECAPTCHA_PRIVATE_KEY = '********************************'
+# Google reCAPTCHA
 
-# CKEditor detail
+RECAPTCHA_SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
+RECAPTCHA_SITE_KEY = '*********************'
+RECAPTCHA_PRIVATE_KEY = '*********************'
+
+# CKEditor Detail
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'
@@ -174,5 +185,6 @@ CKEDITOR_CONFIGS = {
 }
 
 # Admin Site Header and Title
+
 ADMIN_SITE_HEADER = "CBSE"
 ADMIN_SITE_TITLE = "CBSE site admin"

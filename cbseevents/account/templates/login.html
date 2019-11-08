@@ -1,33 +1,23 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Login | {{ block.super }}{% endblock %}
-{% block css %}{% endblock %}
-{% block content %}
+{% block css %}{% endblock %}{% block content %}
     <main role="main" class="container col-lg-4 bg-white">
         <div class="px-md-3 px-2 pt-4 pb-5">
-            <div style="text-align: center">
-                <h3>{% if request.GET.next %}For Registration you have to {% endif %}Login To Your Account</h3>
-            </div>
-            <form method="post">{% csrf_token %}
+            <div style="text-align: center"><h3>
+                {% if request.GET.next %}For Registration you have to {% endif %}Login To Your Account</h3></div>
+            <form method="post" id="loginForm">{% csrf_token %}
                 <div class="mb-3"><label>Email</label>{{ form.email }}</div>
                 <div class="mb-3"><label>Password</label>{{ form.password }}</div>
                 {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
-                {# <script src='https://www.google.com/recaptcha/api.js'></script>#}
-                {# <div class="mb-3 g-recaptcha" data-expired-callback="capcha_expired" data-callback="capcha_filled"#}
-                {#      data-sitekey="6LeumYQUAAAAAC47pBs3aJRatMHOcooqTsrQMgyZ"></div>#}
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Login</button>
             </form>
             <div class="btn-toolbar justify-content-between">
-                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal1">Activate
-                    Your Account
-                </button>
-                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget
-                    Password
-                </button>
+                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal1">Activate Your Account</button>
+                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget Password</button>
             </div>
             <a href="{% url 'account:signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
         </div>
     </main>
-    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-         aria-hidden="true">
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,19 +25,16 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body px-4">
-                    <p>Enter Your Registered Email Id</p>
+                <div class="modal-body px-4"><p>Enter Your Registered Email Id</p>
                     <p>We Will Send an Activation Link to email</p>
-                    <form class="row pl-3" action="" method="post">{% csrf_token %}
-                        {{ form1.email1 }}
+                    <form class="row pl-3" method="post" id="activationForm">{% csrf_token %}{{ form1.email1 }}
                         <input type="submit" class="btn col-3 btn-outline-danger mb-2 float-right">
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2"
-         aria-hidden="true">
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -55,16 +42,62 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body px-4">
-                    <p>Enter Your Registered Email Id</p>
+                <div class="modal-body px-4"><p>Enter Your Registered Email Id</p>
                     <p>We will send you a Password Reset Link</p>
-                    <form class="row pl-3" action="" method="post">{% csrf_token %}
-                        {{ form2.email2 }}
+                    <form class="row pl-3" method="post" id="forgetPasswordForm">{% csrf_token %}{{ form2.email2 }}
                         <input type="submit" class="btn col-3 btn-outline-danger mb-2 float-right">
                     </form>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-{% block script %}{% endblock %}
+{% endblock %}{% block script %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+    <script>
+        grecaptcha.ready(function () {
+            $('#loginForm').submit(function (e) {
+                const form = this;
+                e.preventDefault();
+                grecaptcha.execute('{{ site_key }}', {action: 'login'}).then(function (token) {
+                    const textfield = document.createElement("input");
+                    textfield.type = "hidden";
+                    textfield.name = 'recaptcha';
+                    textfield.setAttribute("value", token);
+                    form.appendChild(textfield);
+                    form.submit();
+                });
+            })
+        });
+    </script>
+    <script>
+        grecaptcha.ready(function () {
+            $('#activationForm').submit(function (e) {
+                const form = this;
+                e.preventDefault();
+                grecaptcha.execute('{{ site_key }}', {action: 'activation'}).then(function (token) {
+                    const textfield = document.createElement("input");
+                    textfield.type = "hidden";
+                    textfield.name = 'recaptcha';
+                    textfield.setAttribute("value", token);
+                    form.appendChild(textfield);
+                    form.submit();
+                });
+            })
+        });
+    </script>
+    <script>
+        grecaptcha.ready(function () {
+            $('#forgetPasswordForm').submit(function (e) {
+                const form = this;
+                e.preventDefault();
+                grecaptcha.execute('{{ site_key }}', {action: 'forgetPassword'}).then(function (token) {
+                    const textfield = document.createElement("input");
+                    textfield.type = "hidden";
+                    textfield.name = 'recaptcha';
+                    textfield.setAttribute("value", token);
+                    form.appendChild(textfield);
+                    form.submit();
+                });
+            })
+        });
+    </script>{% endblock %}

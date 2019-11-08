@@ -20,30 +20,31 @@ class SignupForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}), required=False,
         max_length=30)
     email = forms.CharField(widget=forms.EmailInput(
-        attrs={'class': 'form-control', 'placeholder': 'Email',
-               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
+        attrs={'class': 'form-control', 'placeholder': 'Email', 'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}),
+        required=True, max_length=40)
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password', 'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}),
         required=True, max_length=30)
     confirm_password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Re-Enter Password',
-               'pattern': "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"}), required=True, max_length=30)
+        attrs={'class': 'form-control', 'placeholder': 'Re-Enter Password'}), required=True, max_length=30)
 
     class Meta:
         model = models.User
         fields = ['email', 'first_name', 'last_name', 'password']
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = None
         try:
+            email = self.cleaned_data['email']
             validate_email(email)
+            user = models.User.objects.get(email=email.lower())
+            if user.is_active:
+                raise forms.ValidationError("This Email Address is already used")
         except ValidationError:
-            return forms.ValidationError("Email is not in correct format")
-        try:
-            models.User.objects.get(email=email.lower())
+            return forms.ValidationError("Invalid Email Address")
         except ObjectDoesNotExist:
-            return email
-        raise forms.ValidationError("Email already exits")
+            pass
+        return email
 
     def clean_confirm_password(self):
         password1 = self.cleaned_data['password']
