@@ -23,6 +23,12 @@ from .tokens import account_activation_token, password_reset_token
 
 
 # Create your views here.
+def is_block(request, user):
+    if not user.is_active and user.last_login:
+        return True
+    return False
+
+
 def logout(request):
     auth.logout(request)
     return redirect('home')
@@ -50,7 +56,7 @@ class Login(TemplateView):
                 'response': request.POST.get('recaptcha')
             }
             data = urllib.parse.urlencode(values).encode()
-            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFY_URL, data=data)
+            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFICATION_URL, data=data)
             response = urllib.request.urlopen(req)
             result = json.loads(response.read().decode())
             # print(result)
@@ -89,7 +95,8 @@ class Login(TemplateView):
                             'domain': current_site.domain,
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'token': account_activation_token.make_token(user),
-                            'email': settings.EMAIL_HOST_USER,
+                            'email': settings.CONTACT_EMAIL,
+                            'number': settings.CONTACT_NUMBER
                         })
                         email = EmailMessage(mail_subject, message, to=[user.email])
                         email.send()
@@ -112,7 +119,8 @@ class Login(TemplateView):
                             'domain': current_site.domain,
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'token': password_reset_token.make_token(user),
-                            'email': settings.EMAIL_HOST_USER,
+                            'email': settings.CONTACT_EMAIL,
+                            'number': settings.CONTACT_NUMBER
                         })
                         email = EmailMessage(mail_subject, message, to=[user.email])
                         email.send()
@@ -148,7 +156,7 @@ class Signup(TemplateView):
                 'response': request.POST.get('recaptcha')
             }
             data = urllib.parse.urlencode(values).encode()
-            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFY_URL, data=data)
+            req = urllib.request.Request(settings.RECAPTCHA_SITE_VERIFICATION_URL, data=data)
             response = urllib.request.urlopen(req)
             result = json.loads(response.read().decode())
             # print(result)
@@ -162,6 +170,8 @@ class Signup(TemplateView):
                 password = form.cleaned_data['password']
                 try:
                     user = User.objects.get(username=email)
+                    if is_block(request, user):
+                        raise Exception('Your Email ID is blocked. Please Contact Us')
                     user.first_name = first_name
                     user.last_name = last_name
                     user.set_password(password)
@@ -178,7 +188,8 @@ class Signup(TemplateView):
                     'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
-                    'email': settings.EMAIL_HOST_USER,
+                    'email': settings.CONTACT_EMAIL,
+                    'number': settings.CONTACT_NUMBER
                 })
                 email = EmailMessage(mail_subject, message, to=[user.email])
                 email.send()
@@ -203,23 +214,26 @@ class Activate(TemplateView):
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
             if account_activation_token.check_token(user, kwargs['token']):
+                if user.is_active:
+                    auth.login(request, user)
+                    return redirect("home")
                 form = StudentForm()
                 return render(request, self.template_name, {'user': user, 'form': form})
-            elif user.is_active:
-                auth.login(request, user)
-                return redirect("home")
             else:
-                raise Exception
-        except Exception:
-            messages.error(request, 'Activation link is invalid! Contact to Us')
+                raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
+        except Exception as e:
+            messages.error(request, e)
             return redirect("account:signup")
 
     def post(self, request, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
-            form = StudentForm(request.POST)
             if account_activation_token.check_token(user, kwargs['token']):
+                form = StudentForm(request.POST)
+                if user.is_active:
+                    auth.login(request, user)
+                    return redirect("home")
                 if form.is_valid():
                     temp = form.save(commit=False)
                     temp.user = user
@@ -227,18 +241,15 @@ class Activate(TemplateView):
                     user.is_active = True
                     user.save()
                     auth.login(request, user)
-                    messages.success(request, 'Thank you for Email Confirmation.')
+                    messages.success(request, 'Thank you for Registration')
                     return redirect("home")
                 else:
-                    messages.error(request, 'Invalid Input')
+                    messages.warning(request, 'Invalid Input')
                     return render(request, self.template_name, {'user': user, 'form': form})
-            elif user.is_active:
-                auth.login(request, user)
-                return redirect("home")
             else:
-                raise Exception
-        except Exception:
-            messages.error(request, 'Activation link is invalid! Contact to Us')
+                raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
+        except Exception as e:
+            messages.error(request, e)
             return redirect("account:signup")
 
 

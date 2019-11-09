@@ -133,10 +133,16 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
 LOGIN_URL = "/account/login"
 
-# Session Time out and Session Expire
+# Session & Token Expire
 
 # SESSION_COOKIE_AGE = 600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+PASSWORD_RESET_TIMEOUT_DAYS = 1
+
+# Contact Information
+
+CONTACT_EMAIL = '********************'
+CONTACT_NUMBER = '********************'
 
 # Email Detail
 
@@ -148,9 +154,9 @@ EMAIL_PORT = 587
 
 # Google reCAPTCHA
 
-RECAPTCHA_SITE_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
-RECAPTCHA_SITE_KEY = '*********************'
-RECAPTCHA_PRIVATE_KEY = '*********************'
+RECAPTCHA_SITE_VERIFICATION_URL = 'https://www.google.com/recaptcha/api/siteverify'
+RECAPTCHA_SITE_KEY = '********************'
+RECAPTCHA_PRIVATE_KEY = '********************'
 
 # CKEditor Detail
 
