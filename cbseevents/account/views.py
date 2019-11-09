@@ -18,7 +18,7 @@ from django.views.generic import TemplateView
 from event.models import EventRecord
 from registration.models import RegistrationRecord
 from student.models import StudentRecord
-from .forms import SignupForm, LoginForm, ResetPasswordForm, EditUserForm, EmailForm1, EmailForm2, StudentForm
+from .forms import SignupForm, LoginForm, ResetPasswordForm, EditUserForm, EmailForm, StudentForm
 from .tokens import account_activation_token, password_reset_token
 
 
@@ -36,20 +36,17 @@ def logout(request):
 
 # noinspection PyBroadException
 class Login(TemplateView):
-    template_name = 'login.html'
+    template = 'login.html'
 
     def get(self, request, *args, **kwargs):
         form = LoginForm()
-        form1 = EmailForm1()
-        form2 = EmailForm2()
-        return render(request, self.template_name,
-                      {'form': form, 'form1': form1, 'form2': form2, 'site_key': settings.RECAPTCHA_SITE_KEY})
+        form1 = EmailForm()
+        return render(request, self.template, {'form': form, 'form1': form1, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
     def post(self, request):
         try:
             form = LoginForm(request.POST)
-            form1 = EmailForm1(request.POST)
-            form2 = EmailForm2(request.POST)
+            form1 = EmailForm(request.POST)
             ''' Begin reCAPTCHA validation '''
             values = {
                 'secret': settings.RECAPTCHA_PRIVATE_KEY,
@@ -66,78 +63,58 @@ class Login(TemplateView):
             if result['success'] and result['action'] == 'login' and form.is_valid():
                 email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
-                try:
-                    u = User.objects.get(username=email.lower())
-                    user = auth.authenticate(username=email.lower(), password=password)
-                    if user is not None:
-                        auth.login(request, user)
-                        if 'next' in request.POST:
-                            return redirect(request.POST.get('next'))
-                        return redirect("account:consolidated_view_all")
-                    elif not u.is_active:
-                        messages.warning(request, 'Please confirm the activation link from your Email')
-                    else:
-                        messages.error(request, "Your authentication information is incorrect. Please try again.")
-                except ObjectDoesNotExist:
-                    messages.error(request,
-                                   "Account with that sign-in information does not exist. Try again or create a new account.")
+                u = User.objects.get(username=email.lower())
+                if is_block(request, u):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
 
-            # Account Activation
-            elif result['success'] and result['action'] == 'activation' and form1.is_valid():
-                email = form1.cleaned_data['email1']
-                try:
-                    user = User.objects.get(username=email.lower())
-                    if not user.is_active:
-                        current_site = get_current_site(request)
-                        mail_subject = 'Action Required: Activate your CBSE account'
-                        message = render_to_string('acc_active_email.txt', {
-                            'user': user,
-                            'domain': current_site.domain,
-                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                            'token': account_activation_token.make_token(user),
-                            'email': settings.CONTACT_EMAIL,
-                            'number': settings.CONTACT_NUMBER
-                        })
-                        email = EmailMessage(mail_subject, message, to=[user.email])
-                        email.send()
-                        messages.success(request, 'Check Your Email. Activation link will send on Your email')
-                    else:
-                        messages.warning(request, 'Your Account is already Activated')
-                except ObjectDoesNotExist:
-                    messages.error(request, 'Invalid Email. Try Again')
+                user = auth.authenticate(username=email.lower(), password=password)
+                if user is not None:
+                    auth.login(request, user)
+                    if 'next' in request.POST:
+                        return redirect(request.POST.get('next'))
+                    return redirect("account:consolidated_view_all")
+                elif not u.is_active:
+                    messages.warning(request, 'Please confirm the activation link from your Email')
+                else:
+                    messages.error(request, "Your authentication information is incorrect. Please try again.")
 
             # Forget Password
-            elif result['success'] and result['action'] == 'forgetPassword' and form2.is_valid():
-                email = form2.cleaned_data['email2']
-                try:
-                    user = User.objects.get(username=email.lower())
-                    if user.is_active:
-                        current_site = get_current_site(request)
-                        mail_subject = 'Password Reset link of your CBSE Account.'
-                        message = render_to_string('forget-password.txt', {
-                            'user': user,
-                            'domain': current_site.domain,
-                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                            'token': password_reset_token.make_token(user),
-                            'email': settings.CONTACT_EMAIL,
-                            'number': settings.CONTACT_NUMBER
-                        })
-                        email = EmailMessage(mail_subject, message, to=[user.email])
-                        email.send()
-                        messages.success(request, 'Check Your Email. Password Reset Link Send')
-                    else:
-                        messages.warning(request, 'Activate your Account')
-                except ObjectDoesNotExist:
-                    messages.error(request, 'Invalid Email. Try Again')
+            elif result['success'] and result['action'] == 'forgetPassword' and form1.is_valid():
+                email = form1.cleaned_data['email1']
+                user = User.objects.get(username=email.lower())
+                if is_block(request, user):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
+
+                '''Begin Email Sending '''
+                current_site = get_current_site(request)
+                mail_subject = 'Password Reset link of your CBSE Account.'
+                message = render_to_string('forget-password.txt', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': password_reset_token.make_token(user),
+                    'email': settings.CONTACT_EMAIL,
+                    'number': settings.CONTACT_NUMBER
+                })
+                email = EmailMessage(mail_subject, message, to=[user.email])
+                email.send()
+                '''End Email sending'''
+
+                messages.success(request, 'Password reset link has been sent to your registered E-mail Address')
+                return redirect('home')
             else:
-                messages.warning(request, "Invalid Input. Please try again")
-        except Exception as e:
+                messages.warning(request, 'Invalid Input or Invalid reCAPTCHA. Please try again')
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Invalid Inputs. Please try again')
+        except PermissionDenied as e:
             messages.error(request, e)
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, (str(e) + '. Please Contact Us'))
         form = LoginForm()
-        form1 = EmailForm1()
-        form2 = EmailForm2()
-        return render(request, self.template_name,
-                      {'form': form, 'form1': form1, 'form2': form2, 'site_key': settings.RECAPTCHA_SITE_KEY})
+        form1 = EmailForm()
+        return render(request, self.template, {'form': form, 'form1': form1, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
 
 # noinspection PyBroadException
@@ -171,7 +148,7 @@ class Signup(TemplateView):
                 try:
                     user = User.objects.get(username=email)
                     if is_block(request, user):
-                        raise Exception('Your Email ID is blocked. Please Contact Us')
+                        raise PermissionDenied('Your Account is blocked. Please Contact Us')
                     user.first_name = first_name
                     user.last_name = last_name
                     user.set_password(password)
@@ -198,10 +175,14 @@ class Signup(TemplateView):
                 messages.success(request, 'Check your mail to complete registration')
                 return redirect("account:login")
             else:
-                messages.error(request, "Invalid reCAPTCHA. Please try again.")
+                messages.info(request, 'Invalid Input or Invalid reCAPTCHA. Please try again')
             return render(request, self.template_name, {'form1': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
-        except ObjectDoesNotExist:
-            messages.error(request, 'Contact Us or Try again letter')
+
+        except PermissionDenied as e:
+            messages.error(request, e)
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, (str(e) + '. Please Contact Us'))
             return redirect("account:signup")
 
 
@@ -222,7 +203,7 @@ class Activate(TemplateView):
             else:
                 raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
         except Exception as e:
-            messages.error(request, e)
+            messages.error(request, (str(e) + '. Please Contact Us'))
             return redirect("account:signup")
 
     def post(self, request, **kwargs):
@@ -249,7 +230,7 @@ class Activate(TemplateView):
             else:
                 raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
         except Exception as e:
-            messages.error(request, e)
+            messages.error(request, (str(e) + '. Please Contact Us'))
             return redirect("account:signup")
 
 

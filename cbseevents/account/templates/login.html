@@ -11,29 +11,11 @@
                 <button type="submit" class="btn btn-outline-success btn-block mb-3">Login</button>
             </form>
             <div class="btn-toolbar justify-content-between">
-                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal1">Activate Your Account</button>
                 <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget Password</button>
             </div>
             <a href="{% url 'account:signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
         </div>
     </main>
-    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title px-1" id="myModalLabel1">Resend Your Activation Link</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body px-4"><p>Enter Your Registered Email Id</p>
-                    <p>We Will Send an Activation Link to email</p>
-                    <form class="row pl-3" method="post" id="activationForm">{% csrf_token %}{{ form1.email1 }}
-                        <input type="submit" class="btn col-3 btn-outline-danger mb-2 float-right">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -44,7 +26,7 @@
                 </div>
                 <div class="modal-body px-4"><p>Enter Your Registered Email Id</p>
                     <p>We will send you a Password Reset Link</p>
-                    <form class="row pl-3" method="post" id="forgetPasswordForm">{% csrf_token %}{{ form2.email2 }}
+                    <form class="row pl-3" method="post" id="forgetPasswordForm">{% csrf_token %}{{ form1.email1 }}
                         <input type="submit" class="btn col-3 btn-outline-danger mb-2 float-right">
                     </form>
                 </div>
@@ -59,22 +41,6 @@
                 const form = this;
                 e.preventDefault();
                 grecaptcha.execute('{{ site_key }}', {action: 'login'}).then(function (token) {
-                    const textfield = document.createElement("input");
-                    textfield.type = "hidden";
-                    textfield.name = 'recaptcha';
-                    textfield.setAttribute("value", token);
-                    form.appendChild(textfield);
-                    form.submit();
-                });
-            })
-        });
-    </script>
-    <script>
-        grecaptcha.ready(function () {
-            $('#activationForm').submit(function (e) {
-                const form = this;
-                e.preventDefault();
-                grecaptcha.execute('{{ site_key }}', {action: 'activation'}).then(function (token) {
                     const textfield = document.createElement("input");
                     textfield.type = "hidden";
                     textfield.name = 'recaptcha';

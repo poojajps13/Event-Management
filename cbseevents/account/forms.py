@@ -89,34 +89,19 @@ class LoginForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Email'}), required=True, max_length=40)
     password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Password'}),
-        required=True, max_length=30)
+        attrs={'class': 'form-control', 'placeholder': 'Password'}), required=True, max_length=30)
 
 
-class EmailForm1(forms.Form):
+class EmailForm(forms.Form):
     email1 = forms.CharField(widget=forms.EmailInput(
         attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
                'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
 
     def clean_email1(self):
-        email = self.cleaned_data['email1']
         try:
+            email = self.cleaned_data['email1']
             validate_email(email)
-            return email
-        except ValidationError:
-            return forms.ValidationError("Email is not in correct format")
-
-
-class EmailForm2(forms.Form):
-    email2 = forms.CharField(widget=forms.EmailInput(
-        attrs={'class': 'form-control col-sm-8 mb-2 mr-3', 'placeholder': 'Email',
-               'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'}), required=True, max_length=40)
-
-    def clean_email2(self):
-        email = self.cleaned_data['email2']
-        try:
-            validate_email(email)
-            return email
+            return email.lower()
         except ValidationError:
             return forms.ValidationError("Email is not in correct format")
 
