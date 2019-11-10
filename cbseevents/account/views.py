@@ -252,31 +252,50 @@ class ForgetPassword(TemplateView):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
-            if user.is_active and password_reset_token.check_token(user, kwargs['token']):
+            if password_reset_token.check_token(user, kwargs['token']):
+                if is_block(request, user):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
+
                 form = ResetPasswordForm()
                 return render(request, self.template_name, {'form': form})
-        except Exception:
-            messages.error(request, 'Invalid Link')
-        return redirect('home')
+            else:
+                raise PermissionDenied('Invalid Password Reset link!')
+
+        except PermissionDenied as e:
+            messages.error(request, e)
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, (str(e) + '. Please Contact Us'))
+            return redirect("home")
 
     def post(self, request, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
-            if user.is_active and password_reset_token.check_token(user, kwargs['token']):
+            if password_reset_token.check_token(user, kwargs['token']):
+                if is_block(request, user):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
+
                 form = ResetPasswordForm(request.POST)
                 if form.is_valid():
                     password = form.cleaned_data['password']
                     user.set_password(password)
+                    user.is_active = True
                     user.save()
-                    messages.success(request, 'Password Updated')
+                    messages.success(request, 'Password Successfully Updated')
                     auth.login(request, user)
                     return redirect('home')
-                messages.error(request, 'Password Does not Match')
+                messages.error(request, 'Invalid Password')
                 return render(request, self.template_name, {'form': form})
-        except Exception:
-            messages.error(request, 'Invalid Link')
-        return redirect('home')
+            else:
+                raise PermissionDenied('Invalid Password Reset link!')
+
+        except PermissionDenied as e:
+            messages.error(request, e)
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, (str(e) + '. Please Contact Us'))
+            return redirect("home")
 
 
 # noinspection PyBroadException
