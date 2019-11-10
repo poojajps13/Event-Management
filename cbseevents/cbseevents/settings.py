@@ -141,7 +141,7 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 CONTACT_EMAIL = '********************'
 CONTACT_NUMBER = '********************'
 
-# Email Detail
+# Email
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

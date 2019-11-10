@@ -1,6 +1,6 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Home | {{ block.super }}{% endblock %}
-<main>{% block content %}</main>
-    <div class="row" style="margin: 0">
+{% block content %}
+    <div class="row" style="margin: 1rem 0 0 0">
         <div class="col-lg-6 order-lg-1 pb-5">
             <img src="{% static 'images/Asset 50.svg' %}" alt="logo" style="width: 100%"></div>
         <div class="col-lg-6 order-lg-0 align-self-lg-center px-lg-5 pb-5 text-center">

@@ -1,20 +1,17 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Login | {{ block.super }}{% endblock %}
 {% block css %}{% endblock %}{% block content %}
-    <main role="main" class="container col-lg-4 bg-white">
-        <div class="px-md-3 px-2 pt-4 pb-5">
-            <div style="text-align: center"><h3>
-                {% if request.GET.next %}For Registration you have to {% endif %}Login To Your Account</h3></div>
-            <form method="post" id="loginForm">{% csrf_token %}
-                <div class="mb-3"><label>Email</label>{{ form.email }}</div>
-                <div class="mb-3"><label>Password</label>{{ form.password }}</div>
-                {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
-                <button type="submit" class="btn btn-outline-success btn-block mb-3">Login</button>
-            </form>
-            <div class="btn-toolbar justify-content-between">
-                <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget Password</button>
-            </div>
-            <a href="{% url 'account:signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
+    <main role="main" class="container col-xl-3 col-lg-5 col-md-6 p-4 mt-md-4 mt-2 mb-5" style="background-color: #f7f5f5;box-shadow: 0 0 5px 5px #d4d2cf;border-radius: 5px">
+        <h3 class="text-center pb-3">Login To Your Account</h3>
+        <form method="post" id="loginForm">{% csrf_token %}
+            <div class="mb-4"><label>Email</label>{{ form.email }}</div>
+            <div class="mb-4"><label>Password</label>{{ form.password }}</div>
+            {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+            <button type="submit" class="btn btn-success btn-block mb-3">Login</button>
+        </form>
+        <div class="btn-toolbar justify-content-end">
+            <button class="btn btn-sm btn-outline-info mb-3" data-toggle="modal" data-target="#myModal2">Forget Password</button>
         </div>
+        <a href="{% url 'account:signup' %}" class="btn btn-outline-danger btn-block">Signup</a>
     </main>
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -32,8 +29,7 @@
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}{% block script %}
+    </div>{% endblock %}{% block script %}
     <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
     <script>
         grecaptcha.ready(function () {

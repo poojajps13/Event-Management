@@ -10,6 +10,7 @@ def home(request):
         num = DataList.objects.get(place='home_page').number
     except Exception:
         num = 16
+    request.session['head_name'] = 'home'
     event_list = EventRecord.objects.all().order_by('-event_date')[:num]
     return render(request, 'index.html', {'event_list': event_list})
 

@@ -41,6 +41,7 @@ class Login(TemplateView):
     def get(self, request, *args, **kwargs):
         form = LoginForm()
         form1 = EmailForm()
+        request.session['head_name'] = 'login'
         return render(request, self.template, {'form': form, 'form1': form1, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
     def post(self, request):
@@ -123,6 +124,7 @@ class Signup(TemplateView):
 
     def get(self, request, *args, **kwargs):
         form = SignupForm()
+        request.session['head_name'] = 'signup'
         return render(request, self.template_name, {'form1': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
     def post(self, request):
@@ -175,7 +177,7 @@ class Signup(TemplateView):
                 messages.success(request, 'Check your mail to complete registration')
                 return redirect("account:login")
             else:
-                messages.info(request, 'Invalid Input or Invalid reCAPTCHA. Please try again')
+                messages.warning(request, 'Invalid Input or Invalid reCAPTCHA. Please try again')
             return render(request, self.template_name, {'form1': form, 'site_key': settings.RECAPTCHA_SITE_KEY})
 
         except PermissionDenied as e:
@@ -195,13 +197,17 @@ class Activate(TemplateView):
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
             if account_activation_token.check_token(user, kwargs['token']):
-                if user.is_active:
-                    auth.login(request, user)
-                    return redirect("home")
+                if is_block(request, user):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
+
                 form = StudentForm()
                 return render(request, self.template_name, {'user': user, 'form': form})
             else:
-                raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
+                raise PermissionDenied('Activation link is invalid! Please SignUp Again or Contact Us')
+
+        except PermissionDenied as e:
+            messages.error(request, e)
+            return redirect('home')
         except Exception as e:
             messages.error(request, (str(e) + '. Please Contact Us'))
             return redirect("account:signup")
@@ -211,10 +217,10 @@ class Activate(TemplateView):
             uid = force_text(urlsafe_base64_decode(kwargs['uidb64']))
             user = User.objects.get(pk=uid)
             if account_activation_token.check_token(user, kwargs['token']):
+                if is_block(request, user):
+                    raise PermissionDenied('Your Account is blocked. Please Contact Us')
+
                 form = StudentForm(request.POST)
-                if user.is_active:
-                    auth.login(request, user)
-                    return redirect("home")
                 if form.is_valid():
                     temp = form.save(commit=False)
                     temp.user = user
@@ -228,7 +234,11 @@ class Activate(TemplateView):
                     messages.warning(request, 'Invalid Input')
                     return render(request, self.template_name, {'user': user, 'form': form})
             else:
-                raise Exception('Activation link is invalid! Please SignUp Again or Contact Us')
+                raise PermissionDenied('Activation link is invalid! Please SignUp Again or Contact Us')
+
+        except PermissionDenied as e:
+            messages.error(request, e)
+            return redirect('home')
         except Exception as e:
             messages.error(request, (str(e) + '. Please Contact Us'))
             return redirect("account:signup")

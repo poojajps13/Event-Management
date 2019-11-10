@@ -3,21 +3,12 @@ div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acro
     font-style: normal;
     font-weight: 100;
 }
-
-.card-deck .card {
-    min-width: 260px;
-}
-
-.fit-text {
-    max-width: fit-content;
-}
-
+label {margin: 0;}
+.card-deck .card {min-width: 260px;}
+.fit-text {max-width: fit-content;}
 @media screen and (max-width: 992px) {
-    .fit-text {
-        max-width: 100%;
-    }
+    .fit-text {max-width: 100%;}
 }
-
 .custom-a:hover {text-decoration: none;}
 .btn-custom {color: #FFFFFF;font-weight: 100;border-radius: 10rem;background-color: #1492E6;}
 .btn-custom:hover {background-color: #FFFFFF;color: #1492E6}
@@ -32,7 +23,6 @@ div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acro
 .odd {background-color: #1492E6;}
 .even {background-color: rgb(0, 183, 209);}
 @media (max-width: 768px) {
-    .fixed-top {
-        position: unset;
-    }
+    .fixed-top {position: unset;}
 }
+.under-line {border-bottom: 1px solid #007bff !important;}

@@ -5,11 +5,12 @@ from django.core.validators import validate_email
 
 from student.models import StudentRecord
 
-BATCH_START = [('2015', '2015'), ('2016', '2016'), ('2017', '2017'), ('2018', '2018'), ('2019', '2019'),
-               ('2020', '2020'), ('2021', '2021'), ('2022', '2022')]
-BATCH_END = [('2018', '2018'), ('2019', '2019'), ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'),
-             ('2024', '2024'), ('2025', '2025'), ('2026', '2026')]
-BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('MCA', 'MCA')]
+BATCH_START = [('2016', '2016'), ('2017', '2017'), ('2018', '2018'), ('2019', '2019'), ('2020', '2020'),
+               ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024'), ('2025', '2025')]
+BATCH_END = [('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024'), ('2025', '2025'),
+             ('2026', '2026'), ('2027', '2027'), ('2028', '2028'), ('2029', '2029'), ('2030', '2030')]
+BRANCHES = [('CSE', 'CSE'), ('IT', 'IT'), ('EC', 'EC'), ('ME', 'ME'), ('EN', 'EN'), ('CE', 'CE'), ('MCA', 'MCA'),
+            ('Other', 'Other')]
 
 
 class SignupForm(forms.ModelForm):
@@ -40,8 +41,6 @@ class SignupForm(forms.ModelForm):
             user = models.User.objects.get(email=email.lower())
             if user.is_active:
                 raise forms.ValidationError("This Email Address is already used")
-        except ValidationError:
-            return forms.ValidationError("Invalid Email Address")
         except ObjectDoesNotExist:
             pass
         return email
@@ -77,12 +76,13 @@ class StudentForm(forms.ModelForm):
         fields = ['roll_no', 'college_name', 'branch', 'batch_start', 'batch_end', 'number']
 
     def clean_roll_no(self):
-        roll_no = self.cleaned_data['roll_no']
+        roll_no = None
         try:
+            roll_no = self.cleaned_data['roll_no']
             StudentRecord.objects.get(roll_no=roll_no.upper())
+            raise forms.ValidationError("Roll Number already taken. Contact to us")
         except ObjectDoesNotExist:
             return roll_no.upper()
-        raise forms.ValidationError("Roll Number already taken. Contact to us")
 
 
 class LoginForm(forms.Form):

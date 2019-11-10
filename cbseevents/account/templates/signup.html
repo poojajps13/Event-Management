@@ -1,38 +1,34 @@
 {% extends "base.html" %}{% load staticfiles %}{% block head_title %}Signup | {{ block.super }}{% endblock %}
-{% block content %}
-    <main role="main" class="container col-md-6 bg-white">
-        <div class="px-md-3 px-2 pt-4 pb-5">
-            <div style="text-align: center">
-                <h3>Create Your Account</h3>
+{% block css %}{% endblock %}{% block content %}
+    <main role="main" class="container col-xl-4 col-lg-5 col-md-6 p-4 mt-md-4 mt-2 mb-5" style="background-color: #f7f5f5;box-shadow: 0 0 5px 5px #d4d2cf;border-radius: 5px">
+        <h3 class="text-center pb-3">Create Account</h3>
+        <form id="signupForm" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label>First Name</label>{{ form1.first_name }}<span style="color:red;">{{ form1.first_name.errors }}</span>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label>Last Name</label>{{ form1.last_name }}<span style="color:red;">{{ form1.last_name.errors }}</span>
+                </div>
             </div>
-            <form id="signupForm" method="post">{% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6 mb-3"><label>First Name</label>{{ form1.first_name }}
-                        <span style="color:red;">{{ form1.first_name.errors }}</span></div>
-                    <div class="col-md-6 mb-3"><label>Last Name</label>{{ form1.last_name }}
-                        <span style="color:red;">{{ form1.last_name.errors }}</span></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 mb-3"><label>Email</label>{{ form1.email }}
-                        <span style="color:red;">{{ form1.email.errors }}</span></div>
-                </div>
-                <div class="mb-3"><label>Password</label>{{ form1.password }}
-                    <span style="color:red;">{{ form1.password.errors }}</span></div>
-                <div class="mb-3" style="font-size: 14px">
-                    <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character</li>
-                    <li>Your password can&#39;t be a commonly used password.</li>
-                    <li>Your password can&#39;t be too similar to your other personal information.</li>
-                </div>
-                <div class="mb-3">
-                    <label>Re-Enter Password</label>{{ form1.confirm_password }}
-                    <span style="color:red;">{{ form1.confirm_password.errors }}</span></div>
-                <input type="hidden" name="recaptcha" id="recaptcha">
-                <button type="submit" class="btn btn-outline-success btn-block mb-3">Signup</button>
-                <a href="{% url 'account:login' %}" class="btn btn-outline-info btn-block">Login</a>
-            </form>
-        </div>
-    </main>
-{% endblock %}{% block script %}
+            <div class="mb-4">
+                <label>Email</label>{{ form1.email }}<span style="color:red;">{{ form1.email.errors }}</span></div>
+            <div class="mb-4">
+                <label>Password</label>{{ form1.password }}<span style="color:red;">{{ form1.password.errors }}</span>
+            </div>
+            <div class="mb-3" style="font-size: 14px">
+                <li>Use at least one lowercase and uppercase letter, one numeral, one symbol and 8 character</li>
+                <li>Your password can&#39;t be a commonly used password.</li>
+                <li>Your password can&#39;t be too similar to your other personal information.</li>
+            </div>
+            <div class="mb-4">
+                <label>Re-Enter Password</label>{{ form1.confirm_password }}
+                <span style="color:red;">{{ form1.confirm_password.errors }}</span></div>
+            <input type="hidden" name="recaptcha" id="recaptcha">
+            <button type="submit" class="btn btn-success btn-block mb-4">Signup</button>
+        </form>
+        <a href="{% url 'account:login' %}" class="btn btn-outline-info btn-block">Login</a>
+    </main>{% endblock %}{% block script %}
     <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
     <script>
         grecaptcha.ready(function () {
