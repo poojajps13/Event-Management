@@ -299,36 +299,36 @@ class ForgetPassword(TemplateView):
 
 
 # noinspection PyBroadException
-class ResetPassword(TemplateView):
-    template_name = 'reset-password.html'
-
-    def get(self, request, *args, **kwargs):
-        try:
-            user = User.objects.get(username=request.user)
-            if user.is_active:
-                form = ResetPasswordForm()
-                return render(request, self.template_name, {'form': form})
-        except Exception:
-            messages.error(request, 'User not Found')
-        return redirect('home')
-
-    def post(self, request):
-        try:
-            user = User.objects.get(username=request.user)
-            if user.is_active:
-                form = ResetPasswordForm(request.POST)
-                if form.is_valid():
-                    password = form.cleaned_data['password']
-                    user.set_password(password)
-                    user.save()
-                    messages.success(request, 'Password Updated')
-                    auth.login(request, user)
-                    return redirect('home')
-                messages.error(request, 'Password Does not Match')
-                return render(request, self.template_name, {'form': form})
-        except Exception:
-            messages.error(request, 'Invalid Link')
-        return redirect('home')
+# class ResetPassword(TemplateView):
+#     template_name = 'reset-password.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         try:
+#             user = User.objects.get(username=request.user)
+#             if user.is_active:
+#                 form = ResetPasswordForm()
+#                 return render(request, self.template_name, {'form': form})
+#         except Exception:
+#             messages.error(request, 'User not Found')
+#         return redirect('home')
+#
+#     def post(self, request):
+#         try:
+#             user = User.objects.get(username=request.user)
+#             if user.is_active:
+#                 form = ResetPasswordForm(request.POST)
+#                 if form.is_valid():
+#                     password = form.cleaned_data['password']
+#                     user.set_password(password)
+#                     user.save()
+#                     messages.success(request, 'Password Updated')
+#                     auth.login(request, user)
+#                     return redirect('home')
+#                 messages.error(request, 'Password Does not Match')
+#                 return render(request, self.template_name, {'form': form})
+#         except Exception:
+#             messages.error(request, 'Invalid Link')
+#         return redirect('home')
 
 
 def consolidated_view(request, c_o_e=None, username=None):

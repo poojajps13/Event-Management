@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from .views import consolidated_view, superuser, del_user, edit_user
-from .views import logout, Login, Signup, ResetPassword, ForgetPassword, Activate
+from .views import logout, Login, Signup, ForgetPassword, Activate
 
 urlpatterns = [
     path('login', Login.as_view(), name='login'),
