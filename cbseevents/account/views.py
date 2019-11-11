@@ -17,8 +17,9 @@ from django.views.generic import TemplateView
 
 from event.models import EventRecord
 from registration.models import RegistrationRecord
+from student.forms import StudentForm
 from student.models import StudentRecord
-from .forms import SignupForm, LoginForm, ResetPasswordForm, EditUserForm, EmailForm, StudentForm
+from .forms import SignupForm, LoginForm, ResetPasswordForm, EditUserForm, EmailForm
 from .tokens import account_activation_token, password_reset_token
 
 
@@ -330,26 +331,34 @@ class ForgetPassword(TemplateView):
 #             messages.error(request, 'Invalid Link')
 #         return redirect('home')
 
+class ConsolidatedView(TemplateView):
+    template_name = 'consolidated_view.html'
 
-def consolidated_view(request, c_o_e=None, username=None):
-    try:
-        if request.user.is_superuser:
-            if c_o_e:
-                event_list = EventRecord.objects.filter(c_o_e=c_o_e).order_by('-id')
-            elif username:
-                user = User.objects.get(username=username)
-                event_list = EventRecord.objects.filter(user=user).order_by('-id')
+    def get(self, request, *args, **kwargs):
+        try:
+            if request.user.is_superuser:
+                if kwargs.get('c_o_e'):
+                    event_list = EventRecord.objects.filter(c_o_e=kwargs['c_o_e']).order_by('-id')
+                    print('aa')
+                elif kwargs.get('username'):
+                    user = User.objects.get(username=kwargs['username'])
+                    event_list = EventRecord.objects.filter(user=user).order_by('-id')
+                    print('bb')
+                else:
+                    event_list = EventRecord.objects.all().order_by('-id')
+            elif request.user.is_staff:
+                event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
             else:
-                event_list = EventRecord.objects.all().order_by('-id')
-        elif request.user.is_staff:
-            event_list = EventRecord.objects.filter(user=request.user).order_by('-id')
-        else:
-            student = StudentRecord.objects.get(user=request.user)
-            event_list = RegistrationRecord.objects.filter(student=student)
-        return render(request, 'consolidated_view.html', {'event_list': event_list, 'now': date.today()})
-    except ObjectDoesNotExist:
-        messages.error(request, 'Record Not Found')
-        return redirect('home')
+                student = StudentRecord.objects.get(user=request.user)
+                event_list = RegistrationRecord.objects.filter(student=student)
+            return render(request, self.template_name, {'event_list': event_list, 'now': date.today()})
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Record Not Found')
+            return redirect('home')
+        # except Exception as e:
+        #     messages.error(request, (str(e) + '. Please Contact Us'))
+        #     return redirect("home")
 
 
 # noinspection PyBroadException
