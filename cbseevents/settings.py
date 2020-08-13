@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+import django_heroku
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -198,3 +200,5 @@ CKEDITOR_CONFIGS = {
 
 ADMIN_SITE_HEADER = "CBSE"
 ADMIN_SITE_TITLE = "CBSE site admin"
+
+django_heroku.settings(locals())
