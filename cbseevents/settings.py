@@ -19,12 +19,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'su8_wqo_o6-s=wz7cub&&n1d-s8_&q$3lz9(==qtpmuesn!p+q'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -35,10 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'account',
     'event',
     'registration',
     'student',
+
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -78,8 +80,11 @@ WSGI_APPLICATION = 'cbseevents.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
     }
 }
 
@@ -123,6 +128,7 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 # STATIC_ROOT = os.path.join(BASE_DIR,"static/")
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
@@ -132,28 +138,28 @@ LOGIN_URL = "/account/login"
 
 # Session & Token Expire
 
-# SESSION_COOKIE_AGE = 600
+SESSION_COOKIE_AGE = 600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # Contact Information
 
-CONTACT_EMAIL = '********************'
-CONTACT_NUMBER = '********************'
+CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL')
+CONTACT_NUMBER = os.environ.get('CONTACT_NUMBER')
 
 # Email
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '*********************'
-EMAIL_HOST_PASSWORD = '********************'
-EMAIL_PORT = 587
+EMAIL_USE_TLS = bool(os.environ.get('EMAIL_USE_TLS'))
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 
 # Google reCAPTCHA
 
 RECAPTCHA_SITE_VERIFICATION_URL = 'https://www.google.com/recaptcha/api/siteverify'
-RECAPTCHA_SITE_KEY = '********************'
-RECAPTCHA_PRIVATE_KEY = '********************'
+RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 # CKEditor Detail
 
